@@ -108,30 +108,31 @@ class Board:
         self.draw_player(self.po)
 
     def move_right(self):
-        self.save_po = self.po
+        self.save_po = []
+        for i in self.po:
+            self.save_po.append(i)
         self.po[0] = self.po[0] + self.cell_size
         screen.fill((0, 0, 0))
         self.render(screen)
         self.draw_player(self.po)
 
     def move_up(self):
-        self.save_po = self.po
+        self.save_po = []
+        for i in self.po:
+            self.save_po.append(i)
         self.po[1] = self.po[1] - self.cell_size
         screen.fill((0, 0, 0))
         self.render(screen)
         self.draw_player(self.po)
 
     def move_down(self):
-        self.save_po = self.po
+        self.save_po = []
+        for i in self.po:
+            self.save_po.append(i)
         self.po[1] = self.po[1] + self.cell_size
         screen.fill((0, 0, 0))
         self.render(screen)
         self.draw_player(self.po)
-    
-    def set_view(self, left, top, cell_size):
-        self.left = left
-        self.top = top
-        self.cell_size = cell_size
 
 '''
 class Player(pygame.sprite.Sprite):
