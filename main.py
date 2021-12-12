@@ -1,4 +1,5 @@
 import pygame
+from playerTest import *
 
 
 class Board:
@@ -12,6 +13,11 @@ class Board:
         self.y = 0
         self.cells = []
         self.coords = {}
+        self.man = pygame.image.load('animation/r1.png') # подгружаем картинку
+        self.scale = pygame.transform.scale(
+            self.man, (self.cell_size, self.cell_size)) # меняем размеры
+        self.poloj = []
+        self.po = []
 
     def render(self, screen):
         y = self.top
@@ -24,16 +30,38 @@ class Board:
                 self.coords[(i, j)] = (x, y) # Добавляем координаты
                 x += self.cell_size
             y += self.cell_size
+            
+        self.po = [self.coords[(12, 9)][0], self.coords[(12, 9)][1]]
         
-        self.draw_player(self.coords[(12, 9)])
+        self.draw_player(self.po) # рисуем игрока на его стартовой позиции
 
         self.draw_barier(self.coords[(10, 10)])
+        self.draw_barier(self.coords[(11, 10)])
+        self.draw_barier(self.coords[(12, 10)])
+        self.draw_barier(self.coords[(13, 10)])
+        self.draw_barier(self.coords[(14, 9)])
+        self.draw_barier(self.coords[(14, 8)])
+        self.draw_barier(self.coords[(14, 7)])
+
         
     def draw_player(self, xy):
-        pygame.draw.ellipse(screen, (255, 0, 0), (xy[0], xy[1], self.cell_size, self.cell_size))
+        self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
+        screen.blit(self.scale, self.man_rect)
+        pygame.display.update()
+        self.po[0] = xy[0]
+        self.po[1] = xy[1]
     
+    def coor(self):
+        return self.po
+        
     def draw_barier(self, xy):
-        pygame.draw.rect(screen, (0, 0, 0), (xy[0], xy[1], self.cell_size, self.cell_size))
+        pygame.draw.rect(screen, (255, 255, 255), (xy[0], xy[1], self.cell_size, self.cell_size))
+    
+    def move(self, x, y):
+        arr = [x, y]
+        self.po[0] = x
+        self.po[1] = y
+        self.draw_player(arr)
     
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -56,12 +84,14 @@ if __name__ == '__main__':
     width, height = 780, 540
     size = width, height
     screen = pygame.display.set_mode(size)
+    screen2 = pygame.Surface(screen.get_size())
     screen.fill((0, 0, 0))
     clock = pygame.time.Clock()
     board = Board(26, 18)
-    print(board.render(screen))
-    fps = 60
+    board.render(screen)
+    fps = 90
     running = True
+    # hero = Player(12, 9)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -70,14 +100,19 @@ if __name__ == '__main__':
                 pass
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    pass
-                if event.key == pygame.K_RIGHT:
-                    walk_right = pygame.image.load('R1.png')
-                if event.key == pygame.K_UP:
-                    pass
-                if event.key == pygame.K_DOWN:
-                    pass
-        
+                    co = board.coor()
+                    board.move(co[0] - 30, co[1])
+                # if event.key == pygame.K_RIGHT:
+                #     x = stand.get_rect().x
+                #     y = stand.get_rect().y
+                #     walk_right = pygame.image.load('r1.png')
+                #     screen.blit(walk_right, (x, y))
+                #     pygame.display.update()
+                # if event.key == pygame.K_UP:
+                #     pass
+                # if event.key == pygame.K_DOWN:
+                #     pass
+        board.render(screen)
         clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
