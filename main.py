@@ -18,6 +18,7 @@ class Board:
             self.man, (self.cell_size, self.cell_size)) # меняем размеры
         self.poloj = []
         self.po = []
+        self.bar = []
 
     def render(self, screen):
         y = self.top
@@ -36,12 +37,25 @@ class Board:
         self.draw_player(self.po) # рисуем игрока на его стартовой позиции
 
         self.draw_barier(self.coords[(10, 10)])
+        self.bar.append(self.coords[(10, 10)])
+
         self.draw_barier(self.coords[(11, 10)])
+        self.bar.append(self.coords[(11, 10)])
+
         self.draw_barier(self.coords[(12, 10)])
+        self.bar.append(self.coords[(12, 10)])
+
         self.draw_barier(self.coords[(13, 10)])
+        self.bar.append(self.coords[(13, 10)])
+
         self.draw_barier(self.coords[(14, 9)])
+        self.bar.append(self.coords[(14, 9)])
+
         self.draw_barier(self.coords[(14, 8)])
+        self.bar.append(self.coords[(14, 8)])
+
         self.draw_barier(self.coords[(14, 7)])
+        self.bar.append(self.coords[(14, 7)])
 
         
     def draw_player(self, xy):
@@ -57,13 +71,25 @@ class Board:
     def draw_barier(self, xy):
         pygame.draw.rect(screen, (255, 255, 255), (xy[0], xy[1], self.cell_size, self.cell_size))
     
-    def move(self, screen):
-        self.po[0] = self.po[0] - self.cell_size
-        self.draw_player(self.po)
-    
     def move_left(self):
-        self.draw_player((self.po[0] - self.cell_size, self.po[1]))
-        self.po[0] -= self.cell_size
+        if (self.po[0], self.po[1]) not in self.bar:
+            self.po[0] = self.po[0] - self.cell_size
+            self.draw_player(self.po)
+
+    def move_right(self):
+        if (self.po[0], self.po[1]) not in self.bar:
+            self.po[0] = self.po[0] + self.cell_size
+            self.draw_player(self.po)
+
+    def move_up(self):
+        if (self.po[0], self.po[1]) not in self.bar:
+            self.po[1] = self.po[0] - self.cell_size
+            self.draw_player(self.po)
+
+    def move_down(self):
+        if (self.po[0], self.po[1]) not in self.bar:
+            self.po[1] = self.po[1] + self.cell_size
+            self.draw_player(self.po)
     
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -102,17 +128,13 @@ if __name__ == '__main__':
                 pass
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    board.move(screen)
-                # if event.key == pygame.K_RIGHT:
-                #     x = stand.get_rect().x
-                #     y = stand.get_rect().y
-                #     walk_right = pygame.image.load('r1.png')
-                #     screen.blit(walk_right, (x, y))
-                #     pygame.display.update()
-                # if event.key == pygame.K_UP:
-                #     pass
-                # if event.key == pygame.K_DOWN:
-                #     pass
+                    board.move_left()
+                if event.key == pygame.K_RIGHT:
+                    board.move_right()
+                if event.key == pygame.K_UP:
+                    board.move_up()
+                if event.key == pygame.K_DOWN:
+                    board.move_down()
         clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
