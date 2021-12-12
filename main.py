@@ -6,6 +6,7 @@ class Board:
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
+        self.board[16][16] = 1
         self.po = [360, 360] # координаты игрока
         self.coords = {}
         self.bar = []
@@ -15,6 +16,7 @@ class Board:
         self.left = 10
         self.top = 10
         self.cell_size = 30
+        self.save_po = self.po
 
     # настройка внешнего вида
     def set_view(self, left, top, cell_size):
@@ -25,6 +27,11 @@ class Board:
     # отрисовка поля
     def render(self, screen):
         screen.fill((0, 0, 0))
+        print(self.po)
+        print(self.board[int(self.po[1] / 30)][int(self.po[0] / 30)])
+        print(self.po[1] / 30)
+        if self.board[int(self.po[1] / 30)][int(self.po[0] / 30)] == 1:
+            self.po = self.save_po
         for i in range(self.height):
             for j in range(self.width):
                 if self.board[i][j] == 0:
@@ -92,27 +99,33 @@ class Board:
         pygame.draw.rect(screen, (255, 255, 255), (xy[0], xy[1], self.cell_size, self.cell_size))
     
     def move_left(self):
+        self.save_po = []
+        for i in self.po:
+            self.save_po.append(i)
         self.po[0] = self.po[0] - self.cell_size
         screen.fill((0, 0, 0))
-        self.render_2(screen)
+        self.render(screen)
         self.draw_player(self.po)
 
     def move_right(self):
+        self.save_po = self.po
         self.po[0] = self.po[0] + self.cell_size
         screen.fill((0, 0, 0))
-        self.render_2(screen)
+        self.render(screen)
         self.draw_player(self.po)
 
     def move_up(self):
+        self.save_po = self.po
         self.po[1] = self.po[1] - self.cell_size
         screen.fill((0, 0, 0))
-        self.render_2(screen)
+        self.render(screen)
         self.draw_player(self.po)
 
     def move_down(self):
+        self.save_po = self.po
         self.po[1] = self.po[1] + self.cell_size
         screen.fill((0, 0, 0))
-        self.render_2(screen)
+        self.render(screen)
         self.draw_player(self.po)
     
     def set_view(self, left, top, cell_size):
