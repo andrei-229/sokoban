@@ -13,8 +13,8 @@ class Board:
         self.scale = pygame.image.load('animation/r1.png')
         self.scale = pygame.transform.scale(self.scale, (30, 30))
         # значения по умолчанию
-        self.left = 10
-        self.top = 10
+        self.left = 0
+        self.top = 0
         self.cell_size = 30
         self.save_po = self.po
 
@@ -28,9 +28,9 @@ class Board:
     def render(self, screen):
         screen.fill((0, 0, 0))
         print(self.po)
-        print(self.board[int(self.po[1] / 30)][int(self.po[0] / 30)])
+        print(self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1])
         print(self.po[1] / 30)
-        if self.board[int(self.po[1] / 30)][int(self.po[0] / 30)] == 1:
+        if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 1:
             self.po = self.save_po
         for i in range(self.height):
             for j in range(self.width):
