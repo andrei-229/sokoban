@@ -6,7 +6,7 @@ class Board:
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
-        self.board[16][16] = 1
+        self.board[16][16] = 1 # Размещение одной стены
         self.po = [360, 360] # координаты игрока
         self.coords = {}
         self.bar = []
@@ -17,20 +17,17 @@ class Board:
         self.top = 0
         self.cell_size = 30
         self.save_po = self.po
-
-    # настройка внешнего вида
-    def set_view(self, left, top, cell_size):
-        self.left = left
-        self.top = top
-        self.cell_size = cell_size
     
     # отрисовка поля
     def render(self, screen):
         screen.fill((0, 0, 0))
-        print(self.po)
-        print(self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1])
-        print(self.po[1] / 30)
-        if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 1:
+        try:
+            print(self.po)
+            print(self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1])
+            print(self.po[1] / 30)
+            if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 1 or self.po[0] <= 0 or self.po[1] <= 0:
+                self.po = self.save_po
+        except:
             self.po = self.save_po
         for i in range(self.height):
             for j in range(self.width):
@@ -39,64 +36,15 @@ class Board:
                 else:
                     pygame.draw.rect(screen, (255, 255, 255), (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size))
         self.draw_player(self.po)
-
-    def render_2(self, screen):
-        print(self.po)
-        print(self.board[int(self.po[1] / 30)][int(self.po[0] / 30)])
-        if self.board[int(self.po[1] / 30)][int(self.po[0] / 30)] == 1:
-            self.board[self.po[1]][self.po[0]] = 0
-            self.poloj.append(self.po)
-            self.po = [self.coords[(12, 9)][0], self.coords[(12, 9)][1]]
-            self.draw_player(self.po)
-        y = self.top
-        for j in range(self.height):
-            x = self.left
-            for i in range(self.width):
-                pygame.draw.rect(screen, 'white', ((x, y),
-                                                   (self.cell_size, self.cell_size)),
-                                 width=1)
-                self.coords[(i, j)] = (x, y)  # Добавляем координаты
-                x += self.cell_size
-            y += self.cell_size
-
-        self.draw_barier(self.coords[(10, 10)])
-        self.bar.append(self.coords[(10, 10)])
-
-        self.draw_barier(self.coords[(11, 10)])
-        self.bar.append(self.coords[(11, 10)])
-
-        self.draw_barier(self.coords[(12, 10)])
-        self.bar.append(self.coords[(12, 10)])
-
-        self.draw_barier(self.coords[(13, 10)])
-        self.bar.append(self.coords[(13, 10)])
-
-        self.draw_barier(self.coords[(14, 9)])
-        self.bar.append(self.coords[(14, 9)])
-
-        self.draw_barier(self.coords[(14, 8)])
-        self.bar.append(self.coords[(14, 8)])
-
-        self.draw_barier(self.coords[(14, 7)])
-        self.bar.append(self.coords[(14, 7)])
-
-        self.draw_player(self.po)
    
     def draw_player(self, xy):
         self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
-        # self.man_rect = self.scale.get_rect(bottomright=(12, 12))
         screen.blit(self.scale, self.man_rect)
         pygame.display.update()
         self.po[0] = xy[0]
         self.po[1] = xy[1]
         print(self.po)
         print(self.bar)
-    
-    def coor(self):
-        return self.po
-        
-    def draw_barier(self, xy):
-        pygame.draw.rect(screen, (255, 255, 255), (xy[0], xy[1], self.cell_size, self.cell_size))
     
     def move_left(self):
         self.save_po = []
@@ -134,16 +82,6 @@ class Board:
         self.render(screen)
         self.draw_player(self.po)
 
-'''
-class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.walk_right = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
-        player_image = pygame.image.load('R1.png')
-
-    def update(self):
-        pass
-'''
 
 if __name__ == '__main__':
     pygame.init()
@@ -157,7 +95,6 @@ if __name__ == '__main__':
     board.render(screen)
     fps = 90
     running = True
-    # hero = Player(12, 9)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
