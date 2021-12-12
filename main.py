@@ -32,12 +32,18 @@ if __name__ == '__main__':
     width, height = 780, 540
     size = width, height
     screen = pygame.display.set_mode(size)
+    screen.fill((0, 0, 0))
+    clock = pygame.time.Clock()
     board = Board(26, 18)
+
+    fps = 60
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        screen.fill((0, 0, 0))
+                
         board.render(screen)
+        clock.tick(fps)
         pygame.display.flip()
+    pygame.quit()
