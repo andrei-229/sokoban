@@ -2,14 +2,12 @@ import pygame
 
 
 class Board:
-    # создание поля
     def __init__(self, width, height):
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
-        # значения по умолчанию
-        self.left = 10
-        self.top = 10
+        self.left = 0
+        self.top = 0
         self.cell_size = 30
         self.y = 0
 
@@ -24,7 +22,6 @@ class Board:
                 x += self.cell_size
             y += self.cell_size
 
-    # настройка внешнего вида
     def set_view(self, left, top, cell_size):
         self.left = left
         self.top = top
@@ -32,12 +29,10 @@ class Board:
 
 if __name__ == '__main__':
     pygame.init()
-    width, height = 400, 400
+    width, height = 780, 540
     size = width, height
     screen = pygame.display.set_mode(size)
-    pygame.display.set_caption('Инцилизация игры')
-    board = Board(4, 3)
-    board.set_view(100, 100, 50)
+    board = Board(26, 18)
     running = True
     while running:
         for event in pygame.event.get():
