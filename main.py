@@ -57,11 +57,13 @@ class Board:
     def draw_barier(self, xy):
         pygame.draw.rect(screen, (255, 255, 255), (xy[0], xy[1], self.cell_size, self.cell_size))
     
-    def move(self, x, y):
-        arr = [x, y]
-        self.po[0] = x
-        self.po[1] = y
-        self.draw_player(arr)
+    def move(self, screen):
+        self.po[0] = self.po[0] - self.cell_size
+        self.draw_player(self.po)
+    
+    def move_left(self):
+        self.draw_player((self.po[0] - self.cell_size, self.po[1]))
+        self.po[0] -= self.cell_size
     
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -100,8 +102,7 @@ if __name__ == '__main__':
                 pass
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    co = board.coor()
-                    board.move(co[0] - 30, co[1])
+                    board.move(screen)
                 # if event.key == pygame.K_RIGHT:
                 #     x = stand.get_rect().x
                 #     y = stand.get_rect().y
@@ -112,7 +113,6 @@ if __name__ == '__main__':
                 #     pass
                 # if event.key == pygame.K_DOWN:
                 #     pass
-        board.render(screen)
         clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
