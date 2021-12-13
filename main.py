@@ -6,7 +6,7 @@ class Board:
         self.width = width # ширина поля
         self.height = height # высота поля
         self.board = [[0] * width for _ in range(height)] # список списков с состояниями каждой клетки
-        self.board[16][16] = 1 # Размещение одной стены
+        self.board[16][16] = 1 # Размещение одной стены первое число это по Y второе по X
         self.po = [360, 360] # координаты игрока
         self.coords = {} # словарь координат клеток
         self.bar = [] # список координат препятствий
@@ -28,6 +28,7 @@ class Board:
             self.po = self.save_po # возвращение координат игрока
         for i in range(self.height): # перебор всех строк
             for j in range(self.width): # перебор всех столбцов
+                self.barier(15, 16)
                 if self.board[i][j] == 0: # если клетка пустая
                     pygame.draw.rect(screen, (255, 255, 255), (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), 1, 1, 1, 1, 1, 1) # отрисовка клетки
                 else: # если клетка занята стеной
@@ -41,6 +42,10 @@ class Board:
         pygame.display.update()
         self.po[0] = xy[0]
         self.po[1] = xy[1]
+
+    def barier(self, y, x):
+        self.board[y][x] = 1
+
 
     # перемещение налево
     def move_left(self):
