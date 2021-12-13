@@ -18,6 +18,7 @@ class Board:
         self.poloj = []
         self.po = []
         self.bar = []
+        self.ui = 0
 
     def render(self, screen):
         y = self.top
@@ -31,7 +32,8 @@ class Board:
                 x += self.cell_size
             y += self.cell_size
             
-        self.po = [self.coords[(12, 9)][0], self.coords[(12, 9)][1]]
+        if self.ui == 0:
+            self.po = [self.coords[(12, 9)][0], self.coords[(12, 9)][1]]
 
         self.draw_barier(self.coords[(10, 10)])
         arr = [self.coords[(10, 10)][0], self.coords[(10, 10)][1]]
@@ -62,28 +64,7 @@ class Board:
         self.bar.append(arr)
 
         self.draw_player(self.po)  # рисуем игрока на его стартовой позиции
-
-    def render_2(self, screen):
-        y = self.top
-        for j in range(self.height):
-            x = self.left
-            for i in range(self.width):
-                pygame.draw.rect(screen, 'white', ((x, y),
-                                                   (self.cell_size, self.cell_size)),
-                                 width=1)
-                self.coords[(i, j)] = (x, y)  # Добавляем координаты
-                x += self.cell_size
-            y += self.cell_size
-
-        self.draw_barier(self.coords[(10, 10)])
-        self.draw_barier(self.coords[(11, 10)])
-        self.draw_barier(self.coords[(12, 10)])
-        self.draw_barier(self.coords[(13, 10)])
-        self.draw_barier(self.coords[(14, 9)])
-        self.draw_barier(self.coords[(14, 8)])
-        self.draw_barier(self.coords[(14, 7)])
-
-        self.draw_player(self.po)
+        self.ui = 1
    
     def draw_player(self, xy):
         self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
@@ -105,7 +86,7 @@ class Board:
             if [self.po[0], self.po[1]] not in self.bar:
                 self.po[0] = self.po[0] - self.cell_size
                 screen.fill((0, 0, 0))
-                self.render_2(screen)
+                self.render(screen)
                 self.draw_player(self.po)
 
     def move_right(self):
@@ -113,7 +94,7 @@ class Board:
             if (self.po[0] + self.cell_size, self.po[1]) not in self.bar:
                 self.po[0] = self.po[0] + self.cell_size
                 screen.fill((0, 0, 0))
-                self.render_2(screen)
+                self.render(screen)
                 self.draw_player(self.po)
 
     def move_up(self):
@@ -121,7 +102,7 @@ class Board:
             if (self.po[0], self.po[1]) not in self.bar:
                 self.po[1] = self.po[1] - self.cell_size
                 screen.fill((0, 0, 0))
-                self.render_2(screen)
+                self.render(screen)
                 self.draw_player(self.po)
 
     def move_down(self):
@@ -129,7 +110,7 @@ class Board:
             if [self.po[0], self.po[1]] not in self.bar:
                 self.po[1] = self.po[1] + self.cell_size
                 screen.fill((0, 0, 0))
-                self.render_2(screen)
+                self.render(screen)
                 self.draw_player(self.po)
     
     def set_view(self, left, top, cell_size):
