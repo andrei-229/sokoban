@@ -3,6 +3,10 @@ import pygame # Import pygame
 
 class Board:
     def __init__(self, width, height):
+        self.left = 0  # левая граница поля
+        self.top = 0  # верхняя граница поля
+        self.cell_size = 30  # размер клетки
+
         self.width = width # ширина поля
         self.height = height # высота поля
         self.board = [[0] * width for _ in range(height)] # список списков с состояниями каждой клетки
@@ -11,12 +15,11 @@ class Board:
         self.coords = {} # словарь координат клеток
         self.bar = [] # список координат препятствий
         self.scale = pygame.image.load('animation/r1.png') # изображение игрока
-        self.scale = pygame.transform.scale(self.scale, (30, 30)) # масштабирование изображения
+        self.scale = pygame.transform.scale(self.scale, (self.cell_size, self.cell_size)) # масштабирование изображения
+        self.bor = pygame.image.load('animation/wall.png')
+        self.bor = pygame.transform.scale(self.bor, (self.cell_size, self.cell_size))
         # значения по умолчанию
-        self.left = 0 # левая граница поля
-        self.top = 0 # верхняя граница поля
-        self.cell_size = 30 # размер клетки
-        self.save_po = self.po # сохранение координат игрока
+        self.save_po = self.po  # сохранение координат игрока
     
     # отрисовка поля
     def render(self, screen):
@@ -29,10 +32,17 @@ class Board:
         for i in range(self.height): # перебор всех строк
             for j in range(self.width): # перебор всех столбцов
                 self.barier(15, 16)
+                self.box(14, 16)
+                x = self.left + j * self.cell_size
+                y = self.top + i * self.cell_size
                 if self.board[i][j] == 0: # если клетка пустая
-                    pygame.draw.rect(screen, (255, 255, 255), (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), 1, 1, 1, 1, 1, 1) # отрисовка клетки
+                    pygame.draw.rect(screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size), 1, 1, 1, 1, 1, 1) # отрисовка клетки
+                elif self.board[i][j] == 2:
+                    pygame.draw.rect(screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size))
                 else: # если клетка занята стеной
-                    pygame.draw.rect(screen, (255, 255, 255), (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size)) # отрисовка стены
+                    self.bor_rect = self.bor.get_rect(bottomright=(x + self.cell_size, y + self.cell_size))
+                    screen.blit(self.bor, self.bor_rect)
+        pygame.display.update() # отрисовка стены
         self.draw_player(self.po) # отрисовка игрока
    
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
@@ -45,6 +55,9 @@ class Board:
 
     def barier(self, y, x):
         self.board[y][x] = 1
+    
+    def box(self, y, x):
+        self.board[y][x] = 2
 
 
     # перемещение налево
