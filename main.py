@@ -18,6 +18,8 @@ class Board:
         # спрайты
         self.scale = pygame.image.load('animation/r1.png') # изображение игрока
         self.scale = pygame.transform.scale(self.scale, (self.cell_size, self.cell_size)) # масштабирование изображения
+        self.leftChar = pygame.image.load('animation/l1.png') # изображение игрока
+        self.leftChar = pygame.transform.scale(self.leftChar, (self.cell_size, self.cell_size)) # масштабирование изображения
         self.bor = pygame.image.load('animation/wall.png')
         self.bor = pygame.transform.scale(self.bor, (self.cell_size, self.cell_size))
         self.boxs = pygame.image.load('animation/woodBox5.jpg')
@@ -53,12 +55,19 @@ class Board:
         self.ui = 1
    
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
-    def draw_player(self, xy):
-        self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
-        screen.blit(self.scale, self.man_rect)
-        pygame.display.update()
-        self.po[0] = xy[0]
-        self.po[1] = xy[1]
+    def draw_player(self, xy, lico):
+        if lico == 'right':
+            self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
+            screen.blit(self.scale, self.man_rect)
+            pygame.display.update()
+            self.po[0] = xy[0]
+            self.po[1] = xy[1]
+        elif lico == 'left':
+            self.man_rect = self.leftChar.get_rect(bottomright=(xy[0], xy[1]))
+            screen.blit(self.leftChar, self.man_rect)
+            pygame.display.update()
+            self.po[0] = xy[0]
+            self.po[1] = xy[1]
 
     def barier(self, y, x):
         self.board[y][x] = 1
@@ -82,7 +91,7 @@ class Board:
                 self.po = self.save_po
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
-        self.draw_player(self.po) # отрисовка игрока
+        self.draw_player(self.po, 'rigth') # отрисовка игрока
         pygame.display.update()
 
     # перемещение направо
