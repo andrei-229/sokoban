@@ -12,8 +12,7 @@ class Board:
         self.board = [[0] * width for _ in range(height)] # список списков с состояниями каждой клетки
         self.board[13][16] = 1 # Размещение одной стены первое число это по Y второе по X
         self.po = [360, 360] # координаты игрока
-        self.coords = {} # словарь координат клеток
-        self.bar = [] # список координат препятствий
+        self.krest = []
 
         # спрайты
         self.scale = pygame.image.load('animation/r1.png') # изображение игрока
@@ -49,6 +48,8 @@ class Board:
                 elif self.board[i][j] == 2:
                     self.boxs_rect = self.boxs.get_rect(bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.boxs, self.boxs_rect)
+                elif self.board[i][j] == 3:
+                    pass
                 else: # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
@@ -80,7 +81,10 @@ class Board:
     
     def box(self, y, x):
         self.board[y][x] = 2
-        return [y, x]
+
+    def krests(self, y, x):
+        self.board[y][x] = 3
+        self.krest.append([y, x])
 
     # перемещение налево
     def move_left(self):
