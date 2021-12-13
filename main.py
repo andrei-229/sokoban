@@ -42,7 +42,7 @@ class Board:
                 else: # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
-        pygame.display.update() # отрисовка стены
+        # pygame.display.update() # отрисовка стены
         self.draw_player(self.po) # отрисовка игрока
    
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
@@ -59,7 +59,6 @@ class Board:
     def box(self, y, x):
         self.board[y][x] = 2
 
-
     # перемещение налево
     def move_left(self):
         self.save_po = [] # сохранение координат игрока
@@ -70,6 +69,7 @@ class Board:
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
         self.draw_player(self.po) # отрисовка игрока
+        pygame.display.update()
 
     # перемещение направо
     def move_right(self):
@@ -81,6 +81,7 @@ class Board:
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
         self.draw_player(self.po) # отрисовка игрока
+        pygame.display.update()
 
     # перемещение вверх
     def move_up(self):
@@ -92,6 +93,7 @@ class Board:
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
         self.draw_player(self.po) # отрисовка игрока
+        pygame.display.update()
 
     # перемещение вниз
     def move_down(self):
@@ -103,6 +105,7 @@ class Board:
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
         self.draw_player(self.po) # отрисовка игрока
+        pygame.display.update()
 
 
 # всё далее я не менял, поэтому не буду писать комментарии
