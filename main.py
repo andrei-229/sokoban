@@ -1,120 +1,193 @@
-import pygame
+import pygame  # Import pygame
 
 
 class Board:
     def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.left = 0
-        self.top = 0
-        self.cell_size = 30
-        self.y = 0
-        self.cells = []
-        self.coords = {}
-        self.man = pygame.image.load('animation/r1.png') # подгружаем картинку
+        self.left = 0  # левая граница поля
+        self.top = 0  # верхняя граница поля
+        self.cell_size = 30  # размер клетки
+
+        self.width = width  # ширина поля
+        self.height = height  # высота поля
+        # список списков с состояниями каждой клетки
+        self.board = [[0] * width for _ in range(height)]
+        # Размещение одной стены первое число это по Y второе по X
+        self.board[13][16] = 1
+        self.po = [360, 360]  # координаты игрока
+        self.coords = {}  # словарь координат клеток
+        self.bar = []  # список координат препятствий
+
+        # спрайты
+        self.scale = pygame.image.load(
+            'animation/r1.png')  # изображение игрока
         self.scale = pygame.transform.scale(
-            self.man, (self.cell_size, self.cell_size)) # меняем размеры
-        self.poloj = []
-        self.po = []
-        self.bar = []
-        self.ui = 0
+            self.scale, (self.cell_size, self.cell_size))  # масштабирование изображения
+        self.leftChar = pygame.image.load(
+            'animation/l1.png')  # изображение игрока
+        self.leftChar = pygame.transform.scale(
+            self.leftChar, (self.cell_size, self.cell_size))  # масштабирование изображения
+        self.bor = pygame.image.load('animation/wall.png')
+        self.bor = pygame.transform.scale(
+            self.bor, (self.cell_size, self.cell_size))
+        self.boxs = pygame.image.load('animation/woodBox5.jpg')
+        self.boxs = pygame.transform.scale(
+            self.boxs, (self.cell_size, self.cell_size))
 
+        # значения по умолчанию
+        self.save_po = self.po  # сохранение координат игрока
+        self.barier(12, 16)
+        self.box(11, 16)
+
+    # отрисовка поля
     def render(self, screen):
-        y = self.top
-        for j in range(self.height):
-            x = self.left
-            for i in range(self.width):
-                pygame.draw.rect(screen, 'white', ((x, y),
-                                                   (self.cell_size, self.cell_size)),
-                                                width=1)
-                self.coords[(i, j)] = (x, y) # Добавляем координаты
-                x += self.cell_size
-            y += self.cell_size
-            
-        if self.ui == 0:
-            self.po = [self.coords[(12, 9)][0], self.coords[(12, 9)][1]]
-
-            arr = [self.coords[(10, 10)][0], self.coords[(10, 10)][1]]
-            self.bar.append(arr)
-
-            arr = [self.coords[(11, 10)][0], self.coords[(11, 10)][1]]
-            self.bar.append(arr)
-
-            arr = [self.coords[(12, 10)][0], self.coords[(12, 10)][1]]
-            self.bar.append(arr)
-
-            arr = [self.coords[(13, 10)][0], self.coords[(13, 10)][1]]
-            self.bar.append(arr)
-            arr = [self.coords[(14, 9)][0], self.coords[(14, 9)][1]]
-            self.bar.append(arr)
-            arr = [self.coords[(14, 8)][0], self.coords[(14, 8)][1]]
-            self.bar.append(arr)
-            arr = [self.coords[(14, 7)][0], self.coords[(14, 7)][1]]
-            self.bar.append(arr)
-        self.draw_barier(self.coords[(10, 10)])
-        self.draw_barier(self.coords[(11, 10)])
-        self.draw_barier(self.coords[(12, 10)])
-        self.draw_barier(self.coords[(13, 10)])
-        self.draw_barier(self.coords[(14, 9)])
-        self.draw_barier(self.coords[(14, 8)])
-        self.draw_barier(self.coords[(14, 7)])
-
-        self.draw_player(self.po)  # рисуем игрока на его стартовой позиции
+        screen.fill((0, 0, 0))  # очистка экрана
+        try:  # проверка на наличие клетки в списке
+            # проверка на препятствие
+            if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 1 or self.po[0] <= 0 or self.po[1] <= 0:
+                self.po = self.save_po  # возвращение координат игрока
+        except:  # если клетки нет в списке
+            self.po = self.save_po  # возвращение координат игрока
+        for i in range(self.height):  # перебор всех строк
+            for j in range(self.width):  # перебор всех столбцов
+                x = self.left + j * self.cell_size
+                y = self.top + i * self.cell_size
+                if self.board[i][j] == 0:  # если клетка пустая
+                    pygame.draw.rect(screen, (255, 255, 255), (x, y, self.cell_size,
+                                     self.cell_size), 1, 1, 1, 1, 1, 1)  # отрисовка клетки
+                elif self.board[i][j] == 2:
+                    self.boxs_rect = self.boxs.get_rect(
+                        bottomright=(x + self.cell_size, y + self.cell_size))
+                    screen.blit(self.boxs, self.boxs_rect)
+                else:  # если клетка занята стеной
+                    self.bor_rect = self.bor.get_rect(
+                        bottomright=(x + self.cell_size, y + self.cell_size))
+                    screen.blit(self.bor, self.bor_rect)
+        # pygame.display.update() # отрисовка стены
+        self.draw_player(self.po)  # отрисовка игрока
         self.ui = 1
-   
-    def draw_player(self, xy):
-        self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
-        screen.blit(self.scale, self.man_rect)
-        pygame.display.update()
-        self.po[0] = xy[0]
-        self.po[1] = xy[1]
-        print(self.po)
-        print(self.bar)
-    
-    def coor(self):
-        return self.po
-        
-    def draw_barier(self, xy):
-        pygame.draw.rect(screen, (255, 255, 255), (xy[0], xy[1], self.cell_size, self.cell_size))
-    
+
+    # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
+    def draw_player(self, xy, lico):
+        if lico == 'right':
+            self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
+            screen.blit(self.scale, self.man_rect)
+            pygame.display.update()
+            self.po[0] = xy[0]
+            self.po[1] = xy[1]
+        elif lico == 'left':
+            self.man_rect = self.leftChar.get_rect(bottomright=(xy[0], xy[1]))
+            screen.blit(self.leftChar, self.man_rect)
+            pygame.display.update()
+            self.po[0] = xy[0]
+            self.po[1] = xy[1]
+
+    def barier(self, y, x):
+        self.board[y][x] = 1
+
+    def box(self, y, x):
+        self.board[y][x] = 2
+        return [y, x]
+
+    # перемещение налево
     def move_left(self):
-        if self.po[0] != 30:
-            if [self.po[0], self.po[1]] not in self.bar:
-                self.po[0] = self.po[0] - self.cell_size
-                screen.fill((0, 0, 0))
-                self.render(screen)
-                self.draw_player(self.po)
+        self.save_po = []  # сохранение координат игрока
+        for i in self.po:  # перебор координат игрока
+            self.save_po.append(i)  # добавление координат в список
+        # все действия выше сделаны по причине проблемы изменения save_po при изменении po (Один и тот же id в оперативной памяти)
+        # перемещение игрока на одну клетку влево
+        self.po[0] = self.po[0] - self.cell_size
+        if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 2:
+            if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 2] != 1:
+                self.board[(int(self.po[1] / 30)) -
+                           1][(int(self.po[0] / 30)) - 2] = 2
+                self.board[(int(self.po[1] / 30)) -
+                           1][(int(self.po[0] / 30)) - 1] = 0
+            else:
+                self.po = self.save_po
+        screen.fill((0, 0, 0))  # очистка экрана
+        self.render(screen)  # отрисовка поля
+        self.draw_player(self.po, 'rigth')  # отрисовка игрока
+        pygame.display.update()
 
+    # перемещение направо
     def move_right(self):
-        if self.po[0] != 780:
-            if [self.po[0] + self.cell_size, self.po[1]] not in self.bar:
-                self.po[0] = self.po[0] + self.cell_size
-                screen.fill((0, 0, 0))
-                self.render(screen)
-                self.draw_player(self.po)
+        self.save_po = []  # сохранение координат игрока
+        for i in self.po:  # перебор координат игрока
+            self.save_po.append(i)  # добавление координат в список
+        # все действия выше сделаны по причине проблемы изменения save_po при изменении po (Один и тот же id в оперативной памяти)
+        # перемещение игрока на одну клетку вправо
+        self.po[0] = self.po[0] + self.cell_size
+        try:
+            if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 2 or self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 1:
+                if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30))] != 1:
+                    self.board[(int(self.po[1] / 30)) -
+                               1][(int(self.po[0] / 30))] = 2
+                    self.board[(int(self.po[1] / 30)) -
+                               1][(int(self.po[0] / 30)) - 1] = 0
+                else:
+                    self.po = self.save_po
+        except:
+            self.po = self.save_po
+        screen.fill((0, 0, 0))  # очистка экрана
+        self.render(screen)  # отрисовка поля
+        self.draw_player(self.po)  # отрисовка игрока
+        pygame.display.update()
 
+    # перемещение вверх
     def move_up(self):
-        if self.po[1] != self.cell_size:
-            if [self.po[0], self.po[1]] not in self.bar:
-                self.po[1] = self.po[1] - self.cell_size
-                screen.fill((0, 0, 0))
-                self.render(screen)
-                self.draw_player(self.po)
+        self.save_po = []  # сохранение координат игрока
+        for i in self.po:  # перебор координат игрока
+            self.save_po.append(i)  # добавление координат в список
+        # все действия выше сделаны по причине проблемы изменения save_po при изменении po (Один и тот же id в оперативной памяти)
+        # перемещение игрока на одну клетку вверх
+        self.po[1] = self.po[1] - self.cell_size
+        try:
+            if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 2 or self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 1:
+                if self.board[(int(self.po[1] / 30)) - 2][(int(self.po[0] / 30)) - 1] != 1:
+                    self.board[(int(self.po[1] / 30)) -
+                               2][(int(self.po[0] / 30)) - 1] = 2
+                    self.board[(int(self.po[1] / 30)) -
+                               1][(int(self.po[0] / 30)) - 1] = 0
+                else:
+                    self.po = self.save_po
+        except:
+            if self.board[(int(self.po[1] / 30))][(int(self.po[0] / 30))] == 2:
+                self.board[(int(self.po[1] / 30)) -
+                           1][(int(self.po[0] / 30)) - 1] = 2
+                self.board[(int(self.po[1] / 30))
+                           ][(int(self.po[0] / 30)) - 1] = 0
 
+        screen.fill((0, 0, 0))  # очистка экрана
+        self.render(screen)  # отрисовка поля
+        self.draw_player(self.po)  # отрисовка игрока
+        pygame.display.update()
+
+    # перемещение вниз
     def move_down(self):
-        if self.po[1] != 540:
-            if [self.po[0], self.po[1]] not in self.bar:
-                self.po[1] = self.po[1] + self.cell_size
-                screen.fill((0, 0, 0))
-                self.render(screen)
-                self.draw_player(self.po)
-    
-    def set_view(self, left, top, cell_size):
-        self.left = left
-        self.top = top
-        self.cell_size = cell_size
+        self.save_po = []  # сохранение координат игрока
+        for i in self.po:  # перебор координат игрока
+            self.save_po.append(i)  # добавление координат в список
+        # все действия выше сделаны по причине проблемы изменения save_po при изменении po (Один и тот же id в оперативной памяти)
+        # перемещение игрока на одну клетку вниз
+        self.po[1] = self.po[1] + self.cell_size
+        try:
+            if self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 2 or self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 1:
+                if self.board[(int(self.po[1] / 30))][(int(self.po[0] / 30)) - 1] != 1:
+                    self.board[(int(self.po[1] / 30))
+                               ][(int(self.po[0] / 30)) - 1] = 2
+                    self.board[(int(self.po[1] / 30)) -
+                               1][(int(self.po[0] / 30)) - 1] = 0
+                else:
+                    self.po = self.save_po
+        except:
+            self.po = self.save_po
+        screen.fill((0, 0, 0))  # очистка экрана
+        self.render(screen)  # отрисовка поля
+        self.draw_player(self.po)  # отрисовка игрока
+        pygame.display.update()
 
 
+# всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
     pygame.init()
     width, height = 780, 540
@@ -127,7 +200,6 @@ if __name__ == '__main__':
     board.render(screen)
     fps = 90
     running = True
-    # hero = Player(12, 9)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
