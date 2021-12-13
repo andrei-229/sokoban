@@ -24,7 +24,7 @@ class Board:
         self.bor = pygame.transform.scale(self.bor, (self.cell_size, self.cell_size))
         self.boxs = pygame.image.load('animation/woodBox5.jpg')
         self.boxs = pygame.transform.scale(self.boxs, (self.cell_size, self.cell_size))
-        self.primChar = pygame.image.load('animation/p1.png') # изображение игрока
+        self.primChar = pygame.image.load('animation/b1.png') # изображение игрока
         self.primChar = pygame.transform.scale(self.primChar, (self.cell_size, self.cell_size))
 
         # значения по умолчанию
@@ -52,9 +52,7 @@ class Board:
                 else: # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
-        # pygame.display.update() # отрисовка стены
-        self.draw_player(self.po, 'primo') # отрисовка игрока
-        self.ui = 1
+        self.draw_player(self.po, 'primo')
    
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
     def draw_player(self, xy, lico):
@@ -99,7 +97,7 @@ class Board:
                 self.po = self.save_po
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
-        self.draw_player(self.po, 'rigth') # отрисовка игрока
+        self.draw_player(self.po, 'left') # отрисовка игрока
         pygame.display.update()
 
     # перемещение направо
@@ -120,7 +118,7 @@ class Board:
             self.po = self.save_po
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
-        self.draw_player(self.po) # отрисовка игрока
+        self.draw_player(self.po, 'right') # отрисовка игрока
         pygame.display.update()
 
     # перемещение вверх
@@ -144,7 +142,7 @@ class Board:
                 
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
-        self.draw_player(self.po) # отрисовка игрока
+        self.draw_player(self.po, 'primo') # отрисовка игрока
         pygame.display.update()
 
     # перемещение вниз
@@ -165,7 +163,7 @@ class Board:
             self.po = self.save_po
         screen.fill((0, 0, 0)) # очистка экрана
         self.render(screen) # отрисовка поля
-        self.draw_player(self.po) # отрисовка игрока
+        self.draw_player(self.po, 'primo') # отрисовка игрока
         pygame.display.update()
 
 
