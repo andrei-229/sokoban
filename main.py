@@ -33,6 +33,8 @@ class Board:
         self.barier(12, 16)
         self.barier(5, 5)
         self.box(11, 16)
+        self.box(11, 17)
+        self.box(11, 18)
         self.krests(10, 16)
         self.krests(10, 15)
         self.krests(9, 15)
@@ -118,14 +120,14 @@ class Board:
         now_board_y = int(self.po[1] / self.cell_size) # получение координат игрока по оси Y
         if self.board[now_board_y - 1][now_board_x - 1] == 2 or self.board[now_board_y - 1][now_board_x - 1] == 1: # если игрок на клетке с коробкой или крестом
             if self.board[now_board_y - 1][now_board_x - 1] != 1:
-                if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 3: # проверка на крестик
+                if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 1 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4:
+                    self.po = self.save_po
+                elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 3: # проверка на крестик
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] = 4 # перемещение на крестик
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0 # перемещение на пустую клетку
                 elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4:
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] = 0
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 1:
-                    self.po = self.save_po
                 else:
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] = 2
@@ -136,6 +138,8 @@ class Board:
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 3:
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] = 4
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
+                elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2:
+                    self.po = self.save_po
                 else:
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] = 2
                     self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -156,14 +160,14 @@ class Board:
         try:
             if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] != 1:
-                    if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
+                    if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 1 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4:
+                        self.po = self.save_po
+                    elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] = 4
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4:
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] = 0
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                    elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 1:
-                        self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] = 2
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0
@@ -174,6 +178,8 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] = 4
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
+                    elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2:
+                        self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] = 2
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -196,14 +202,14 @@ class Board:
         try:
             if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1: # если на клетке препятствие
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] != 1: # если на клетке не препятствие
-                    if self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 3: # если на клетке ящик
+                    if self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 1 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4: # если на клетке препятствие
+                        self.po = self.save_po
+                    elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 3: # если на клетке ящик
                         self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] = 4 # перемещение ящика на клетку вверх
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0 # очистка клетки
                     elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4:
                         self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] = 0
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                    elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 1:
-                        self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] = 2
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0
@@ -214,6 +220,8 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] = 4
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
+                    elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2:
+                        self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] = 2
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -239,14 +247,14 @@ class Board:
         try:
             if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] != 1:
-                    if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
+                    if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 1 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4:
+                        self.po = self.save_po
+                    elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] = 4
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4:
                         self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] = 0
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                    elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 1:
-                        self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] = 2
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 0
@@ -257,6 +265,8 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] = 4
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
+                    elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2:
+                        self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] = 2
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -298,6 +308,9 @@ if __name__ == '__main__':
                     board.move_up()
                 if event.key == pygame.K_DOWN:
                     board.move_down()
+                if event.key == pygame.K_r:
+                    board = Board(26, 18)
+                    board.render(screen)
         clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
