@@ -24,6 +24,8 @@ class Board:
         self.bor = pygame.transform.scale(self.bor, (self.cell_size, self.cell_size))
         self.boxs = pygame.image.load('animation/woodBox5.jpg')
         self.boxs = pygame.transform.scale(self.boxs, (self.cell_size, self.cell_size))
+        self.primChar = pygame.image.load('animation/p1.png') # изображение игрока
+        self.primChar = pygame.transform.scale(self.primChar, (self.cell_size, self.cell_size))
 
         # значения по умолчанию
         self.save_po = self.po  # сохранение координат игрока
@@ -51,7 +53,7 @@ class Board:
                     self.bor_rect = self.bor.get_rect(bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
         # pygame.display.update() # отрисовка стены
-        self.draw_player(self.po) # отрисовка игрока
+        self.draw_player(self.po, 'primo') # отрисовка игрока
         self.ui = 1
    
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
@@ -65,6 +67,12 @@ class Board:
         elif lico == 'left':
             self.man_rect = self.leftChar.get_rect(bottomright=(xy[0], xy[1]))
             screen.blit(self.leftChar, self.man_rect)
+            pygame.display.update()
+            self.po[0] = xy[0]
+            self.po[1] = xy[1]
+        elif lico == 'primo':
+            self.man_rect = self.primChar.get_rect(bottomright=(xy[0], xy[1]))
+            screen.blit(self.primChar, self.man_rect)
             pygame.display.update()
             self.po[0] = xy[0]
             self.po[1] = xy[1]
