@@ -109,8 +109,7 @@ class Board:
                     self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 2] = 4
                     self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0
                 else:
-                    self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 2] = 2
-                    self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0
+                    self.po = self.save_po
             else:
                 self.po = self.save_po
         elif self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 4:
@@ -138,8 +137,7 @@ class Board:
                         self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30))] = 4
                         self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0
                     else:
-                        self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30))] = 2
-                        self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0
+                        self.po = self.save_po
                 else:
                     self.po = self.save_po
             elif self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 4:
@@ -169,8 +167,7 @@ class Board:
                         self.board[(int(self.po[1] / 30)) - 2][(int(self.po[0] / 30)) - 1] = 4 # перемещение ящика на клетку вверх
                         self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0 # очистка клетки
                     else:
-                        self.board[(int(self.po[1] / 30)) - 2][(int(self.po[0] / 30)) - 1] = 2
-                        self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0
+                        self.po = self.save_po # возврат координат игрока на место
                 else:
                     self.po = self.save_po
             elif self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 4:
@@ -203,8 +200,7 @@ class Board:
                         self.board[(int(self.po[1] / 30))][(int(self.po[0] / 30)) - 1] = 2
                         self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0
                     else:
-                        self.board[(int(self.po[1] / 30))][(int(self.po[0] / 30)) - 1] = 2
-                        self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] = 0
+                        self.po = self.save_po
                 else:
                     self.po = self.save_po
             elif self.board[(int(self.po[1] / 30)) - 1][(int(self.po[0] / 30)) - 1] == 4:
