@@ -32,10 +32,13 @@ class Board:
         for i in range(self.height): # перебор всех строк
             for j in range(self.width): # перебор всех столбцов
                 self.barier(15, 16)
+                self.box(14, 16)
                 x = self.left + j * self.cell_size
                 y = self.top + i * self.cell_size
                 if self.board[i][j] == 0: # если клетка пустая
                     pygame.draw.rect(screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size), 1, 1, 1, 1, 1, 1) # отрисовка клетки
+                elif self.board[i][j] == 2:
+                    pygame.draw.rect(screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size))
                 else: # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
@@ -52,6 +55,9 @@ class Board:
 
     def barier(self, y, x):
         self.board[y][x] = 1
+    
+    def box(self, y, x):
+        self.board[y][x] = 2
 
 
     # перемещение налево
