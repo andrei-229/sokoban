@@ -5,7 +5,6 @@ class Board:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.board = [[0] * width for _ in range(height)]
         self.left = 0
         self.top = 0
         self.cell_size = 30
@@ -35,33 +34,30 @@ class Board:
         if self.ui == 0:
             self.po = [self.coords[(12, 9)][0], self.coords[(12, 9)][1]]
 
+            arr = [self.coords[(10, 10)][0], self.coords[(10, 10)][1]]
+            self.bar.append(arr)
+
+            arr = [self.coords[(11, 10)][0], self.coords[(11, 10)][1]]
+            self.bar.append(arr)
+
+            arr = [self.coords[(12, 10)][0], self.coords[(12, 10)][1]]
+            self.bar.append(arr)
+
+            arr = [self.coords[(13, 10)][0], self.coords[(13, 10)][1]]
+            self.bar.append(arr)
+            arr = [self.coords[(14, 9)][0], self.coords[(14, 9)][1]]
+            self.bar.append(arr)
+            arr = [self.coords[(14, 8)][0], self.coords[(14, 8)][1]]
+            self.bar.append(arr)
+            arr = [self.coords[(14, 7)][0], self.coords[(14, 7)][1]]
+            self.bar.append(arr)
         self.draw_barier(self.coords[(10, 10)])
-        arr = [self.coords[(10, 10)][0], self.coords[(10, 10)][1]]
-        self.bar.append(arr)
-
         self.draw_barier(self.coords[(11, 10)])
-        arr = [self.coords[(11, 10)][0], self.coords[(11, 10)][1]]
-        self.bar.append(arr)
-
         self.draw_barier(self.coords[(12, 10)])
-        arr = [self.coords[(12, 10)][0], self.coords[(12, 10)][1]]
-        self.bar.append(arr)
-
         self.draw_barier(self.coords[(13, 10)])
-        arr = [self.coords[(13, 10)][0], self.coords[(13, 10)][1] - self.cell_size]
-        self.bar.append(arr)
-
         self.draw_barier(self.coords[(14, 9)])
-        arr = [self.coords[(14, 9)][0], self.coords[(14, 9)][1]]
-        self.bar.append(arr)
-
         self.draw_barier(self.coords[(14, 8)])
-        arr = [self.coords[(14, 8)][0] - self.cell_size, self.coords[(14, 8)][1]]
-        self.bar.append(arr)
-
         self.draw_barier(self.coords[(14, 7)])
-        arr = [self.coords[(14, 7)][0] + self.cell_size, self.coords[(14, 7)][1]]
-        self.bar.append(arr)
 
         self.draw_player(self.po)  # рисуем игрока на его стартовой позиции
         self.ui = 1
@@ -91,7 +87,7 @@ class Board:
 
     def move_right(self):
         if self.po[0] != 780:
-            if (self.po[0] + self.cell_size, self.po[1]) not in self.bar:
+            if [self.po[0] + self.cell_size, self.po[1]] not in self.bar:
                 self.po[0] = self.po[0] + self.cell_size
                 screen.fill((0, 0, 0))
                 self.render(screen)
@@ -99,7 +95,7 @@ class Board:
 
     def move_up(self):
         if self.po[1] != self.cell_size:
-            if (self.po[0], self.po[1]) not in self.bar:
+            if [self.po[0], self.po[1]] not in self.bar:
                 self.po[1] = self.po[1] - self.cell_size
                 screen.fill((0, 0, 0))
                 self.render(screen)
@@ -118,16 +114,6 @@ class Board:
         self.top = top
         self.cell_size = cell_size
 
-'''
-class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.walk_right = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
-        player_image = pygame.image.load('R1.png')
-
-    def update(self):
-        pass
-'''
 
 if __name__ == '__main__':
     pygame.init()
