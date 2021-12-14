@@ -20,6 +20,7 @@ class Level1:
         old.board[5][13] = old.board[5][11] = old.board[5][12] = 3
 
         # Ящики
-        old.board[8][12] = 2
+        old.board[8][12] = old.board[9][13] = old.board[10][11] = 2
+
         
         old.po = [11 * old.cell_size, 8 * old.cell_size]
