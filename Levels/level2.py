@@ -40,3 +40,4 @@ class Level2:
         old.count = 0
         old.count_box = 5
         old.nowLevel = 3
+        # hello
