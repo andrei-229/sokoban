@@ -1,7 +1,7 @@
 # Задача Андрея
 class Level1:
     def __init__(self, old) -> None:
-        old.nowLevel = 0
+        old.nowLevel = 1
         # Стены по периметру
         old.board[3][10] = old.board[3][12] = old.board[3][11] = old.board[4][12] = old.board[4][13] = 1
         old.board[4][10] = old.board[5][10] = old.board[6][10] = 1
@@ -22,8 +22,8 @@ class Level1:
 
         # Ящики
         old.board[8][12] = old.board[9][13] = old.board[10][11] = 2
-        old.countBox = 3
-        old.nowLevel = 1
+        # old.countBox = 3
+        # old.nowLevel = 0
 
         
         old.po = [11 * old.cell_size, 8 * old.cell_size]

@@ -1,7 +1,7 @@
 # Задача Сергея
 class Level3():
     def __init__(self, old) -> None:
-        old.nowLevel = 2
+        old.nowLevel = 3
         old.board[10][10] = old.board[10][9] = old.board[10][8] = 1
         old.board[9][8] = old.board[8][8] = old.board[7][8] = old.board[6][8] = 1
         old.board[6][9] = old.board[6][10] = old.board[6][11] = 1
