@@ -82,6 +82,7 @@ class Board:
                     self.boxs_rect = self.boxs.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.boxs, (x, y))
+                    print('Коробка на кресту')
                 else:  # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
