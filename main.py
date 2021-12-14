@@ -85,9 +85,9 @@ class Board:
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.boxs, (x, y))
                     print('Коробка на кресту', str(self.count))
-                    if [i, j] not in self.coor:
-                        self.coor.append([i, j])
-                        self.count += 1
+                    # if [i, j] not in self.coor:
+                    #     self.coor.append([i, j])
+                    #     self.count += 1
                 else:  # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
@@ -154,6 +154,7 @@ class Board:
                     # перемещение на крестик
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 4
+                    self.count += 1
                     # перемещение на пустую клетку
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 0
@@ -181,6 +182,7 @@ class Board:
                 else:
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 2
+                    self.count -= 1
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 3
             else:
@@ -206,6 +208,7 @@ class Board:
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 4
+                        self.count += 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4:
@@ -232,6 +235,7 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 2
+                        self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                 else:
@@ -262,6 +266,7 @@ class Board:
                         # перемещение ящика на клетку вверх
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 4
+                        self.count += 1
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(
                             int(self.po[0] / self.cell_size)) - 1] = 0  # очистка клетки
                     elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4:
@@ -288,6 +293,7 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                 else:
@@ -319,7 +325,8 @@ class Board:
                         self.po = self.save_po
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))
-                                   ][(int(self.po[0] / self.cell_size)) - 1] = 4
+                                   ][(int(self.po[0] / self.cell_size)) - 1]
+                        self.count += 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4:
@@ -346,6 +353,7 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                 else:
