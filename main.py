@@ -56,12 +56,18 @@ class Board:
         if self.count == self.countBox:
             if self.nowLevel == 0:
                 self.board = [[0] * width for _ in range(height)]
+                self.countBox = 3
+                self.count = 0
                 Level1(self)
             elif self.nowLevel == 1:
                 self.board = [[0] * width for _ in range(height)]
+                self.countBox = 5
+                self.count = 0
                 Level2(self)
             elif self.nowLevel == 2:
                 self.board = [[0] * width for _ in range(height)]
+                self.countBox = 5
+                self.count = 0
                 Level3(self)
             else:
                 print('ПОБЕДА! Вам BAN!')
