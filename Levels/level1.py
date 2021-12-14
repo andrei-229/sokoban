@@ -21,6 +21,7 @@ class Level1:
 
         # Ящики
         old.board[8][12] = old.board[9][13] = old.board[10][11] = 2
+        old.countBox = 3
 
         
         old.po = [11 * old.cell_size, 8 * old.cell_size]
