@@ -1,5 +1,6 @@
 import pygame  # Import pygame
 from Levels.level3 import Level3
+from Levels.level2 import Level2
 from Levels.level1 import Level1
 
 
