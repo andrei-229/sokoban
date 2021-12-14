@@ -1,4 +1,5 @@
 import pygame  # Import pygame
+from Levels.level3 import Level3
 
 
 class Board:
