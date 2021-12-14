@@ -10,6 +10,7 @@ class Board:
         self.top = 0  # верхняя граница поля
         self.cell_size = 30  # размер клетки
         self.count = 0
+        self.countBox = 0
 
         self.width = width  # ширина поля
         self.height = height  # высота поля
@@ -78,11 +79,12 @@ class Board:
                     self.boxs_rect = self.boxs.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.boxs, (x, y))
-                    print('Коробка на кресту', str(self.count))
                 else:  # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
+        if self.count == self.countBox:
+            print('Ты выиграл')
         self.draw_player(self.po, 'primo')
 
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
@@ -364,6 +366,8 @@ if __name__ == '__main__':
     size = width, height
     screen = pygame.display.set_mode(size)
     screen2 = pygame.Surface(screen.get_size())
+    pygame.display.set_caption("SokoBAN")
+    pygame.display.set_icon(pygame.image.load('animation/logo.png'))
     screen.fill((0, 0, 0))
     clock = pygame.time.Clock()
     board = Board(26, 18)
