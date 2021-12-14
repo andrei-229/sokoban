@@ -78,12 +78,12 @@ class Board:
                     self.boxs_rect = self.boxs.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.boxs, (x, y))
-                    if self.count == self.countBox:
-                        print('Ты выиграл')
                 else:  # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
+        if self.count == self.countBox:
+            print('Ты выиграл')
         self.draw_player(self.po, 'primo')
 
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
