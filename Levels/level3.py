@@ -22,3 +22,5 @@ class Level3():
         # Кресты
         old.board[12][12] = old.board[12][13] = old.board[12][14] = old.board[12][15] = old.board[12][16] = 3
         old.po = [10 * old.cell_size, 10 * old.cell_size]
+        old.count_box = 5
+        old.nowLevel = 3
