@@ -1,5 +1,5 @@
 # Задача Андрея
-class Level1():
+class Level1:
     def __init__(self, old) -> None:
         # Стены по периметру
         old.board[3][10] = old.board[3][12] = old.board[3][11] = old.board[4][12] = old.board[4][13] = 1
@@ -8,6 +8,7 @@ class Level1():
         old.board[11][9] = old.board[11][10] = old.board[11][11] = old.board[11][12] = old.board[11][13] = 1
         old.board[11][14] = old.board[11][15] = 1
         old.board[10][15] = old.board[9][15] = old.board[8][15] = old.board[7][15] = old.board[6][15] = 1
+        old.board[5][15] = old.board[5][14] = 1
 
         # Ящики
         # old.board[8][10] = old.board[8][11] = 2
