@@ -6,6 +6,7 @@ class Board:
         self.left = 0  # левая граница поля
         self.top = 0  # верхняя граница поля
         self.cell_size = 30  # размер клетки
+        self.count = 0
 
         self.width = width  # ширина поля
         self.height = height  # высота поля
@@ -15,6 +16,7 @@ class Board:
         self.board[13][16] = 1
         self.po = [360, 360]  # координаты игрока
         self.krest = []
+        self.coor = []
 
         # спрайты
         self.scale = pygame.image.load(
@@ -82,7 +84,10 @@ class Board:
                     self.boxs_rect = self.boxs.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.boxs, (x, y))
-                    print('Коробка на кресту')
+                    print('Коробка на кресту', str(self.count))
+                    if [i, j] not in self.coor:
+                        self.coor.append([i, j])
+                        self.count += 1
                 else:  # если клетка занята стеной
                     self.bor_rect = self.bor.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
