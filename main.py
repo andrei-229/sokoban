@@ -17,7 +17,7 @@ class Board:
         # список списков с состояниями каждой клетки
         self.board = [[0] * width for _ in range(height)]
         # Размещение одной стены первое число это по Y второе по X
-        Level1(self)
+        Level2(self)
         self.krest = []
         self.coor = []
 
