@@ -11,13 +11,15 @@ class Board:
         self.cell_size = 30  # размер клетки
         self.count = 0
         self.countBox = 0
+        self.nowLevel = 0
 
         self.width = width  # ширина поля
         self.height = height  # высота поля
         # список списков с состояниями каждой клетки
         self.board = [[0] * width for _ in range(height)]
         # Размещение одной стены первое число это по Y второе по X
-        Level2(self)
+        self.po = [0, 0]
+        # Level1(self)
         self.krest = []
         self.coor = []
 
@@ -51,6 +53,18 @@ class Board:
     # отрисовка поля
     def render(self, screen):
         screen.fill((0, 0, 0))  # очистка экрана
+        if self.count == self.countBox:
+            if self.nowLevel == 0:
+                self.board = [[0] * width for _ in range(height)]
+                Level1(self)
+            elif self.nowLevel == 1:
+                self.board = [[0] * width for _ in range(height)]
+                Level2(self)
+            elif self.nowLevel == 2:
+                self.board = [[0] * width for _ in range(height)]
+                Level3(self)
+            else:
+                print('ПОБЕДА! Вам BAN!')
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
             if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1 or self.po[0] <= 0 or self.po[1] <= 0:
@@ -83,8 +97,6 @@ class Board:
                     self.bor_rect = self.bor.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
-        if self.count == self.countBox:
-            print('Ты выиграл')
         self.draw_player(self.po, 'primo')
 
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
@@ -390,7 +402,9 @@ if __name__ == '__main__':
                 if event.key == pygame.K_DOWN:
                     board.move_down()
                 if event.key == pygame.K_r:
-                    board = Board(26, 18)
+                    board.board = [[0] * width for _ in range(height)]
+                    board.count = board.countBox = 0
+                    board.nowLevel -= 1
                     board.render(screen)
         clock.tick(fps)
         pygame.display.flip()
