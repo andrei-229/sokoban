@@ -61,7 +61,7 @@ class Board:
                 Level1(self)
             elif self.nowLevel == 1:
                 self.board = [[0] * width for _ in range(height)]
-                self.countBox = 5
+                self.countBox = 6
                 self.count = 0
                 Level2(self)
             elif self.nowLevel == 2:

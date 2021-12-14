@@ -2,7 +2,7 @@
 
 class Level2:
     def __init__(self, old):
-        old.nowLevel = 1
+        old.nowLevel = 2
         old.po = [8 * old.cell_size, 7 * old.cell_size]
 
         # стены 
@@ -36,8 +36,4 @@ class Level2:
         old.board[4][15] = 3
         old.board[11][17] = 3
         old.board[12][16] = 3
-
-        old.count = 0
-        old.count_box = 5
-        old.nowLevel = 3
         # hello
