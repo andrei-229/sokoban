@@ -4,14 +4,14 @@ import pygame_gui
 pygame.init()
 
 pygame.display.set_caption('Quick Start')
-window_surface = pygame.display.set_mode((800, 600))
+window_surface = pygame.display.set_mode((780, 540))
 
-background = pygame.Surface((800, 600))
+background = pygame.Surface((780, 540))
 background.fill(pygame.Color('Black'))
 
 clock = pygame.time.Clock()
 
-manager = pygame_gui.UIManager((800, 600))
+manager = pygame_gui.UIManager((780, 540))
 levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 275), (200, 100)),
                                              text='Levels',
                                              manager=manager)
