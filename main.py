@@ -5,13 +5,14 @@ from Levels.level1 import Level1
 
 
 class Board:
-    def __init__(self, width, height):
+    def __init__(self, screen, width, height):
         self.left = 0  # левая граница поля
         self.top = 0  # верхняя граница поля
         self.cell_size = 30  # размер клетки
         self.count = 0
         self.countBox = 0
         self.nowLevel = 0
+        self.screen = screen
 
         self.width = width  # ширина поля
         self.height = height  # высота поля
@@ -55,17 +56,17 @@ class Board:
         screen.fill((0, 0, 0))  # очистка экрана
         if self.count == self.countBox:
             if self.nowLevel == 0:
-                self.board = [[0] * width for _ in range(height)]
+                self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 3
                 self.count = 0
                 Level1(self)
             elif self.nowLevel == 1:
-                self.board = [[0] * width for _ in range(height)]
+                self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 6
                 self.count = 0
                 Level2(self)
             elif self.nowLevel == 2:
-                self.board = [[0] * width for _ in range(height)]
+                self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 5
                 self.count = 0
                 Level3(self)
@@ -102,10 +103,10 @@ class Board:
                     self.bor_rect = self.bor.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
                     screen.blit(self.bor, self.bor_rect)
-        self.draw_player(self.po, 'primo')
+        self.draw_player(screen, self.po, 'primo')
 
     # отрисовка игрока (Ничего не трогал, все работает по вашему коду)
-    def draw_player(self, xy, lico):
+    def draw_player(self, screen, xy, lico):
         if lico == 'right':
             self.man_rect = self.scale.get_rect(bottomright=(xy[0], xy[1]))
             screen.blit(self.scale, self.man_rect)
@@ -197,9 +198,9 @@ class Board:
                                1][(int(self.po[0] / self.cell_size)) - 1] = 3
             else:
                 self.po = self.save_po
-        screen.fill((0, 0, 0))  # очистка экрана
-        self.render(screen)  # отрисовка поля
-        self.draw_player(self.po, 'left')  # отрисовка игрока
+        self.screen.fill((0, 0, 0))  # очистка экрана
+        self.render(self.screen)  # отрисовка поля
+        self.draw_player(self.screen, self.po, 'left')  # отрисовка игрока
         pygame.display.update()
 
     # перемещение направо
@@ -252,9 +253,9 @@ class Board:
                     self.po = self.save_po
         except:
             self.po = self.save_po
-        screen.fill((0, 0, 0))  # очистка экрана
-        self.render(screen)  # отрисовка поля
-        self.draw_player(self.po, 'right')  # отрисовка игрока
+        self.screen.fill((0, 0, 0))  # очистка экрана
+        self.render(self.screen)  # отрисовка поля
+        self.draw_player(self.screen, self.po, 'right')  # отрисовка игрока
         pygame.display.update()
 
     # перемещение вверх
@@ -315,9 +316,9 @@ class Board:
                 self.board[(int(self.po[1] / self.cell_size))
                            ][(int(self.po[0] / self.cell_size)) - 1] = 0
 
-        screen.fill((0, 0, 0))  # очистка экрана
-        self.render(screen)  # отрисовка поля
-        self.draw_player(self.po, 'back')  # отрисовка игрока
+        self.screen.fill((0, 0, 0))  # очистка экрана
+        self.render(self.screen)  # отрисовка поля
+        self.draw_player(self.screen, self.po, 'back')  # отрисовка игрока
         pygame.display.update()
 
     # перемещение вниз
@@ -370,9 +371,9 @@ class Board:
                     self.po = self.save_po
         except:
             self.po = self.save_po
-        screen.fill((0, 0, 0))  # очистка экрана
-        self.render(screen)  # отрисовка поля
-        self.draw_player(self.po, 'primo')  # отрисовка игрока
+        self.screen.fill((0, 0, 0))  # очистка экрана
+        self.render(self.screen)  # отрисовка поля
+        self.draw_player(self.screen, self.po, 'primo')  # отрисовка игрока
         pygame.display.update()
 
 
