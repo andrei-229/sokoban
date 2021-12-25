@@ -82,8 +82,7 @@ class Board:
                 x = self.left + j * self.cell_size
                 y = self.top + i * self.cell_size
                 if self.board[i][j] == 0:  # если клетка пустая
-                    pygame.draw.rect(screen, (255, 255, 255), (x, y, self.cell_size,
-                                     self.cell_size), 1, 1, 1, 1, 1, 1)  # отрисовка клетки
+                    pass  # отрисовка клетки
                 elif self.board[i][j] == 2:
                     self.boxs_rect = self.boxs.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
