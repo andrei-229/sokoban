@@ -1,7 +1,9 @@
 import pygame  # Import pygame
+import pygame_gui
 from Levels.level3 import Level3
 from Levels.level2 import Level2
 from Levels.level1 import Level1
+from startMenu import Start
 
 
 class Board:
@@ -377,6 +379,11 @@ class Board:
         pygame.display.update()
 
 
+def start_screen(screen):
+    screen.fill((0, 0, 0))
+    
+
+
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
     pygame.init()
@@ -386,32 +393,59 @@ if __name__ == '__main__':
     screen2 = pygame.Surface(screen.get_size())
     pygame.display.set_caption("SokoBAN")
     pygame.display.set_icon(pygame.image.load('animation/logo.png'))
+    manager = pygame_gui.UIManager(screen.get_size())
     screen.fill((0, 0, 0))
     clock = pygame.time.Clock()
-    board = Board(26, 18)
-    board.render(screen)
     fps = 90
     running = True
+    run = True
+    check = False
+    levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 275), (200, 100)),
+                                                     text='Levels',
+                                                     manager=manager)
+
+    settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
+                                                text='Settings',
+                                                manager=manager)
+
+    st = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect((300, 115), (200, 100)),
+                                    html_text='Menu',
+                                    manager=manager)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    board.move_left()
-                if event.key == pygame.K_RIGHT:
-                    board.move_right()
-                if event.key == pygame.K_UP:
-                    board.move_up()
-                if event.key == pygame.K_DOWN:
-                    board.move_down()
-                if event.key == pygame.K_r:
-                    board.board = [[0] * width for _ in range(height)]
-                    board.count = board.countBox = 0
-                    board.nowLevel -= 1
-                    board.render(screen)
+
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == levels_button:
+                        check = True
+                        run = False
+                        board = Board(screen, 26, 18)
+                        board.render(screen)
+                        levels_button.kill()
+                        settings_button.kill()
+                        st.kill()
+            if check:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        board.move_left()
+                    if event.key == pygame.K_RIGHT:
+                        board.move_right()
+                    if event.key == pygame.K_UP:
+                        board.move_up()
+                    if event.key == pygame.K_DOWN:
+                        board.move_down()
+                    if event.key == pygame.K_r:
+                        board.board = [[0] * width for _ in range(height)]
+                        board.count = board.countBox = 0
+                        board.nowLevel -= 1
+                        board.render(screen)
+            manager.process_events(event)
+        if run:
+            manager.update(clock.tick(60))
+            screen.blit(screen2, (0, 0))
+            manager.draw_ui(screen)
         clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
