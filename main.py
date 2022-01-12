@@ -3,7 +3,6 @@ import pygame_gui
 from Levels.level3 import Level3
 from Levels.level2 import Level2
 from Levels.level1 import Level1
-from startMenu import Start
 
 
 class Board:
@@ -401,7 +400,7 @@ if __name__ == '__main__':
     run = True
     check = False
     levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 275), (200, 100)),
-                                                     text='Levels',
+                                                     text='Start',
                                                      manager=manager)
 
     settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
