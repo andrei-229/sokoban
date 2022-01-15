@@ -393,23 +393,30 @@ if __name__ == '__main__':
     pygame.display.set_caption("SokoBAN")
     pygame.display.set_icon(pygame.image.load('animation/logo.png'))
     manager = pygame_gui.UIManager(screen.get_size())
-    screen.fill((0, 0, 0))
+    screen.fill((255, 255, 255))
+    screen2.fill('black')
     clock = pygame.time.Clock()
     fps = 90
     running = True
     run = True
     check = False
-    levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 275), (200, 100)),
+
+    st2 = pygame.image.load('animation/sok.png')
+    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                                              manager=manager, image_surface=st2)
+    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                      text='Start',
                                                      manager=manager)
+
+    levels_button = start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                                text='Levels',
+                                                                manager=manager)
 
     settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
                                                 text='Settings',
                                                 manager=manager)
 
-    st2 = pygame.image.load('animation/sok.png')
-    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 100), (300, 100)), 
-                                              manager=manager, image_surface=st2)
+    
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -417,12 +424,12 @@ if __name__ == '__main__':
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == levels_button:
+                    if event.ui_element == start_button:
                         check = True
                         run = False
                         board = Board(screen, 26, 18)
                         board.render(screen)
-                        levels_button.kill()
+                        start_button.kill()
                         settings_button.kill()
                         st.kill()
             if check:
