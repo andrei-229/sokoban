@@ -337,7 +337,7 @@ class Board:
                         self.po = self.save_po
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))
-                                   ][(int(self.po[0] / self.cell_size)) - 1] = 2
+                                   ][(int(self.po[0] / self.cell_size)) - 1] = 4
                         self.count += 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
