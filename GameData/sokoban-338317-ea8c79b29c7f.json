@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sokoban-338317",
+  "private_key_id": "ea8c79b29c7fad22f1ce924105506210ee1eb264",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3VCU67oXu73eT\n2pFaUFcepzq+EoIHlZFNwzl67CusIWXzMiZOiGjL1+NxQV7rqMJ467p5I1wxz9og\ntwLSPf7RW7eqeqMEty901pbaBk9L9esySOFmwSC40/EvWH0btXHqqyEb8hwxEGLL\nzVT5tPeTzfmXok2KLgONByeqUk5nD929K9FK36mEdTKVxiinO6gg6PNPaWSXHzYp\nRE+SGZ1rkX4DZb5Em67k0zI/CuB859q3jhpZaL1BhmWwDRxfrduPe+DU46Ngqwx1\nzlsQqYd5p9EKbDkiq1qBi5A88rG/AQRVsYlJLV8O1zVdrw/FpBhMFqXndDFy6iqy\n817NTMBVAgMBAAECggEAHNKCXe8FKIkGjDzHMGNEJyIUhrCDN+0IYKjqPwylWxUP\nIbqHMj6Y9z9UV0h3Q2aPWJJ7CTOJeZ1bhlwved1cVA7u48MPIR0pvV1FbzahvegG\nV6wEn/KKEfTkTNTFKpeOtt27wViBnScd2TvJec69Q8QU0wWl2i0cys3OqyTwhZxA\nppZR2fKjXuUj1nSXEWcoDV4cL6Wmi32UVWSq6fR9nnguY/5XcliMDOa6VZPnCGLG\nNqXWSEx229yLWf5fz9FnefapHeDxHyVCtXK7Ud6uGQ4CpOy2HTHD9bdNSfW+t4fa\nPHmllmzv2KGp8vnfYSxq/QeX86uUxNTZyWXNANBPewKBgQD6DL72tw66eQL7jMED\nqmjgOW5xkBgCzllDM92rG7GucoAodFJj+Ytt0Rr0TtWiARrLEZZT3jlap2/Kqq7L\n2U207uzHZlbjKi+avrpZHuUfX+6eMzvNyJQygfpTZ/q0xAFe/X0Txk7j0qg+oynY\nktC7SK2lKUBO+B01H+svkhfFJwKBgQC7sPKdBwO5LYwC/jnxBcMnZiBqBofHAMkI\nyVMBq0Fx/7gNyX650jaLWu8CSb8vl/5XLoHlQw1RRrUxGhJnFInifZKQOB+T7Dur\nF3T8rK7g4hQK87pwAB0qRa0Qn99DGerq8TixljxhO2znFajfhCBk5ApHPJsCW/OR\nIOZor0RUIwKBgQCMjy2psi1tVSkADpdRYDGkGaSj4cQdj7FNvZIV5XN0BJlWJE1M\nNbLTAICOZOJiNwzAqho++uRyuTx2SIwJuxWbZ9NiI30kJUqtShmmj19sy5hvBY3Q\nl7f2zGnTCNg9VREQPJ5ax1cBaiF5VG7pd14uaSRze0TTH1YLzu19yDnkcQKBgBgg\nHo9gn3HmEOExnHEGtJcT4Ya/YCSMTUr71deZE8h7fkUHaWqpQqmW/rHkmNadSuwZ\n5kh53fRcil3NZCAr261pRrWTATwaWXEcisUPzUrKxJjDy2sqGJWebyh75E7TvgaF\nCyyIiypUYSMy/Yn9icxuI4QUnjgnaZ92Ayfhn37RAoGBAMs1Cw3lKR2zmHP51bEs\nGzE5IIxZqTvE4PzcgnfzUXKlxPQ22o4q3tLKJIdmBT6r6ipDiujFJpc2laMCAAWs\nq/Bb+wKfwnx9tQug5En8cFrbOzapazRKCX/8jPvIOp8+FPsrJ2wfi355U/QQOMnf\nMdQSEHS/7filSDBPeHvoEjOF\n-----END PRIVATE KEY-----\n",
+  "client_email": "sokobanrecords@sokoban-338317.iam.gserviceaccount.com",
+  "client_id": "115359061796846173186",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sokobanrecords%40sokoban-338317.iam.gserviceaccount.com"
+}

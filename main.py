@@ -407,9 +407,9 @@ if __name__ == '__main__':
                                                 text='Settings',
                                                 manager=manager)
 
-    st = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect((300, 115), (200, 100)),
-                                    html_text='Menu',
-                                    manager=manager)
+    st2 = pygame.image.load('animation/sok.png')
+    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 100), (300, 100)), 
+                                              manager=manager, image_surface=st2)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
