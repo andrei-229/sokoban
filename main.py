@@ -569,11 +569,12 @@ if __name__ == '__main__':
                             gMenu.kill()
                             ld = False
                         elif event.ui_element == continueB:
-                            board = Board(screen, 26, 18, 1)
                             board.render(screen)
                             continueB.kill()
                             gMenu.kill()
                             ld = False
+                            check = True
+                            run1 = False
             
                         
             manager.process_events(event)
