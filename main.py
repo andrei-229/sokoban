@@ -6,13 +6,13 @@ from Levels.level1 import Level1
 
 
 class Board:
-    def __init__(self, screen, width, height):
+    def __init__(self, screen, width, height, level):
         self.left = 0  # левая граница поля
         self.top = 0  # верхняя граница поля
         self.cell_size = 30  # размер клетки
         self.count = 0
         self.countBox = 0
-        self.nowLevel = 0
+        self.nowLevel = level
         self.screen = screen
 
         self.width = width  # ширина поля
@@ -378,11 +378,6 @@ class Board:
         pygame.display.update()
 
 
-def start_screen(screen):
-    screen.fill((0, 0, 0))
-    
-
-
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
     pygame.init()
@@ -394,16 +389,16 @@ if __name__ == '__main__':
     pygame.display.set_icon(pygame.image.load('animation/logo.png'))
     manager = pygame_gui.UIManager(screen.get_size())
     screen.fill((255, 255, 255))
-    screen2.fill('black')
     clock = pygame.time.Clock()
     fps = 90
     running = True
-    run = True
+    run1 = True
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
     st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                               manager=manager, image_surface=st2)
+
     start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                      text='Start',
                                                      manager=manager)
@@ -426,12 +421,53 @@ if __name__ == '__main__':
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == start_button:
                         check = True
-                        run = False
-                        board = Board(screen, 26, 18)
+                        run1 = False
+                        board = Board(screen, 26, 18, 0)
                         board.render(screen)
                         start_button.kill()
                         settings_button.kill()
+                        levels_button.kill()
                         st.kill()
+                    elif event.ui_element == levels_button:
+                        start_button.kill()
+                        settings_button.kill()
+                        levels_button.kill()
+                        st.kill()
+                        first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
+                                                                text='1',
+                                                                manager=manager)
+
+                        second_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 270), (220, 50)),
+                                                                text='2',
+                                                                manager=manager)
+
+                        third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
+                                                                text='3',
+                                                                manager=manager)
+                    elif event.ui_element == first_level:
+                        check = True
+                        run1 = False
+                        board = Board(screen, 26, 18, 0)
+                        board.render(screen)
+                        first_level.kill()
+                        second_level.kill()
+                        third_level.kill()
+                    elif event.ui_element == second_level:
+                        check = True
+                        run1 = False
+                        board = Board(screen, 26, 18, 1)
+                        board.render(screen)
+                        first_level.kill()
+                        second_level.kill()
+                        third_level.kill()
+                    elif event.ui_element == third_level:
+                        check = True
+                        run1 = False
+                        board = Board(screen, 26, 18, 2)
+                        board.render(screen)
+                        first_level.kill()
+                        second_level.kill()
+                        third_level.kill()
             if check:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
@@ -448,7 +484,7 @@ if __name__ == '__main__':
                         board.nowLevel -= 1
                         board.render(screen)
             manager.process_events(event)
-        if run:
+        if run1:
             manager.update(clock.tick(60))
             screen.blit(screen2, (0, 0))
             manager.draw_ui(screen)
