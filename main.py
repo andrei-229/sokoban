@@ -1,3 +1,4 @@
+from glob import escape
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level3
@@ -24,6 +25,7 @@ class Board:
         # Level1(self)
         self.krest = []
         self.coor = []
+        self.win = False
 
         # спрайты
         self.scale = pygame.image.load(
@@ -73,6 +75,9 @@ class Board:
                 Level3(self)
             else:
                 print('ПОБЕДА! Вам BAN!')
+        if self.win:
+            print(1)
+            self.win = False
         
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
@@ -92,11 +97,11 @@ class Board:
                     screen.blit(self.boxs, self.boxs_rect)
                 elif self.board[i][j] == 3:
                     pygame.draw.line(screen, (255, 255, 255), (x, y),
-                                     (x + self.cell_size, y + self.cell_size),
-                                     width=1)
+                                    (x + self.cell_size, y + self.cell_size),
+                                    width=1)
                     pygame.draw.line(screen, (255, 255, 255), (x, y + self.cell_size),
-                                     (x + self.cell_size, y),
-                                     width=2)
+                                    (x + self.cell_size, y),
+                                    width=2)
                 elif self.board[i][j] == 4:
                     self.boxs_rect = self.boxs.get_rect(
                         bottomright=(x + self.cell_size, y + self.cell_size))
@@ -168,6 +173,8 @@ class Board:
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 4
                     self.count += 1
+                    if self.count == self.countBox:
+                        self.win = True
                     # перемещение на пустую клетку
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 0
@@ -222,6 +229,8 @@ class Board:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 4
                         self.count += 1
+                        if self.count == self.countBox:
+                            self.win = True
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4:
@@ -280,6 +289,8 @@ class Board:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 4
                         self.count += 1
+                        if self.count == self.countBox:
+                            self.win = True
                         self.board[(int(self.po[1] / self.cell_size)) - 1][(
                             int(self.po[0] / self.cell_size)) - 1] = 0  # очистка клетки
                     elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4:
@@ -340,6 +351,8 @@ class Board:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 4
                         self.count += 1
+                        if self.count == self.countBox:
+                            self.win = True
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4:
@@ -414,10 +427,40 @@ if __name__ == '__main__':
                                                 manager=manager)
 
     lk = False
+    ld = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            if check:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        board.move_left()
+                    if event.key == pygame.K_RIGHT:
+                        board.move_right()
+                    if event.key == pygame.K_UP:
+                        board.move_up()
+                    if event.key == pygame.K_DOWN:
+                        board.move_down()
+                    if event.key == pygame.K_r:
+                        board.board = [[0] * width for _ in range(height)]
+                        board.count = board.countBox = 0
+                        board.nowLevel -= 1
+                        board.render(screen)
+                    if event.key == pygame.K_ESCAPE:
+                        check = True
+                        screen.fill((0, 0, 0))
+                        ld = True
+                        check = False
+                        run1 = True
+                        continueB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                                 text='Countinue',
+                                                                 manager=manager)
+
+                        gMenu = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                             text='Main menu',
+                                                             manager=manager)
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -448,6 +491,10 @@ if __name__ == '__main__':
                         third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
                                                                 text='3',
                                                                 manager=manager)
+                                                            
+                        escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
+                                                               text='<-',
+                                                               manager=manager)
                     elif event.ui_element == settings_button:
                         pass
                     if lk:
@@ -460,6 +507,7 @@ if __name__ == '__main__':
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
+                            escapeB.kill()
 
                         elif event.ui_element == second_level:
                             check = True
@@ -470,6 +518,7 @@ if __name__ == '__main__':
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
+                            escapeB.kill()
                         elif event.ui_element == third_level:
                             check = True
                             run1 = False
@@ -479,21 +528,54 @@ if __name__ == '__main__':
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
-            if check:
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        board.move_left()
-                    if event.key == pygame.K_RIGHT:
-                        board.move_right()
-                    if event.key == pygame.K_UP:
-                        board.move_up()
-                    if event.key == pygame.K_DOWN:
-                        board.move_down()
-                    if event.key == pygame.K_r:
-                        board.board = [[0] * width for _ in range(height)]
-                        board.count = board.countBox = 0
-                        board.nowLevel -= 1
-                        board.render(screen)
+                            escapeB.kill()
+                        elif event.ui_element == escapeB:
+                            first_level.kill()
+                            second_level.kill()
+                            third_level.kill()
+                            escapeB.kill()
+                            for_text = False
+                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                                                                      manager=manager, image_surface=st2)
+
+                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                                        text='Start',
+                                                                        manager=manager)
+
+                            levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                                            text='Levels',
+                                                                            manager=manager)
+
+                            settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
+                                                                            text='Settings',
+                                                                            manager=manager)
+                    if ld:
+                        if event.ui_element == gMenu:
+                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                                                                        manager=manager, image_surface=st2)
+
+                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                                        text='Start',
+                                                                        manager=manager)
+
+                            levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                                        text='Levels',
+                                                                        manager=manager)
+
+                            settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
+                                                                        text='Settings',
+                                                                        manager=manager)
+                            continueB.kill()
+                            gMenu.kill()
+                            ld = False
+                        elif event.ui_element == continueB:
+                            board = Board(screen, 26, 18, 1)
+                            board.render(screen)
+                            continueB.kill()
+                            gMenu.kill()
+                            ld = False
+            
+                        
             manager.process_events(event)
         if run1:
             manager.update(clock.tick(60))
