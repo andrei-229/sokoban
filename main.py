@@ -393,6 +393,7 @@ if __name__ == '__main__':
     fps = 90
     running = True
     run1 = True
+    for_text = False
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
@@ -433,6 +434,7 @@ if __name__ == '__main__':
                         settings_button.kill()
                         levels_button.kill()
                         st.kill()
+                        for_text = True
                         first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
                                                                 text='1',
                                                                 manager=manager)
@@ -447,6 +449,7 @@ if __name__ == '__main__':
                     elif event.ui_element == first_level:
                         check = True
                         run1 = False
+                        for_text = False
                         board = Board(screen, 26, 18, 0)
                         board.render(screen)
                         first_level.kill()
@@ -455,6 +458,7 @@ if __name__ == '__main__':
                     elif event.ui_element == second_level:
                         check = True
                         run1 = False
+                        for_text = False
                         board = Board(screen, 26, 18, 1)
                         board.render(screen)
                         first_level.kill()
@@ -463,6 +467,7 @@ if __name__ == '__main__':
                     elif event.ui_element == third_level:
                         check = True
                         run1 = False
+                        for_text = False
                         board = Board(screen, 26, 18, 2)
                         board.render(screen)
                         first_level.kill()
@@ -488,6 +493,10 @@ if __name__ == '__main__':
             manager.update(clock.tick(60))
             screen.blit(screen2, (0, 0))
             manager.draw_ui(screen)
+        if for_text:
+            f = pygame.font.Font(None, 50)
+            text = f.render('Выберите уровень:', True, (255, 255, 255))
+            screen.blit(text, (225, 20))
         clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
