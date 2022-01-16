@@ -73,6 +73,7 @@ class Board:
                 Level3(self)
             else:
                 print('ПОБЕДА! Вам BAN!')
+        
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
             if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1 or self.po[0] <= 0 or self.po[1] <= 0:
@@ -412,7 +413,7 @@ if __name__ == '__main__':
                                                 text='Settings',
                                                 manager=manager)
 
-    
+    lk = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -430,6 +431,7 @@ if __name__ == '__main__':
                         levels_button.kill()
                         st.kill()
                     elif event.ui_element == levels_button:
+                        lk = True
                         start_button.kill()
                         settings_button.kill()
                         levels_button.kill()
@@ -446,33 +448,37 @@ if __name__ == '__main__':
                         third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
                                                                 text='3',
                                                                 manager=manager)
-                    elif event.ui_element == first_level:
-                        check = True
-                        run1 = False
-                        for_text = False
-                        board = Board(screen, 26, 18, 0)
-                        board.render(screen)
-                        first_level.kill()
-                        second_level.kill()
-                        third_level.kill()
-                    elif event.ui_element == second_level:
-                        check = True
-                        run1 = False
-                        for_text = False
-                        board = Board(screen, 26, 18, 1)
-                        board.render(screen)
-                        first_level.kill()
-                        second_level.kill()
-                        third_level.kill()
-                    elif event.ui_element == third_level:
-                        check = True
-                        run1 = False
-                        for_text = False
-                        board = Board(screen, 26, 18, 2)
-                        board.render(screen)
-                        first_level.kill()
-                        second_level.kill()
-                        third_level.kill()
+                    elif event.ui_element == settings_button:
+                        pass
+                    if lk:
+                        if event.ui_element == first_level:
+                            check = True
+                            run1 = False
+                            for_text = False
+                            board = Board(screen, 26, 18, 0)
+                            board.render(screen)
+                            first_level.kill()
+                            second_level.kill()
+                            third_level.kill()
+
+                        elif event.ui_element == second_level:
+                            check = True
+                            run1 = False
+                            for_text = False
+                            board = Board(screen, 26, 18, 1)
+                            board.render(screen)
+                            first_level.kill()
+                            second_level.kill()
+                            third_level.kill()
+                        elif event.ui_element == third_level:
+                            check = True
+                            run1 = False
+                            for_text = False
+                            board = Board(screen, 26, 18, 2)
+                            board.render(screen)
+                            first_level.kill()
+                            second_level.kill()
+                            third_level.kill()
             if check:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
