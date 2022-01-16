@@ -1,9 +1,11 @@
-from glob import escape
+import time
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level3
 from Levels.level2 import Level2
 from Levels.level1 import Level1
+import moviepy.editor
+import moviepy.video.fx.all
 
 
 class Board:
@@ -59,22 +61,45 @@ class Board:
         screen.fill((0, 0, 0))  # очистка экрана
         if self.count == self.countBox:
             if self.nowLevel == 0:
+                pygame.mixer.music.load('GameData/Music/level1.mp3')
+                pygame.mixer.music.play(-1)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 3
                 self.count = 0
                 Level1(self)
             elif self.nowLevel == 1:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load('GameData/Music/level2.mp3')
+                pygame.mixer.music.play(-1)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 6
                 self.count = 0
                 Level2(self)
             elif self.nowLevel == 2:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load('GameData/Music/level3.mp3')
+                pygame.mixer.music.play(-1)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 5
                 self.count = 0
                 Level3(self)
             else:
+                # check = True
+                # screen.fill((0, 0, 0))
+                # ld = True
+                # check = False
+                # run1 = True
+                # manager = pygame_gui.UIManager(screen.get_size())
+                # continueB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                #                                             text='Продолжить',
+                #                                             manager=manager)
+
+                # gMenu = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                #                                         text='Главное меню',
+                #                                         manager=manager)
                 print('ПОБЕДА! Вам BAN!')
+                pygame.mixer.music.stop()
+                pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/win.mp3'))
         if self.win:
             print(1)
             self.win = False
@@ -172,6 +197,7 @@ class Board:
                     # перемещение на крестик
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 4
+                    pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                     self.count += 1
                     if self.count == self.countBox:
                         self.win = True
@@ -183,11 +209,13 @@ class Board:
                                1][(int(self.po[0] / self.cell_size)) - 2] = 0
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 2
+                    pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                 else:
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 2
+                    pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
             else:
                 self.po = self.save_po
         elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 4:
@@ -195,6 +223,7 @@ class Board:
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 3:
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 4
+                    pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 3
                 elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2:
@@ -205,8 +234,11 @@ class Board:
                     self.count -= 1
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 3
+                    pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
             else:
                 self.po = self.save_po
+        if self.po != self.save_po:
+            pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/move.mp3'))
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'left')  # отрисовка игрока
@@ -228,6 +260,7 @@ class Board:
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 4
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.count += 1
                         if self.count == self.countBox:
                             self.win = True
@@ -238,9 +271,11 @@ class Board:
                                    1][(int(self.po[0] / self.cell_size))] = 0
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                 else:
@@ -250,6 +285,7 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 4
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2:
@@ -257,6 +293,7 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -264,6 +301,8 @@ class Board:
                     self.po = self.save_po
         except:
             self.po = self.save_po
+        if self.po != self.save_po:
+            pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/move.mp3'))
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'right')  # отрисовка игрока
@@ -288,6 +327,7 @@ class Board:
                         # перемещение ящика на клетку вверх
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 4
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.count += 1
                         if self.count == self.countBox:
                             self.win = True
@@ -298,9 +338,11 @@ class Board:
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 0
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                 else:
@@ -310,6 +352,7 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 4
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                     elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2:
@@ -317,6 +360,7 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -326,9 +370,11 @@ class Board:
             if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size))] == 2:
                 self.board[(int(self.po[1] / self.cell_size)) -
                            1][(int(self.po[0] / self.cell_size)) - 1] = 2
+                pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                 self.board[(int(self.po[1] / self.cell_size))
                            ][(int(self.po[0] / self.cell_size)) - 1] = 0
-
+        if self.po != self.save_po:
+            pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/move.mp3'))
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'back')  # отрисовка игрока
@@ -350,6 +396,7 @@ class Board:
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 4
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.count += 1
                         if self.count == self.countBox:
                             self.win = True
@@ -360,9 +407,11 @@ class Board:
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 0
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                     else:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                 else:
@@ -372,6 +421,7 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 4
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2:
@@ -379,6 +429,7 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/box.mp3'))
                         self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -386,6 +437,8 @@ class Board:
                     self.po = self.save_po
         except:
             self.po = self.save_po
+        if self.po != self.save_po:
+            pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Sounds/move.mp3'))
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'primo')  # отрисовка игрока
@@ -405,6 +458,12 @@ if __name__ == '__main__':
     screen.fill((255, 255, 255))
     clock = pygame.time.Clock()
     fps = 90
+    pygame.mixer.init()
+    pygame.mixer.music.load('GameData/Music/music.mp3')
+    pygame.mixer.music.play(-1)
+    video = moviepy.editor.VideoFileClip('animation/Authors.mp4')
+    video.preview()
+    # time.sleep(7)
     running = True
     run1 = True
     for_text = False
@@ -415,15 +474,15 @@ if __name__ == '__main__':
                                               manager=manager, image_surface=st2)
 
     start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                     text='Start',
+                                                     text='Начать',
                                                      manager=manager)
 
     levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                                text='Levels',
+                                                                text='Уровни',
                                                                 manager=manager)
 
     settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                text='Settings',
+                                                text='Настройки',
                                                 manager=manager)
 
     lk = False
@@ -455,11 +514,11 @@ if __name__ == '__main__':
                         check = False
                         run1 = True
                         continueB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                                 text='Countinue',
+                                                                 text='Продолжить',
                                                                  manager=manager)
 
                         gMenu = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                             text='Main menu',
+                                                             text='Главное меню',
                                                              manager=manager)
 
             if event.type == pygame.USEREVENT:
@@ -467,7 +526,15 @@ if __name__ == '__main__':
                     if event.ui_element == start_button:
                         check = True
                         run1 = False
+                        screen.fill((0, 0, 0))
                         board = Board(screen, 26, 18, 0)
+                        pygame.mixer.music.stop()
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
+                        f = pygame.font.Font(None, 30)
+                        text = f.render('Загрузка...', True, (255, 255, 255))
+                        screen.blit(text, (650, 500))
+                        pygame.display.flip()
+                        time.sleep(2)
                         board.render(screen)
                         start_button.kill()
                         settings_button.kill()
@@ -479,6 +546,7 @@ if __name__ == '__main__':
                         settings_button.kill()
                         levels_button.kill()
                         st.kill()
+                        pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/Levels.mp3'))
                         for_text = True
                         first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
                                                                 text='1',
@@ -499,31 +567,56 @@ if __name__ == '__main__':
                         pass
                     if lk:
                         if event.ui_element == first_level:
+                            pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
+                            pygame.mixer.music.stop()
                             check = True
                             run1 = False
                             for_text = False
+                            screen.fill((0, 0, 0))
                             board = Board(screen, 26, 18, 0)
+                            f = pygame.font.Font(None, 30)
+                            text = f.render('Загрузка...', True, (255, 255, 255))
+                            screen.blit(text, (650, 500))
+                            pygame.display.flip()
+                            time.sleep(2)
                             board.render(screen)
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
                             escapeB.kill()
+                            # fade(780, 540)
 
                         elif event.ui_element == second_level:
+                            pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
+                            pygame.mixer.music.stop()
                             check = True
                             run1 = False
                             for_text = False
+                            screen.fill((0, 0, 0))
                             board = Board(screen, 26, 18, 1)
+                            f = pygame.font.Font(None, 30)
+                            text = f.render('Загрузка...', True, (255, 255, 255))
+                            screen.blit(text, (650, 500))
+                            pygame.display.flip()
+                            time.sleep(2)
                             board.render(screen)
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
                             escapeB.kill()
                         elif event.ui_element == third_level:
+                            pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
+                            pygame.mixer.music.stop()
                             check = True
                             run1 = False
                             for_text = False
+                            screen.fill((0, 0, 0))
                             board = Board(screen, 26, 18, 2)
+                            f = pygame.font.Font(None, 30)
+                            text = f.render('Загрузка...', True, (255, 255, 255))
+                            screen.blit(text, (650, 500))
+                            pygame.display.flip()
+                            time.sleep(2)
                             board.render(screen)
                             first_level.kill()
                             second_level.kill()
@@ -539,31 +632,36 @@ if __name__ == '__main__':
                                                                       manager=manager, image_surface=st2)
 
                             start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                                        text='Start',
+                                                                        text='Старт',
                                                                         manager=manager)
 
                             levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                                            text='Levels',
+                                                                            text='Уровни',
                                                                             manager=manager)
 
                             settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                                            text='Settings',
+                                                                            text='Настройки',
                                                                             manager=manager)
                     if ld:
                         if event.ui_element == gMenu:
+                            pygame.mixer.music.stop()
+                            pygame.mixer.music.load('GameData/Music/music.mp3')
+                            video = moviepy.editor.VideoFileClip('animation/Authors.mp4')
+                            pygame.mixer.music.play(-1)
+                            video.preview()
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                         manager=manager, image_surface=st2)
 
                             start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                                        text='Start',
+                                                                        text='Старт',
                                                                         manager=manager)
 
                             levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                                        text='Levels',
+                                                                        text='Уровни',
                                                                         manager=manager)
 
                             settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                                        text='Settings',
+                                                                        text='Настройки',
                                                                         manager=manager)
                             continueB.kill()
                             gMenu.kill()
@@ -575,8 +673,6 @@ if __name__ == '__main__':
                             ld = False
                             check = True
                             run1 = False
-            
-                        
             manager.process_events(event)
         if run1:
             manager.update(clock.tick(60))
