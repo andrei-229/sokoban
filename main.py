@@ -408,7 +408,7 @@ if __name__ == '__main__':
                                                      text='Start',
                                                      manager=manager)
 
-    levels_button = start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+    levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
                                                                 text='Levels',
                                                                 manager=manager)
 
