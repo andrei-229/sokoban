@@ -489,7 +489,7 @@ if __name__ == '__main__':
     manager = pygame_gui.UIManager(screen.get_size())
     screen.fill((255, 255, 255))
     clock = pygame.time.Clock()
-    soundS = 0
+    soundS = 0.2
     soundS2 = 0.2
     fps = 90
     client_id = '932641205727146026'
@@ -535,21 +535,23 @@ if __name__ == '__main__':
                 running = False
 
             if check:
+                r2 = False
+                board.win = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         r2 = board.move_left()
-                    elif event.key == pygame.K_RIGHT:
+                    if event.key == pygame.K_RIGHT:
                         r2 = board.move_right()
-                    elif event.key == pygame.K_UP:
+                    if event.key == pygame.K_UP:
                         r2 = board.move_up()
-                    elif event.key == pygame.K_DOWN:
+                    if event.key == pygame.K_DOWN:
                         r2 = board.move_down()
-                    elif event.key == pygame.K_r:
+                    if event.key == pygame.K_r:
                         board.board = [[0] * width for _ in range(height)]
                         board.count = board.countBox = 0
                         board.nowLevel -= 1
                         board.render(screen)
-                    elif event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_ESCAPE:
                         screen.fill((0, 0, 0))
                         ld = True
                         check = False
@@ -748,6 +750,7 @@ if __name__ == '__main__':
                             time.sleep(2)
                             board = Board(screen, 26, 18, count2, soundS)
                             board.render(screen)
+                            lk = board.win = False
                             ll = False
                             check = True
                             run1 = False
