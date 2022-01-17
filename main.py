@@ -5,12 +5,12 @@ import tkinter
 from tkinter import filedialog
 import pygame  # Import pygame
 import pygame_gui
-from Levels.level3 import Level3
-from Levels.level2 import Level2
-from Levels.level1 import Level1
+from Levels.level3 import Level as Level3
+from Levels.level2 import Level as Level2
+from Levels.level1 import Level as Level1
 import moviepy.editor
 import moviepy.video.fx.all
-
+import pypresence
 
 class Board:
     def __init__(self, screen, width, height, level):
@@ -71,10 +71,12 @@ class Board:
                 # self.countBox = 3
                 # self.count = 0
                 Level1(self)
+                pypresence 
             elif self.nowLevel == 1:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level2.mp3')
                 pygame.mixer.music.play(-1)
+                pygame.mixer.music.set_volume(1)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 6
                 self.count = 0
@@ -112,7 +114,7 @@ class Board:
                 pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/win.mp3'))
         if self.win:
             print(1)
-            self.win = False
+            return self.win
         
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
@@ -476,6 +478,8 @@ if __name__ == '__main__':
     screen.fill((255, 255, 255))
     clock = pygame.time.Clock()
     fps = 90
+    client_id = '932641205727146026'
+    rpc = pypresence.Presence(client_id)
     pygame.mixer.init()
     pygame.mixer.music.load('GameData/Music/music.mp3')
     pygame.mixer.music.play(-1)
@@ -505,6 +509,7 @@ if __name__ == '__main__':
 
     lk = False
     ld = False
+    r2 = ''
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -524,9 +529,8 @@ if __name__ == '__main__':
                         board.board = [[0] * width for _ in range(height)]
                         board.count = board.countBox = 0
                         board.nowLevel -= 1
-                        board.render(screen)
+                        r2 = board.render(screen)
                     if event.key == pygame.K_ESCAPE:
-                        check = True
                         screen.fill((0, 0, 0))
                         ld = True
                         check = False
@@ -541,6 +545,17 @@ if __name__ == '__main__':
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if r2:
+                        check = False
+                        run1 = True
+                        screen.fill((0, 0, 0))
+                        nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                            text='Продолжить',
+                                                            manager=manager)
+
+                        gMenu2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                            text='Главное меню',
+                                                            manager=manager)
                     if event.ui_element == start_button:
                         check = True
                         run1 = False
@@ -553,7 +568,7 @@ if __name__ == '__main__':
                         screen.blit(text, (650, 500))
                         pygame.display.flip()
                         time.sleep(2)
-                        board.render(screen)
+                        r2 = board.render(screen)
                         start_button.kill()
                         settings_button.kill()
                         levels_button.kill()
@@ -601,7 +616,7 @@ if __name__ == '__main__':
                             screen.blit(text, (650, 500))
                             pygame.display.flip()
                             time.sleep(2)
-                            board.render(screen)
+                            r2 = board.render(screen)
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
@@ -611,26 +626,29 @@ if __name__ == '__main__':
                         elif event.ui_element == custom_level:
                             f = UserFile()
                             if f:
-                                shutil.copy(f, 'Levels/level4.py')
-                                from Levels.level4 import Level1 as Level4
-                                pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
-                                pygame.mixer.music.stop()
-                                check = True
-                                run1 = False
-                                for_text = False
-                                screen.fill((0, 0, 0))
-                                board = Board(screen, 26, 18, 25)
-                                f = pygame.font.Font(None, 30)
-                                text = f.render('Загрузка...', True, (255, 255, 255))
-                                screen.blit(text, (650, 500))
-                                pygame.display.flip()
-                                time.sleep(2)
-                                board.render(screen)
-                                first_level.kill()
-                                second_level.kill()
-                                third_level.kill()
-                                escapeB.kill()
-                                custom_level.kill()
+                                try:
+                                    shutil.copy(f, 'Levels/level4.py')
+                                    from Levels.level4 import Level as Level4
+                                    pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
+                                    pygame.mixer.music.stop()
+                                    check = True
+                                    run1 = False
+                                    for_text = False
+                                    screen.fill((0, 0, 0))
+                                    board = Board(screen, 26, 18, 25)
+                                    f = pygame.font.Font(None, 30)
+                                    text = f.render('Загрузка...', True, (255, 255, 255))
+                                    screen.blit(text, (650, 500))
+                                    pygame.display.flip()
+                                    time.sleep(2)
+                                    r2 = board.render(screen)
+                                    first_level.kill()
+                                    second_level.kill()
+                                    third_level.kill()
+                                    escapeB.kill()
+                                    custom_level.kill()
+                                except Exception:
+                                    pass
 
                         elif event.ui_element == second_level:
                             pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
@@ -645,7 +663,7 @@ if __name__ == '__main__':
                             screen.blit(text, (650, 500))
                             pygame.display.flip()
                             time.sleep(2)
-                            board.render(screen)
+                            r2 = board.render(screen)
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
@@ -664,7 +682,7 @@ if __name__ == '__main__':
                             screen.blit(text, (650, 500))
                             pygame.display.flip()
                             time.sleep(2)
-                            board.render(screen)
+                            r2 = board.render(screen)
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
@@ -695,9 +713,7 @@ if __name__ == '__main__':
                         if event.ui_element == gMenu:
                             pygame.mixer.music.stop()
                             pygame.mixer.music.load('GameData/Music/music.mp3')
-                            video = moviepy.editor.VideoFileClip('animation/Authors.mp4')
                             pygame.mixer.music.play(-1)
-                            video.preview()
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                         manager=manager, image_surface=st2)
 
@@ -716,7 +732,7 @@ if __name__ == '__main__':
                             gMenu.kill()
                             ld = False
                         elif event.ui_element == continueB:
-                            board.render(screen)
+                            r2 = board.render(screen)
                             continueB.kill()
                             gMenu.kill()
                             ld = False

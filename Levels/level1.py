@@ -1,5 +1,5 @@
 # Задача Андрея
-class Level1:
+class Level:
     def __init__(self, old) -> None:
         old.nowLevel = 1
         # Стены по периметру

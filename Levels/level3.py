@@ -1,5 +1,5 @@
 # Задача Сергея
-class Level3():
+class Level:
     def __init__(self, old) -> None:
         old.nowLevel = 3
         old.board[10][10] = old.board[10][9] = old.board[10][8] = 1
