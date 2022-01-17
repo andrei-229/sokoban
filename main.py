@@ -65,14 +65,17 @@ class Board:
         screen.fill((0, 0, 0))  # очистка экрана
         if self.count == self.countBox:
             if self.nowLevel == 0:
+                rpc.update(state='Играет в 1-ый уровень',
+                           large_image='logo', start=time.time())
                 pygame.mixer.music.load('GameData/Music/level1.mp3')
                 pygame.mixer.music.play(-1)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 # self.countBox = 3
                 # self.count = 0
                 Level1(self)
-                pypresence 
             elif self.nowLevel == 1:
+                rpc.update(state='Играет во 2-ой уровень',
+                           large_image='logo')
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level2.mp3')
                 pygame.mixer.music.play(-1)
@@ -81,7 +84,10 @@ class Board:
                 self.countBox = 6
                 self.count = 0
                 Level2(self)
+            
             elif self.nowLevel == 2:
+                rpc.update(state='Играет в 3-ий уровень',
+                           large_image='logo')
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level3.mp3')
                 pygame.mixer.music.play(-1)
@@ -114,7 +120,6 @@ class Board:
                 pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/win.mp3'))
         if self.win:
             print(1)
-            return self.win
         
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
@@ -391,6 +396,7 @@ class Board:
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'back')  # отрисовка игрока
         pygame.display.update()
+        return self.win
 
     # перемещение вниз
     def move_down(self):
@@ -455,6 +461,7 @@ class Board:
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'primo')  # отрисовка игрока
         pygame.display.update()
+        return self.win
 
 
 def UserFile():
@@ -481,6 +488,7 @@ if __name__ == '__main__':
     client_id = '932641205727146026'
     rpc = pypresence.Presence(client_id)
     rpc.connect()
+    rpc.update(state='Загрузка игры...', large_image='logo', small_image='logo')
     pygame.mixer.init()
     pygame.mixer.music.load('GameData/Music/music.mp3')
     pygame.mixer.music.play(-1)
@@ -519,13 +527,13 @@ if __name__ == '__main__':
             if check:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        board.move_left()
+                        r2 = board.move_left()
                     if event.key == pygame.K_RIGHT:
-                        board.move_right()
+                        r2 = board.move_right()
                     if event.key == pygame.K_UP:
-                        board.move_up()
+                        r2 = board.move_up()
                     if event.key == pygame.K_DOWN:
-                        board.move_down()
+                        r2 = board.move_down()
                     if event.key == pygame.K_r:
                         board.board = [[0] * width for _ in range(height)]
                         board.count = board.countBox = 0
@@ -546,17 +554,6 @@ if __name__ == '__main__':
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if r2:
-                        check = False
-                        run1 = True
-                        screen.fill((0, 0, 0))
-                        nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                            text='Продолжить',
-                                                            manager=manager)
-
-                        gMenu2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                            text='Главное меню',
-                                                            manager=manager)
                     if event.ui_element == start_button:
                         check = True
                         run1 = False
@@ -618,6 +615,8 @@ if __name__ == '__main__':
                             pygame.display.flip()
                             time.sleep(2)
                             r2 = board.render(screen)
+                            if r2:
+                                print(2)
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
@@ -739,7 +738,18 @@ if __name__ == '__main__':
                             ld = False
                             check = True
                             run1 = False
-            manager.process_events(event)
+                if r2:
+                    check = False
+                    run1 = True
+                    screen.fill((0, 0, 0))
+                    nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                        text='Продолжить',
+                                                        manager=manager)
+
+                    gMenu2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                        text='Главное меню',
+                                                        manager=manager)
+                    manager.process_events(event)
         if run1:
             manager.update(clock.tick(60))
             screen.blit(screen2, (0, 0))
@@ -750,4 +760,5 @@ if __name__ == '__main__':
             screen.blit(text, (225, 20))
         clock.tick(fps)
         pygame.display.flip()
+    rpc.close()
     pygame.quit()
