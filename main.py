@@ -490,6 +490,7 @@ if __name__ == '__main__':
     screen.fill((255, 255, 255))
     clock = pygame.time.Clock()
     soundS = 0
+    soundS2 = 0.2
     fps = 90
     client_id = '932641205727146026'
     rpc = pypresence.Presence(client_id)
@@ -576,6 +577,7 @@ if __name__ == '__main__':
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == start_button:
+                        count2 = 0
                         check = True
                         run1 = False
                         screen.fill((0, 0, 0))
