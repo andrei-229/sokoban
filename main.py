@@ -480,6 +480,7 @@ if __name__ == '__main__':
     fps = 90
     client_id = '932641205727146026'
     rpc = pypresence.Presence(client_id)
+    rpc.connect()
     pygame.mixer.init()
     pygame.mixer.music.load('GameData/Music/music.mp3')
     pygame.mixer.music.play(-1)
