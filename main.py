@@ -1,4 +1,8 @@
+import os
+import shutil
 import time
+import tkinter
+from tkinter import filedialog
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level3
@@ -64,8 +68,8 @@ class Board:
                 pygame.mixer.music.load('GameData/Music/level1.mp3')
                 pygame.mixer.music.play(-1)
                 self.board = [[0] * self.width for _ in range(self.height)]
-                self.countBox = 3
-                self.count = 0
+                # self.countBox = 3
+                # self.count = 0
                 Level1(self)
             elif self.nowLevel == 1:
                 pygame.mixer.music.stop()
@@ -83,6 +87,12 @@ class Board:
                 self.countBox = 5
                 self.count = 0
                 Level3(self)
+            elif self.nowLevel == 25:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load('GameData/Music/level1.mp3')
+                pygame.mixer.music.play(-1)
+                self.board = [[0] * self.width for _ in range(self.height)]
+                Level4(self)
             else:
                 # check = True
                 # screen.fill((0, 0, 0))
@@ -445,6 +455,14 @@ class Board:
         pygame.display.update()
 
 
+def UserFile():
+    top = tkinter.Tk()
+    top.withdraw()  # hide window
+    file_name = filedialog.askopenfilename(parent=top, filetypes=[("Python files", "*.py")])
+    top.destroy()
+    return file_name
+
+
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
     pygame.init()
@@ -474,7 +492,7 @@ if __name__ == '__main__':
                                               manager=manager, image_surface=st2)
 
     start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                     text='Начать',
+                                                     text='Старт',
                                                      manager=manager)
 
     levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
@@ -559,6 +577,10 @@ if __name__ == '__main__':
                         third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
                                                                 text='3',
                                                                 manager=manager)
+                        
+                        custom_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 370), (220, 50)),
+                                                                text='Custom',
+                                                                manager=manager)
                                                             
                         escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
                                                                text='<-',
@@ -584,7 +606,31 @@ if __name__ == '__main__':
                             second_level.kill()
                             third_level.kill()
                             escapeB.kill()
+                            custom_level.kill()
                             # fade(780, 540)
+                        elif event.ui_element == custom_level:
+                            f = UserFile()
+                            if f:
+                                shutil.copy(f, 'Levels/level4.py')
+                                from Levels.level4 import Level1 as Level4
+                                pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
+                                pygame.mixer.music.stop()
+                                check = True
+                                run1 = False
+                                for_text = False
+                                screen.fill((0, 0, 0))
+                                board = Board(screen, 26, 18, 25)
+                                f = pygame.font.Font(None, 30)
+                                text = f.render('Загрузка...', True, (255, 255, 255))
+                                screen.blit(text, (650, 500))
+                                pygame.display.flip()
+                                time.sleep(2)
+                                board.render(screen)
+                                first_level.kill()
+                                second_level.kill()
+                                third_level.kill()
+                                escapeB.kill()
+                                custom_level.kill()
 
                         elif event.ui_element == second_level:
                             pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
@@ -604,6 +650,7 @@ if __name__ == '__main__':
                             second_level.kill()
                             third_level.kill()
                             escapeB.kill()
+                            custom_level.kill()
                         elif event.ui_element == third_level:
                             pygame.mixer.Sound.play(pygame.mixer.Sound('GameData/Music/levelopen.mp3'))
                             pygame.mixer.music.stop()
@@ -622,11 +669,13 @@ if __name__ == '__main__':
                             second_level.kill()
                             third_level.kill()
                             escapeB.kill()
+                            custom_level.kill()
                         elif event.ui_element == escapeB:
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
                             escapeB.kill()
+                            custom_level.kill()
                             for_text = False
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                       manager=manager, image_surface=st2)
