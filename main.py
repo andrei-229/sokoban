@@ -166,17 +166,6 @@ class Board:
             self.po[0] = xy[0]
             self.po[1] = xy[1]
 
-    def barier(self, y, x):
-        self.board[y][x] = 1
-
-    def box(self, y, x):
-        self.board[y][x] = 2
-
-    def krests(self, y, x):
-        self.board[y][x] = 3
-        self.krest.append([y, x])
-        print(self.krest)
-
     # перемещение налево
     def move_left(self):
         self.save_po = []  # сохранение координат игрока
@@ -247,6 +236,7 @@ class Board:
         if self.po != self.save_po:
             pygame.mixer.Sound.play(
                 pygame.mixer.Sound('GameData/Sounds/move.mp3'))
+            self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'left')  # отрисовка игрока
@@ -318,6 +308,7 @@ class Board:
         if self.po != self.save_po:
             pygame.mixer.Sound.play(
                 pygame.mixer.Sound('GameData/Sounds/move.mp3'))
+            self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'right')  # отрисовка игрока
@@ -398,6 +389,7 @@ class Board:
         if self.po != self.save_po:
             pygame.mixer.Sound.play(
                 pygame.mixer.Sound('GameData/Sounds/move.mp3'))
+            self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'back')  # отрисовка игрока
@@ -469,6 +461,7 @@ class Board:
         if self.po != self.save_po:
             pygame.mixer.Sound.play(
                 pygame.mixer.Sound('GameData/Sounds/move.mp3'))
+            self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
         self.draw_player(self.screen, self.po, 'primo')  # отрисовка игрока
@@ -580,6 +573,7 @@ if __name__ == '__main__':
                         run1 = True
                         ll = True
                         screen.fill((0, 0, 0))
+                        print(board.step)
                         nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                              text='Продолжить',
                                                              manager=manager)
@@ -776,6 +770,28 @@ if __name__ == '__main__':
                             ll = False
                             check = True
                             run1 = False
+                        elif event.ui_element == gMenu2:
+                            pygame.mixer.music.stop()
+                            pygame.mixer.music.load('GameData/Music/music.mp3')
+                            pygame.mixer.music.play(-1)
+                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                                                                      manager=manager, image_surface=st2)
+
+                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                                        text='Старт',
+                                                                        manager=manager)
+
+                            levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                                         text='Уровни',
+                                                                         manager=manager)
+
+                            settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
+                                                                           text='Настройки',
+                                                                           manager=manager)
+                            nextB.kill()
+                            gMenu2.kill()
+                            lk = board.win = False
+                            ll = False
 
                     if ld:
                         if event.ui_element == gMenu:
