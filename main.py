@@ -91,6 +91,7 @@ class Board:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level3.mp3')
                 pygame.mixer.music.play(-1)
+                pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 self.countBox = 5
                 self.count = 0
@@ -451,8 +452,9 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        pygame.mixer.Sound.play(
-                            pygame.mixer.Sound('GameData/Sounds/box.mp3'))
+                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
+                        pygame.mixer.Sound.play(qw)
+                        qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                 else:
@@ -515,8 +517,8 @@ if __name__ == '__main__':
     manager = pygame_gui.UIManager(screen.get_size())
     screen.fill((255, 255, 255))
     clock = pygame.time.Clock()
-    soundS = 0.2
-    soundS2 = 0.1
+    soundS = 0.1
+    soundS2 = 0
     fps = 90
     try:
         client_id = '932641205727146026'
@@ -536,6 +538,7 @@ if __name__ == '__main__':
     running = True
     run1 = True
     for_text = False
+    for_text2 = False
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
@@ -635,8 +638,9 @@ if __name__ == '__main__':
                         settings_button.kill()
                         levels_button.kill()
                         st.kill()
-                        pygame.mixer.Sound.play(
-                            pygame.mixer.Sound('GameData/Music/Levels.mp3'))
+                        qw = pygame.mixer.Sound('GameData/Music/Levels.mp3')
+                        pygame.mixer.Sound.play(qw)
+                        qw.set_volume(soundS2)
                         for_text = True
                         first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
                                                                    text='1',
@@ -658,12 +662,18 @@ if __name__ == '__main__':
                                                                text='<-',
                                                                manager=manager)
                     elif event.ui_element == settings_button:
-                        print(1)
+                        for_text2 = True
+                        start_button.kill()
+                        settings_button.kill()
+                        levels_button.kill()
+                        st.kill()
+
                     if lk:
                         if event.ui_element == first_level:
                             count2 = 0
-                            pygame.mixer.Sound.play(pygame.mixer.Sound(
-                                'GameData/Music/levelopen.mp3'))
+                            qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
+                            pygame.mixer.Sound.play(qw)
+                            qw.set_volume(soundS2)
                             pygame.mixer.music.stop()
                             check = True
                             run1 = False
@@ -691,8 +701,9 @@ if __name__ == '__main__':
                                 try:
                                     shutil.copy(f, 'Levels/level4.py')
                                     from Levels.level4 import Level as Level4
-                                    pygame.mixer.Sound.play(pygame.mixer.Sound(
-                                        'GameData/Music/levelopen.mp3'))
+                                    qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
+                                    pygame.mixer.Sound.play(qw)
+                                    qw.set_volume(soundS2)
                                     pygame.mixer.music.stop()
                                     check = True
                                     run1 = False
@@ -716,8 +727,9 @@ if __name__ == '__main__':
 
                         elif event.ui_element == second_level:
                             count2 = 1
-                            pygame.mixer.Sound.play(pygame.mixer.Sound(
-                                'GameData/Music/levelopen.mp3'))
+                            qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
+                            pygame.mixer.Sound.play(qw)
+                            qw.set_volume(soundS2)
                             pygame.mixer.music.stop()
                             check = True
                             run1 = False
@@ -738,8 +750,9 @@ if __name__ == '__main__':
                             custom_level.kill()
                         elif event.ui_element == third_level:
                             count2 = 2
-                            pygame.mixer.Sound.play(pygame.mixer.Sound(
-                                'GameData/Music/levelopen.mp3'))
+                            qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
+                            pygame.mixer.Sound.play(qw)
+                            qw.set_volume(soundS2)
                             pygame.mixer.music.stop()
                             check = True
                             run1 = False
@@ -799,6 +812,7 @@ if __name__ == '__main__':
                         elif event.ui_element == gMenu2:
                             pygame.mixer.music.stop()
                             pygame.mixer.music.load('GameData/Music/music.mp3')
+                            pygame.mixer.music.set_volume(soundS)
                             pygame.mixer.music.play(-1)
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                       manager=manager, image_surface=st2)
@@ -823,6 +837,7 @@ if __name__ == '__main__':
                         if event.ui_element == gMenu:
                             pygame.mixer.music.stop()
                             pygame.mixer.music.load('GameData/Music/music.mp3')
+                            pygame.mixer.music.set_volume(soundS)
                             pygame.mixer.music.play(-1)
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                       manager=manager, image_surface=st2)
@@ -857,6 +872,14 @@ if __name__ == '__main__':
             f = pygame.font.Font(None, 50)
             text = f.render('Выберите уровень:', True, (255, 255, 255))
             screen.blit(text, (225, 20))
+        if for_text2:
+            f = pygame.font.Font(None, 50)
+            text = f.render('Настройки', True, (255, 255, 255))
+            mus = f.render('Музыка', True, (255, 255, 255))
+            effec = f.render('Эффекты', True, (255, 255, 255))
+            screen.blit(text, (300, 20))
+            screen.blit(mus, (50, 200))
+            screen.blit(effec, (50, 280))
         clock.tick(fps)
         pygame.display.flip()
     try:
