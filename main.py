@@ -2,7 +2,7 @@ import os
 import shutil
 import time
 import tkinter
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level as Level3
