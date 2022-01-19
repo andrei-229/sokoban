@@ -4,7 +4,10 @@ import sqlite3
 import time
 import tkinter
 from tkinter import filedialog, simpledialog
+<<<<<<< HEAD
 from turtle import xcor
+=======
+>>>>>>> f9c1b13ab30d5a8a4f0953ca91a26cb913fa0491
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level as Level3
