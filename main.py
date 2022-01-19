@@ -1,8 +1,10 @@
 import os
 import shutil
+import sqlite3
 import time
 import tkinter
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
+from turtle import xcor
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level as Level3
@@ -485,17 +487,20 @@ def UserFile():
 
 
 def pygame_nick_input():
-    top = tkinter.Tk()
-    top.withdraw()  # hide window
-    nick = tkinter.simpledialog.askstring(
-        "Введите ваш ник", "Введите ваш ник", parent=top)
-    top.destroy()
+    top1.withdraw()
+    nick = tkinter.simpledialog.askstring("Введите ваш ник", "Введите ваш ник", parent=top1)
+    top1.destroy()
     return nick
 
 
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
+    top1 = tkinter.Tk()
+    top1.tk.eval(f'tk::PlaceWindow {top1._w} center')
     nick = pygame_nick_input()
+    db = sqlite3.connect('GameData/score.db')
+    db.cursor().execute("""INSERT INTO Players(player) VALUES(?)""", (nick, )).fetchall()
+    db.commit()
     pygame.init()
     width, height = 780, 540
     size = width, height
