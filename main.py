@@ -516,6 +516,7 @@ if __name__ == '__main__':
     pygame.mixer.music.play(-1)
     video = moviepy.editor.VideoFileClip('animation/Authors.mp4')
     video.preview()
+    levelS = pygame.mixer.Sound('GameData/Music/Levels.mp3')
     # time.sleep(7)
     running = True
     run1 = True
@@ -641,9 +642,8 @@ if __name__ == '__main__':
                         settings_button.kill()
                         levels_button.kill()
                         st.kill()
-                        qw = pygame.mixer.Sound('GameData/Music/Levels.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(soundS2)
+                        pygame.mixer.Sound.play(levelS)
+                        levelS.set_volume(soundS2)
                         for_text = True
                         first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
                                                                    text='1',
@@ -669,6 +669,8 @@ if __name__ == '__main__':
                         start_button.kill()
                         settings_button.kill()
                         levels_button.kill()
+                        pygame.mixer.Sound.play(levelS)
+                        levelS.set_volume(soundS2)
                         st.kill()
                         lm = True
                         escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
@@ -713,24 +715,22 @@ if __name__ == '__main__':
                                                                            text='Настройки',
                                                                            manager=manager)
                             lm = False
-                        elif event.ui_element == minus1:
-                            if soundS >= 0.05:
-                                soundS -= 0.05
+                        elif event.ui_element == minus1 and soundS >= 0.05:
+                            soundS -= 0.05
                             screen.blit(gromk1, (350, 200))
-                        elif event.ui_element == minus2:
-                            if soundS2 >= 0.05:
-                                soundS2 -= 0.05
+                        elif event.ui_element == minus2 and soundS2 >= 0.05:
+                            soundS2 -= 0.05
                             screen.blit(gromk2, (350, 280))
-                        elif event.ui_element == plus1:
-                            if soundS < 1:
-                                soundS += 0.05
+                        elif event.ui_element == plus1 and soundS < 1:
+                            soundS += 0.05
                             screen.blit(gromk1, (350, 280))
-                        elif event.ui_element == plus2:
-                            if soundS2 < 1:
-                                soundS2 += 0.05
+                        elif event.ui_element == plus2 and soundS2 < 1:
+                            soundS2 += 0.05
                             screen.blit(gromk2, (350, 280))
                         elif event.ui_element == saveS:
-                            pass
+                            levelS.set_volume(soundS2)
+                            grom.set_volume(soundS2)
+                            pygame.mixer.music.set_volume(soundS)
                     if lk:
                         if event.ui_element == first_level:
                             count2 = 0
@@ -763,9 +763,8 @@ if __name__ == '__main__':
                                 try:
                                     shutil.copy(f, 'Levels/level4.py')
                                     from Levels.level4 import Level as Level4
-                                    qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
-                                    pygame.mixer.Sound.play(qw)
-                                    qw.set_volume(soundS2)
+                                    pygame.mixer.Sound.play(grom)
+                                    grom.set_volume(soundS2)
                                     pygame.mixer.music.stop()
                                     check = True
                                     run1 = False
@@ -789,9 +788,8 @@ if __name__ == '__main__':
 
                         elif event.ui_element == second_level:
                             count2 = 1
-                            qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
-                            pygame.mixer.Sound.play(qw)
-                            qw.set_volume(soundS2)
+                            pygame.mixer.Sound.play(grom)
+                            grom.set_volume(soundS2)
                             pygame.mixer.music.stop()
                             check = True
                             run1 = False
@@ -812,9 +810,8 @@ if __name__ == '__main__':
                             custom_level.kill()
                         elif event.ui_element == third_level:
                             count2 = 2
-                            qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
-                            pygame.mixer.Sound.play(qw)
-                            qw.set_volume(soundS2)
+                            pygame.mixer.Sound.play(grom)
+                            grom.set_volume(soundS2)
                             pygame.mixer.music.stop()
                             check = True
                             run1 = False
