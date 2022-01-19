@@ -4,10 +4,6 @@ import sqlite3
 import time
 import tkinter
 from tkinter import filedialog, simpledialog
-<<<<<<< HEAD
-from turtle import xcor
-=======
->>>>>>> f9c1b13ab30d5a8a4f0953ca91a26cb913fa0491
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level as Level3
@@ -492,19 +488,32 @@ def UserFile():
 def pygame_nick_input():
     top1.withdraw()
     nick = tkinter.simpledialog.askstring("Введите ваш ник", "Введите ваш ник", parent=top1)
-    top1.destroy()
-    return nick
+    if len(nick.split()) > 0:
+        top1.destroy()
+        return nick
+    else:
+        for i in range(1000):
+            nick = tkinter.simpledialog.askstring("Введите ваш ник", "Введите ваш ник", parent=top1)
+            if len(nick.split()) > 0:
+                top1.destroy()
+                return nick
+            else:
+                continue
+
+
+def add_nickname_to_db(name):
+    db.cursor().execute("""INSERT INTO Players(player) VALUES(?)""", (name, )).fetchall()
+    db.commit()
 
 
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
     top1 = tkinter.Tk()
     top1.tk.eval(f'tk::PlaceWindow {top1._w} center')
-    nick = pygame_nick_input()
-    db = sqlite3.connect('GameData/score.db')
-    db.cursor().execute("""INSERT INTO Players(player) VALUES(?)""", (nick, )).fetchall()
-    db.commit()
+    a = pygame_nick_input()
+    add_nickname_to_db(a)
     pygame.init()
+    db = sqlite3.connect('GameData/score.db')
     width, height = 780, 540
     size = width, height
     screen = pygame.display.set_mode(size)
