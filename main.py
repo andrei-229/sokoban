@@ -484,8 +484,18 @@ def UserFile():
     return file_name
 
 
+def pygame_nick_input():
+    top = tkinter.Tk()
+    top.withdraw()  # hide window
+    nick = tkinter.simpledialog.askstring(
+        "Введите ваш ник", "Введите ваш ник", parent=top)
+    top.destroy()
+    return nick
+
+
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
+    nick = pygame_nick_input()
     pygame.init()
     width, height = 780, 540
     size = width, height
