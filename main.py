@@ -501,7 +501,7 @@ def pygame_nick_input():
                 continue
 
 
-def add_nickname_to_db(name):
+def add_nickname_to_db(name, db):
     db.cursor().execute("""INSERT INTO Players(player) VALUES(?)""", (name, )).fetchall()
     db.commit()
 
@@ -511,9 +511,9 @@ if __name__ == '__main__':
     top1 = tkinter.Tk()
     top1.tk.eval(f'tk::PlaceWindow {top1._w} center')
     a = pygame_nick_input()
-    add_nickname_to_db(a)
     pygame.init()
     db = sqlite3.connect('GameData/score.db')
+    add_nickname_to_db(a, db)
     width, height = 780, 540
     size = width, height
     screen = pygame.display.set_mode(size)
@@ -549,6 +549,7 @@ if __name__ == '__main__':
     run1 = True
     for_text = False
     for_text2 = False
+    for_text3 = False
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
@@ -573,6 +574,7 @@ if __name__ == '__main__':
     lm = False
     r2 = ''
     count2 = 0
+    stars = 3
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -621,6 +623,7 @@ if __name__ == '__main__':
                         ld = True
                         check = False
                         run1 = True
+                        for_text3 = True
                         continueB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                                  text='Продолжить',
                                                                  manager=manager)
@@ -942,6 +945,7 @@ if __name__ == '__main__':
                             continueB.kill()
                             gMenu.kill()
                             ld = False
+                            for_text3 = False
                         elif event.ui_element == continueB:
                             board.render(screen)
                             continueB.kill()
@@ -949,6 +953,7 @@ if __name__ == '__main__':
                             ld = False
                             check = True
                             run1 = False
+                            for_text3 = False
             manager.process_events(event)
         if run1:
             manager.update(clock.tick(60))
@@ -970,6 +975,19 @@ if __name__ == '__main__':
             screen.blit(effec, (50, 280))
             screen.blit(gromk1, (350, 200))
             screen.blit(gromk2, (350, 280))
+        if for_text3:
+            f = pygame.font.Font(None, 50)
+            text = f.render('Пауза', True, (255, 255, 255))
+            shag = f.render(f'Кол-во шагов: {board.step}', True, (255, 255, 255))
+            screen.blit(text, (300, 20))
+            screen.blit(shag, (300, 70))
+        if for_text4:
+            f = pygame.font.Font(None, 50)
+            text = f.render('Пауза', True, (255, 255, 255))
+            shag = f.render(
+                f'Кол-во шагов: {board.step}', True, (255, 255, 255))
+            screen.blit(text, (300, 20))
+            screen.blit(shag, (300, 70))
         clock.tick(fps)
         pygame.display.flip()
     try:
