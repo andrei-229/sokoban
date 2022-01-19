@@ -1,4 +1,3 @@
-from logging import exception
 import os
 import shutil
 import time
@@ -26,6 +25,9 @@ class Board:
         self.soundS = soundS
         self.soundS2 = soundS2
         self.step = 0
+        self.qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
+        self.wq = pygame.mixer.Sound('GameData/Sounds/move.mp3')
+        self.mus = pygame.mixer.music.load('GameData/Music/level1.mp3')
 
         self.width = width  # ширина поля
         self.height = height  # высота поля
@@ -70,14 +72,14 @@ class Board:
         screen.fill((0, 0, 0))  # очистка экрана
         if self.count == self.countBox:
             if self.nowLevel == 0:
-                pygame.mixer.music.load('GameData/Music/level1.mp3')
+                self.mus = pygame.mixer.music.load('GameData/Music/level1.mp3')
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 # self.countBox = 3
                 # self.count = 0
                 Level1(self)
-            elif self.nowLevel == 1:
+            elif self.nowLevel == 1 and self.win == False:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level2.mp3')
                 pygame.mixer.music.play(-1)
@@ -87,7 +89,7 @@ class Board:
                 self.count = 0
                 Level2(self)
 
-            elif self.nowLevel == 2:
+            elif self.nowLevel == 2 and self.win == False:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level3.mp3')
                 pygame.mixer.music.play(-1)
@@ -103,7 +105,9 @@ class Board:
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 Level4(self)
-            else:
+            if self.nowLevel == 3 and self.win == True:
+                self.nowLevel = 4
+            if (self.nowLevel == 4 or self.nowLevel == 25) and self.win == True:
                 pygame.mixer.music.stop()
                 pygame.mixer.Sound.play(
                     pygame.mixer.Sound('GameData/Music/win.mp3'))
@@ -190,9 +194,8 @@ class Board:
                     # перемещение на крестик
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 4
-                    qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                    pygame.mixer.Sound.play(qw)
-                    qw.set_volume(self.soundS2)
+                    pygame.mixer.Sound.play(self.qw)
+                    self.qw.set_volume(self.soundS2)
                     self.count += 1
                     if self.count == self.countBox:
                         self.win = True
@@ -204,17 +207,15 @@ class Board:
                                1][(int(self.po[0] / self.cell_size)) - 2] = 0
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                    qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                    pygame.mixer.Sound.play(qw)
-                    qw.set_volume(self.soundS2)
+                    pygame.mixer.Sound.play(self.qw)
+                    self.qw.set_volume(self.soundS2)
                 else:
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 0
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 2
-                    qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                    pygame.mixer.Sound.play(qw)
-                    qw.set_volume(self.soundS2)
+                    pygame.mixer.Sound.play(self.qw)
+                    self.qw.set_volume(self.soundS2)
             else:
                 self.po = self.save_po
         elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 4:
@@ -222,9 +223,8 @@ class Board:
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 3:
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 2] = 4
-                    qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                    pygame.mixer.Sound.play(qw)
-                    qw.set_volume(self.soundS2)
+                    pygame.mixer.Sound.play(self.qw)
+                    self.qw.set_volume(self.soundS2)
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 3
                 elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2:
@@ -235,15 +235,13 @@ class Board:
                     self.count -= 1
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 3
-                    qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                    pygame.mixer.Sound.play(qw)
-                    qw.set_volume(self.soundS2)
+                    pygame.mixer.Sound.play(self.qw)
+                    self.qw.set_volume(self.soundS2)
             else:
                 self.po = self.save_po
         if self.po != self.save_po:
-            qw = pygame.mixer.Sound('GameData/Sounds/move.mp3')
-            pygame.mixer.Sound.play(qw)
-            qw.set_volume(self.soundS2)
+            pygame.mixer.Sound.play(self.wq)
+            self.wq.set_volume(self.soundS2)
             self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
@@ -267,9 +265,8 @@ class Board:
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 4
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.count += 1
                         if self.count == self.countBox:
                             self.win = True
@@ -280,15 +277,13 @@ class Board:
                                    1][(int(self.po[0] / self.cell_size))] = 0
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                 else:
@@ -298,9 +293,8 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 4
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2:
@@ -308,9 +302,8 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size))] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -319,9 +312,8 @@ class Board:
         except:
             self.po = self.save_po
         if self.po != self.save_po:
-            qw = pygame.mixer.Sound('GameData/Sounds/move.mp3')
-            pygame.mixer.Sound.play(qw)
-            qw.set_volume(self.soundS2)
+            pygame.mixer.Sound.play(self.wq)
+            self.wq.set_volume(self.soundS2)
             self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
@@ -348,9 +340,8 @@ class Board:
                         # перемещение ящика на клетку вверх
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 4
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.count += 1
                         if self.count == self.countBox:
                             self.win = True
@@ -361,15 +352,13 @@ class Board:
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 0
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                 else:
@@ -379,9 +368,8 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 4
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                     elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2:
@@ -389,9 +377,8 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    2][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -401,15 +388,13 @@ class Board:
             if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size))] == 2:
                 self.board[(int(self.po[1] / self.cell_size)) -
                            1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                pygame.mixer.Sound.play(qw)
-                qw.set_volume(self.soundS2)
+                pygame.mixer.Sound.play(self.qw)
+                self.qw.set_volume(self.soundS2)
                 self.board[(int(self.po[1] / self.cell_size))
                            ][(int(self.po[0] / self.cell_size)) - 1] = 0
         if self.po != self.save_po:
-            qw = pygame.mixer.Sound('GameData/Sounds/move.mp3')
-            pygame.mixer.Sound.play(qw)
-            qw.set_volume(self.soundS2)
+            pygame.mixer.Sound.play(self.wq)
+            self.wq.set_volume(self.soundS2)
             self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
@@ -433,9 +418,8 @@ class Board:
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 4
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.count += 1
                         if self.count == self.countBox:
                             self.win = True
@@ -446,15 +430,13 @@ class Board:
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 0
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                     else:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 0
                 else:
@@ -464,9 +446,8 @@ class Board:
                     if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 4
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2:
@@ -474,9 +455,8 @@ class Board:
                     else:
                         self.board[(int(self.po[1] / self.cell_size))
                                    ][(int(self.po[0] / self.cell_size)) - 1] = 2
-                        qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(self.soundS2)
+                        pygame.mixer.Sound.play(self.qw)
+                        self.qw.set_volume(self.soundS2)
                         self.count -= 1
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
@@ -485,9 +465,8 @@ class Board:
         except:
             self.po = self.save_po
         if self.po != self.save_po:
-            qw = pygame.mixer.Sound('GameData/Sounds/move.mp3')
-            pygame.mixer.Sound.play(qw)
-            qw.set_volume(self.soundS2)
+            pygame.mixer.Sound.play(self.wq)
+            self.wq.set_volume(self.soundS2)
             self.step += 1
         self.screen.fill((0, 0, 0))  # очистка экрана
         self.render(self.screen)  # отрисовка поля
@@ -522,6 +501,7 @@ if __name__ == '__main__':
     soundS_2 = 0
     soundS2_2 = 0
     fps = 90
+    grom = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
     try:
         client_id = '932641205727146026'
         rpc = pypresence.Presence(client_id)
@@ -562,6 +542,7 @@ if __name__ == '__main__':
     lk = False
     ld = False
     ll = False
+    lm = False
     r2 = ''
     count2 = 0
     while running:
@@ -575,12 +556,24 @@ if __name__ == '__main__':
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         r2 = board.move_left()
+                        board.qw.set_volume(soundS2)
+                        board.wq.set_volume(soundS2)
+                        pygame.mixer.music.set_volume(soundS)
                     if event.key == pygame.K_RIGHT:
                         r2 = board.move_right()
+                        board.qw.set_volume(soundS2)
+                        board.wq.set_volume(soundS2)
+                        pygame.mixer.music.set_volume(soundS)
                     if event.key == pygame.K_UP:
                         r2 = board.move_up()
+                        board.qw.set_volume(soundS2)
+                        board.wq.set_volume(soundS2)
+                        pygame.mixer.music.set_volume(soundS)
                     if event.key == pygame.K_DOWN:
                         r2 = board.move_down()
+                        board.qw.set_volume(soundS2)
+                        board.wq.set_volume(soundS2)
+                        pygame.mixer.music.set_volume(soundS)
                     if event.key == pygame.K_r:
                         board.board = [[0] * width for _ in range(height)]
                         board.count = board.countBox = 0
@@ -590,8 +583,11 @@ if __name__ == '__main__':
                         print(1)
                         soundS, soundS_2 = soundS_2, soundS
                         soundS2, soundS2_2 = soundS2_2, soundS2
+                        grom.set_volume(soundS2)
                         print(soundS, soundS2)
                         print(soundS_2, soundS2_2)
+                    if event.key == pygame.K_c:
+                        r2 = True
                     if event.key == pygame.K_ESCAPE:
                         screen.fill((0, 0, 0))
                         ld = True
@@ -627,9 +623,8 @@ if __name__ == '__main__':
                         screen.fill((0, 0, 0))
                         board = Board(screen, 26, 18, 0, soundS, soundS2)
                         pygame.mixer.music.stop()
-                        qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
-                        pygame.mixer.Sound.play(qw)
-                        qw.set_volume(soundS2)
+                        pygame.mixer.Sound.play(grom)
+                        grom.set_volume(soundS2)
                         f = pygame.font.Font(None, 30)
                         text = f.render('Загрузка...', True, (255, 255, 255))
                         screen.blit(text, (650, 500))
@@ -675,13 +670,72 @@ if __name__ == '__main__':
                         settings_button.kill()
                         levels_button.kill()
                         st.kill()
+                        lm = True
+                        escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
+                                                               text='<-',
+                                                               manager=manager)
+                        saveS = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 400), (200, 50)),
+                                                               text='Сохранить изменения',
+                                                               manager=manager)
+                        minus1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((270, 200), (50, 50)),
+                                                                        text='-',
+                                                                        manager=manager)
+                        minus2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((270, 280), (50, 50)),
+                                                                        text='-',
+                                                                        manager=manager)
+                        plus1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((450, 200), (50, 50)),
+                                                              text='+',
+                                                              manager=manager)
+                        plus2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((450, 280), (50, 50)),
+                                                              text='+',
+                                                              manager=manager)
+                    if lm:
+                        if event.ui_element == escapeB:
+                            escapeB.kill()
+                            saveS.kill()
+                            minus1.kill()
+                            minus2.kill()
+                            plus1.kill()
+                            plus2.kill()
+                            for_text2 = False
+                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                                                                      manager=manager, image_surface=st2)
 
+                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                                        text='Старт',
+                                                                        manager=manager)
+
+                            levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                                         text='Уровни',
+                                                                         manager=manager)
+
+                            settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
+                                                                           text='Настройки',
+                                                                           manager=manager)
+                            lm = False
+                        elif event.ui_element == minus1:
+                            if soundS >= 0.05:
+                                soundS -= 0.05
+                            screen.blit(gromk1, (350, 200))
+                        elif event.ui_element == minus2:
+                            if soundS2 >= 0.05:
+                                soundS2 -= 0.05
+                            screen.blit(gromk2, (350, 280))
+                        elif event.ui_element == plus1:
+                            if soundS < 1:
+                                soundS += 0.05
+                            screen.blit(gromk1, (350, 280))
+                        elif event.ui_element == plus2:
+                            if soundS2 < 1:
+                                soundS2 += 0.05
+                            screen.blit(gromk2, (350, 280))
+                        elif event.ui_element == saveS:
+                            pass
                     if lk:
                         if event.ui_element == first_level:
                             count2 = 0
-                            qw = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
-                            pygame.mixer.Sound.play(qw)
-                            qw.set_volume(soundS2)
+                            pygame.mixer.Sound.play(grom)
+                            grom.set_volume(soundS2)
                             pygame.mixer.music.stop()
                             check = True
                             run1 = False
@@ -885,9 +939,13 @@ if __name__ == '__main__':
             text = f.render('Настройки', True, (255, 255, 255))
             mus = f.render('Музыка', True, (255, 255, 255))
             effec = f.render('Эффекты', True, (255, 255, 255))
+            gromk1 = f.render(f'{str(int(soundS * 100))}%', True, (255, 255, 255))
+            gromk2 = f.render(f'{str(int(soundS2 * 100))}%', True, (255, 255, 255))
             screen.blit(text, (300, 20))
             screen.blit(mus, (50, 200))
             screen.blit(effec, (50, 280))
+            screen.blit(gromk1, (350, 200))
+            screen.blit(gromk2, (350, 280))
         clock.tick(fps)
         pygame.display.flip()
     try:
