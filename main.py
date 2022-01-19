@@ -518,7 +518,9 @@ if __name__ == '__main__':
     screen.fill((255, 255, 255))
     clock = pygame.time.Clock()
     soundS = 0.1
-    soundS2 = 0
+    soundS2 = 0.1
+    soundS_2 = 0
+    soundS2_2 = 0
     fps = 90
     try:
         client_id = '932641205727146026'
@@ -584,6 +586,12 @@ if __name__ == '__main__':
                         board.count = board.countBox = 0
                         board.nowLevel -= 1
                         board.render(screen)
+                    if event.key == pygame.K_m:
+                        print(1)
+                        soundS, soundS_2 = soundS_2, soundS
+                        soundS2, soundS2_2 = soundS2_2, soundS2
+                        print(soundS, soundS2)
+                        print(soundS_2, soundS2_2)
                     if event.key == pygame.K_ESCAPE:
                         screen.fill((0, 0, 0))
                         ld = True
