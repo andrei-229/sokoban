@@ -502,8 +502,27 @@ def pygame_nick_input():
 
 
 def add_nickname_to_db(name, db):
-    db.cursor().execute("""INSERT INTO Players(player) VALUES(?)""", (name, )).fetchall()
+    nicknames = db.cursor().execute("""SELECT player FROM Players""").fetchall()
+    for elem in nicknames:
+        if name in elem:
+            return
+    db.cursor().execute("""INSERT INTO Players(player) VALUES(?)""", (name, ))
     db.commit()
+
+
+def add_score_to_db(score, nickname, db):
+    player_id = db.cursor().execute("""SELECT player_id FROM Players
+                                WHERE player = ?""", (nickname, )).fetchall()
+    scores = db.cursor().execute("""SELECT player_id, score FROM Scores
+                                    WHERE player_id = ?""", (player_id[0][0], )).fetchall()
+    if len(scores) == 0:
+        db.cursor().execute("""INSERT INTO Scores(player_id, score) VALUES(?, ?)""", (player_id[0][0], score))
+        db.commit()
+    else:
+        db.cursor().execute("""UPDATE Scores
+                                SET score = ?
+                                WHERE player_id = ?""", (int(scores[0][1]) + score, player_id[0][0]))
+        db.commit()
 
 
 # всё далее я не менял, поэтому не буду писать комментарии
@@ -550,6 +569,7 @@ if __name__ == '__main__':
     for_text = False
     for_text2 = False
     for_text3 = False
+    print_win1 = False
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
@@ -575,6 +595,7 @@ if __name__ == '__main__':
     r2 = ''
     count2 = 0
     stars = 3
+    score = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -609,6 +630,7 @@ if __name__ == '__main__':
                         board.count = board.countBox = 0
                         board.nowLevel -= 1
                         board.render(screen)
+                        board.step = 0
                     if event.key == pygame.K_m:
                         print(1)
                         soundS, soundS_2 = soundS_2, soundS
@@ -636,7 +658,27 @@ if __name__ == '__main__':
                         run1 = True
                         ll = True
                         screen.fill((0, 0, 0))
-                        print(board.step)
+                        steps = board.step
+                        if board.nowLevel == 1:
+                            if steps >= 0 and steps < 48:
+                                score += 10
+                            elif steps >= 48 and steps < 53:
+                                score += 7
+                            elif steps >= 53:
+                                score += 5
+                        elif board.nowLevel == 2:
+                            if steps >= 0 and steps < 85:
+                                score += 10
+                            elif steps >= 85 and steps < 90:
+                                score += 7
+                            elif steps >= 90:
+                                score += 5
+                        elif board.nowLevel == 3:
+                            score += 100
+                        add_score_to_db(score, a, db)
+
+
+                        print(board.step , '- steps')
                         nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                              text='Продолжить',
                                                              manager=manager)
@@ -645,6 +687,7 @@ if __name__ == '__main__':
                                                               text='Главное меню',
                                                               manager=manager)
                         count2 += 1
+                        score = 0
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == start_button:
@@ -789,6 +832,7 @@ if __name__ == '__main__':
                             # fade(780, 540)
                         elif event.ui_element == custom_level:
                             f = UserFile()
+                            print(f)
                             if f:
                                 try:
                                     shutil.copy(f, 'Levels/level4.py')
@@ -981,13 +1025,13 @@ if __name__ == '__main__':
             shag = f.render(f'Кол-во шагов: {board.step}', True, (255, 255, 255))
             screen.blit(text, (300, 20))
             screen.blit(shag, (300, 70))
-        if for_text4:
+        '''if for_text4:
             f = pygame.font.Font(None, 50)
             text = f.render('Пауза', True, (255, 255, 255))
             shag = f.render(
                 f'Кол-во шагов: {board.step}', True, (255, 255, 255))
             screen.blit(text, (300, 20))
-            screen.blit(shag, (300, 70))
+            screen.blit(shag, (300, 70))'''
         clock.tick(fps)
         pygame.display.flip()
     try:
