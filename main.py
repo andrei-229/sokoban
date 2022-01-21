@@ -75,6 +75,11 @@ class Board:
         screen.fill((0, 0, 0))  # очистка экрана
         if self.count == self.countBox:
             if self.nowLevel == 0:
+                try:
+                    nowTime = time.time()
+                    rpc.update(state='Проходит первый уровень', large_image='logo', small_image='logo', start=nowTime)
+                except Exception:
+                    pass
                 self.mus = pygame.mixer.music.load('GameData/Music/level1.mp3')
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
@@ -83,6 +88,11 @@ class Board:
                 # self.count = 0
                 Level1(self)
             elif self.nowLevel == 1 and self.win == False:
+                try:
+                    nowTime = time.time()
+                    rpc.update(state='Проходит второй уровень', large_image='logo', small_image='logo', start=nowTime)
+                except Exception:
+                    pass
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level2.mp3')
                 pygame.mixer.music.play(-1)
@@ -93,6 +103,11 @@ class Board:
                 Level2(self)
 
             elif self.nowLevel == 2 and self.win == False:
+                try:
+                    nowTime = time.time()
+                    rpc.update(state='Проходит третий уровень', large_image='logo', small_image='logo', start=nowTime)
+                except Exception:
+                    pass
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level3.mp3')
                 pygame.mixer.music.play(-1)
@@ -102,17 +117,17 @@ class Board:
                 self.count = 0
                 Level3(self)
             elif self.nowLevel == 25:
+                try:
+                    nowTime = time.time()
+                    rpc.update(state='Проходит пользовательский уровень', large_image='logo', small_image='logo', start=nowTime)
+                except Exception:
+                    pass
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load('GameData/Music/level1.mp3')
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
                 Level4(self)
-            if (self.nowLevel == 3 or self.nowLevel == 25) and self.win == True:
-                print('Done')
-                pygame.mixer.music.stop()
-                pygame.mixer.Sound.play(self.win_music)
-                self.win_music.set_volume(self.soundS)
 
 
         try:  # проверка на наличие клетки в списке
@@ -565,7 +580,7 @@ if __name__ == '__main__':
         rpc.connect()
         rpc.update(state='Играет в игру',
                    large_image='logo', small_image='logo')
-    except pypresence.DiscordNotFound:
+    except Exception:
         pass
     pygame.mixer.init()
     pygame.mixer.music.load('GameData/Music/music.mp3')
