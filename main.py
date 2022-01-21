@@ -603,6 +603,13 @@ if __name__ == '__main__':
     video.preview()
     levelS = pygame.mixer.Sound('GameData/Music/Levels.mp3')
     win_music = pygame.mixer.Sound('GameData/Music/win.mp3')
+    scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                    WHERE player_id = (SELECT player_id FROM Players
+                                    WHERE player = ?)""", (a, )).fetchall()
+    if len(scores_2) > 0:
+        level_done = scores_2[0][0].split(';')
+    else:
+        level_done = ['']
     # time.sleep(7)
     running = True
     run1 = True
@@ -774,10 +781,14 @@ if __name__ == '__main__':
                         second_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 270), (220, 50)),
                                                                     text='2',
                                                                     manager=manager)
+                        if '1' not in level_done:
+                            second_level.disable()
 
                         third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
                                                                    text='3',
                                                                    manager=manager)
+                        if '2' not in level_done:
+                            third_level.disable()
 
                         custom_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 370), (220, 50)),
                                                                     text='Custom',
@@ -965,6 +976,13 @@ if __name__ == '__main__':
                             escapeB.kill()
                             custom_level.kill()
                             for_text = False
+                            scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                                            WHERE player_id = (SELECT player_id FROM Players
+                                                            WHERE player = ?)""", (a, )).fetchall()
+                            if len(scores_2) > 0:
+                                level_done = scores_2[0][0].split(';')
+                            else:
+                                level_done = ['']
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
@@ -1029,6 +1047,10 @@ if __name__ == '__main__':
                                 pygame.mixer.music.load('GameData/Music/music.mp3')
                                 pygame.mixer.music.set_volume(soundS)
                                 pygame.mixer.music.play(-1)
+                                scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                                            WHERE player_id = (SELECT player_id FROM Players
+                                                            WHERE player = ?)""", (a, )).fetchall()
+                                level_done = scores_2[0][0].split(';')
                                 st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                         manager=manager, image_surface=st2)
 
@@ -1055,6 +1077,13 @@ if __name__ == '__main__':
                             pygame.mixer.music.load('GameData/Music/music.mp3')
                             pygame.mixer.music.set_volume(soundS)
                             pygame.mixer.music.play(-1)
+                            scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                                            WHERE player_id = (SELECT player_id FROM Players
+                                                            WHERE player = ?)""", (a, )).fetchall()
+                            if len(scores_2) > 0:
+                                level_done = scores_2[0][0].split(';')
+                            else:
+                                level_done = ['']
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
