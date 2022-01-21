@@ -26,6 +26,7 @@ class Board:
         self.soundS = soundS
         self.soundS2 = soundS2
         self.step = 0
+        self.score_2 = 0
         self.qw = pygame.mixer.Sound('GameData/Sounds/box.mp3')
         self.wq = pygame.mixer.Sound('GameData/Sounds/move.mp3')
         self.mus = pygame.mixer.music.load('GameData/Music/level1.mp3')
@@ -525,6 +526,15 @@ def add_score_to_db(score, nickname, db):
         db.commit()
 
 
+def schet_score(step, nowLevel):
+    if nowLevel == 1:
+        pass
+    elif nowLevel == 2:
+        pass
+    elif nowLevel == 3:
+        pass
+
+
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
     top1 = tkinter.Tk()
@@ -569,6 +579,7 @@ if __name__ == '__main__':
     for_text = False
     for_text2 = False
     for_text3 = False
+    for_text4 = False
     print_win1 = False
     check = False
 
@@ -676,14 +687,15 @@ if __name__ == '__main__':
                         elif board.nowLevel == 3:
                             score += 100
                         add_score_to_db(score, a, db)
-
+                        board.score_2 = score
 
                         print(board.step , '- steps')
-                        nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                        for_text4 = True
+                        nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 200), (200, 100)),
                                                              text='Продолжить',
                                                              manager=manager)
 
-                        gMenu2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                        gMenu2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 320), (200, 100)),
                                                               text='Главное меню',
                                                               manager=manager)
                         count2 += 1
@@ -942,6 +954,7 @@ if __name__ == '__main__':
                             ll = False
                             check = True
                             run1 = False
+                            for_text4 = False
                         elif event.ui_element == gMenu2:
                             pygame.mixer.music.stop()
                             pygame.mixer.music.load('GameData/Music/music.mp3')
@@ -965,6 +978,7 @@ if __name__ == '__main__':
                             gMenu2.kill()
                             lk = board.win = False
                             ll = False
+                            for_text4 = False
 
                     if ld:
                         if event.ui_element == gMenu:
@@ -1023,8 +1037,18 @@ if __name__ == '__main__':
             f = pygame.font.Font(None, 50)
             text = f.render('Пауза', True, (255, 255, 255))
             shag = f.render(f'Кол-во шагов: {board.step}', True, (255, 255, 255))
-            screen.blit(text, (300, 20))
-            screen.blit(shag, (300, 70))
+            screen.blit(text, (270, 20))
+            screen.blit(shag, (270, 70))
+        if for_text4:
+            f = pygame.font.Font(None, 50)
+            text = f.render('Уровень пройден!', True, (255, 255, 255))
+            shag = f.render(
+                f'Кол-во шагов: {board.step}', True, (255, 255, 255))
+            score_text = f.render(
+                f'Ваш счёт: {board.score_2}', True, (255, 255, 255))
+            screen.blit(text, (270, 20))
+            screen.blit(shag, (270, 70))
+            screen.blit(score_text, (270, 120))
         '''if for_text4:
             f = pygame.font.Font(None, 50)
             text = f.render('Пауза', True, (255, 255, 255))
