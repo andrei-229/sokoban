@@ -1,8 +1,11 @@
 # Задача Кольки
 
 class Level:
-    def __init__(self, old):
-        old.nowLevel = 2
+    def __init__(self, old, custom=False) -> None:
+        if custom is False:
+            old.nowLevel = 2
+        else:
+            old.nowLevel = 25
         old.po = [8 * old.cell_size, 7 * old.cell_size]
 
         # стены 
@@ -36,4 +39,6 @@ class Level:
         old.board[4][15] = 3
         old.board[11][17] = 3
         old.board[12][16] = 3
+        old.count = 0
+        old.countBox = 6
         # hello

@@ -86,8 +86,6 @@ class Board:
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
-                # self.countBox = 3
-                # self.count = 0
                 Level1(self)
             elif self.nowLevel == 1 and self.win == False:
                 try:
@@ -103,8 +101,6 @@ class Board:
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
-                self.countBox = 6
-                self.count = 0
                 Level2(self)
 
             elif self.nowLevel == 2 and self.win == False:
@@ -121,8 +117,6 @@ class Board:
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
-                self.countBox = 5
-                self.count = 0
                 Level3(self)
             elif self.nowLevel == 25:
                 try:
@@ -134,11 +128,11 @@ class Board:
                 except Exception:
                     pass
                 pygame.mixer.music.stop()
-                pygame.mixer.music.load('GameData/Music/level1.mp3')
+                pygame.mixer.music.load('GameData/Music/level4.mp3')
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
-                Level4(self)
+                Level4(self, custom=True)
 
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
@@ -644,7 +638,13 @@ if __name__ == '__main__':
     count2 = 0
     stars = 3
     score = 0
+    sndone = False
     while running:
+        try:
+            board.qw.set_volume(soundS2)
+            board.wq.set_volume(soundS2)
+        except Exception:
+            pass
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -728,7 +728,7 @@ if __name__ == '__main__':
 
                         print(board.step , '- steps')
                         for_text4 = True
-                        if board.nowLevel != 3:
+                        if board.nowLevel != 3 and board.nowLevel != 25:
                             nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 200), (200, 100)),
                                                                  text='Продолжить',
                                                                  manager=manager)
@@ -736,9 +736,12 @@ if __name__ == '__main__':
                                                                   text='Главное меню',
                                                                   manager=manager)
                         else:
-                            pygame.mixer.music.stop()
-                            pygame.mixer.Sound.play(win_music)
-                            win_music.set_volume(soundS)
+                            if board.nowLevel != 25:
+                                pygame.mixer.music.stop()
+                                pygame.mixer.Sound.play(win_music)
+                                win_music.set_volume(soundS)
+                            else:
+                                pass
                             nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((250, 200), (300, 100)),
                                                                  text='Вернуться в главное меню',
                                                                  manager=manager)
@@ -1000,6 +1003,7 @@ if __name__ == '__main__':
                     if ll:
                         if board.nowLevel == 3:
                                 if event.ui_element == nextB:
+                                    sndone = False
                                     pygame.mixer.music.stop()
                                     win_music.stop()
                                     pygame.mixer.music.load(
@@ -1026,9 +1030,13 @@ if __name__ == '__main__':
                                     for_text4 = False
                         else:
                             if event.ui_element == nextB:
+                                    sndone = False
                                     f = pygame.font.Font(None, 30)
                                     nextB.kill()
-                                    gMenu2.kill()
+                                    try:
+                                        gMenu2.kill()
+                                    except Exception:
+                                        pass
                                     screen.fill((0, 0, 0))
                                     text = f.render(
                                         'Загрузка...', True, (255, 255, 255))
@@ -1145,6 +1153,12 @@ if __name__ == '__main__':
             else:
                 text = f.render('Уровень пройден!', True, (255, 255, 255))
                 screen.blit(text, (270, 20))
+                if not sndone:
+                    pygame.mixer.music.stop()
+                    board.lvldone = pygame.mixer.Sound('GameData/Music/leveldone.mp3')
+                    pygame.mixer.Sound.play(board.lvldone)
+                    board.lvldone.set_volume(board.soundS2)
+                    sndone = True
             shag = f.render(
                 f'Кол-во шагов: {board.step}', True, (255, 255, 255))
             score_text = f.render(
