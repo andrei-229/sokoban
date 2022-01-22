@@ -28,3 +28,5 @@ class Level:
         old.po = [10 * old.cell_size, 10 * old.cell_size]
         old.count = 0
         old.countBox = 5
+        old.ten = 1000000
+        old.seven = 1000000

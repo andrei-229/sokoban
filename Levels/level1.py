@@ -28,5 +28,9 @@ class Level:
         old.countBox = 3
         old.count = 0
 
+        # Очки
+        old.ten = 48
+        old.seven = 53
+
         
         old.po = [11 * old.cell_size, 8 * old.cell_size]

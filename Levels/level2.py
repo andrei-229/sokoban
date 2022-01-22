@@ -42,3 +42,5 @@ class Level:
         old.count = 0
         old.countBox = 6
         # hello
+        self.ten = 85
+        self.seven = 90

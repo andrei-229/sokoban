@@ -709,22 +709,16 @@ if __name__ == '__main__':
                         ll = True
                         screen.fill((0, 0, 0))
                         steps = board.step
-                        if board.nowLevel == 1:
-                            if steps >= 0 and steps < 48:
+                        if board.nowLevel != 3:
+                            if steps >= 0 and steps < board.ten:
                                 score += 10
-                            elif steps >= 48 and steps < 53:
+                            elif steps >= board.ten and steps < board.seven:
                                 score += 7
-                            elif steps >= 53:
-                                score += 5
-                        elif board.nowLevel == 2:
-                            if steps >= 0 and steps < 85:
-                                score += 10
-                            elif steps >= 85 and steps < 90:
-                                score += 7
-                            elif steps >= 90:
+                            elif steps >= board.seven:
                                 score += 5
                         elif board.nowLevel == 3:
                             score += 100
+
                         add_score_to_db(score, a, db, board.nowLevel)
                         board.score_2 = score
 
