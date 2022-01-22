@@ -621,8 +621,10 @@ if __name__ == '__main__':
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
-    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
                                               manager=manager, image_surface=st2)
+    
+    for_text5 = True
 
     start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                 text='Старт',
@@ -721,7 +723,12 @@ if __name__ == '__main__':
                             elif steps >= 90:
                                 score += 5
                         elif board.nowLevel == 3:
-                            score += 100
+                            if steps >= 0 and strps <= 150:
+                                score += 100
+                            elif steps > 150 and steps <= 250:
+                                score += 50
+                            elif steps > 250:
+                                score += 25
                         add_score_to_db(score, a, db, board.nowLevel)
                         board.score_2 = score
 
@@ -749,6 +756,7 @@ if __name__ == '__main__':
                     if event.ui_element == start_button:
                         count2 = 0
                         check = True
+                        for_text5 = False
                         run1 = False
                         screen.fill((0, 0, 0))
                         board = Board(screen, 26, 18, 0, soundS, soundS2)
@@ -774,6 +782,7 @@ if __name__ == '__main__':
                         else:
                             level_done = ['']
                         lk = True
+                        for_text5 = False
                         start_button.kill()
                         settings_button.kill()
                         levels_button.kill()
@@ -813,6 +822,7 @@ if __name__ == '__main__':
                         levelS.set_volume(soundS2)
                         st.kill()
                         lm = True
+                        for_text5 = False
                         escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
                                                                text='<-',
                                                                manager=manager)
@@ -840,7 +850,7 @@ if __name__ == '__main__':
                             plus1.kill()
                             plus2.kill()
                             for_text2 = False
-                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
                             start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
@@ -990,7 +1000,7 @@ if __name__ == '__main__':
                                 level_done = scores_2[0][0].split(';')
                             else:
                                 level_done = ['']
-                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
                             start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
@@ -1054,11 +1064,12 @@ if __name__ == '__main__':
                                 pygame.mixer.music.load('GameData/Music/music.mp3')
                                 pygame.mixer.music.set_volume(soundS)
                                 pygame.mixer.music.play(-1)
+                                for_text5 = True
                                 scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
                                                             WHERE player_id = (SELECT player_id FROM Players
                                                             WHERE player = ?)""", (a, )).fetchall()
                                 level_done = scores_2[0][0].split(';')
-                                st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                                st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
                                                                         manager=manager, image_surface=st2)
 
                                 start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
@@ -1091,7 +1102,7 @@ if __name__ == '__main__':
                                 level_done = scores_2[0][0].split(';')
                             else:
                                 level_done = ['']
-                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
                             start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
@@ -1158,6 +1169,17 @@ if __name__ == '__main__':
                 f'Ваш счёт: {board.score_2}', True, (255, 255, 255))
             screen.blit(shag, (270, 70))
             screen.blit(score_text, (300, 120))
+        if for_text5:
+            scores_2 = db.cursor().execute("""SELECT score FROM Scores
+                                                            WHERE player_id = (SELECT player_id FROM Players
+                                                            WHERE player = ?)""", (a, )).fetchall()
+            if len(scores_2) > 0:
+                ipe = scores_2[0][0]
+            else:
+                ipe = '0'
+            f = pygame.font.Font(None, 50)
+            text = f.render(f'Лучший результат: {ipe}', True, (255, 255, 255))
+            screen.blit(text, (250, 100))
         clock.tick(fps)
         pygame.display.flip()
     try:
