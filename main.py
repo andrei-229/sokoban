@@ -525,6 +525,12 @@ def pygame_nick_input():
 
 
 def main_menu():
+    global start_button
+    global levels_button
+    global settings_button
+    global st
+    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
+                                              manager=manager, image_surface=st2)
     start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                 text='Старт',
                                                 manager=manager)
@@ -634,20 +640,7 @@ if __name__ == '__main__':
 
     st2 = pygame.image.load('animation/sok.png')
     # Первое главное меню
-    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
-                                              manager=manager, image_surface=st2)
-
-    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                text='Старт',
-                                                manager=manager)
-
-    levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                 text='Уровни',
-                                                 manager=manager)
-
-    settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                   text='Настройки',
-                                                   manager=manager)
+    main_menu()
 
     lk = False
     ld = False
@@ -1003,20 +996,7 @@ if __name__ == '__main__':
                                 level_done = scores_2[0][0].split(';')
                             else:
                                 level_done = ['']
-                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
-                                                                      manager=manager, image_surface=st2)
-
-                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                                        text='Старт',
-                                                                        manager=manager)
-
-                            levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                                         text='Уровни',
-                                                                         manager=manager)
-
-                            settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                                           text='Настройки',
-                                                                           manager=manager)
+                            main_menu()
                     if ll:
                         if board.nowLevel == 3:
                                 if event.ui_element == nextB:
@@ -1027,20 +1007,7 @@ if __name__ == '__main__':
                                         'GameData/Music/music.mp3')
                                     pygame.mixer.music.set_volume(soundS)
                                     pygame.mixer.music.play(-1)
-                                    st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
-                                                                              manager=manager, image_surface=st2)
-
-                                    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                                                text='Старт',
-                                                                                manager=manager)
-
-                                    levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                                                 text='Уровни',
-                                                                                 manager=manager)
-
-                                    settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                                                   text='Настройки',
-                                                                                   manager=manager)
+                                    main_menu()
                                     nextB.kill()
                                     lk = board.win = False
                                     ll = False
@@ -1079,20 +1046,7 @@ if __name__ == '__main__':
                                                             WHERE player_id = (SELECT player_id FROM Players
                                                             WHERE player = ?)""", (a, )).fetchall()
                                 level_done = scores_2[0][0].split(';')
-                                st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
-                                                                        manager=manager, image_surface=st2)
-
-                                start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                                            text='Старт',
-                                                                            manager=manager)
-
-                                levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                                            text='Уровни',
-                                                                            manager=manager)
-
-                                settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                                            text='Настройки',
-                                                                            manager=manager)
+                                main_menu()
                                 try:
                                     nextB.kill()
                                 except Exception:
@@ -1115,20 +1069,7 @@ if __name__ == '__main__':
                                 level_done = scores_2[0][0].split(';')
                             else:
                                 level_done = ['']
-                            st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
-                                                                      manager=manager, image_surface=st2)
-
-                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
-                                                                        text='Старт',
-                                                                        manager=manager)
-
-                            levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
-                                                                         text='Уровни',
-                                                                         manager=manager)
-
-                            settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
-                                                                           text='Настройки',
-                                                                           manager=manager)
+                            main_menu()
                             continueB.kill()
                             gMenu.kill()
                             ld = False
