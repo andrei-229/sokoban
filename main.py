@@ -37,7 +37,6 @@ class Board:
         self.board = [[0] * width for _ in range(height)]
         # Размещение одной стены первое число это по Y второе по X
         self.po = [0, 0]
-        # Level1(self)
         self.krest = []
         self.coor = []
         self.win = False
@@ -560,6 +559,14 @@ def add_score_to_db(score, nickname, db, level):
 
 # всё далее я не менял, поэтому не буду писать комментарии
 if __name__ == '__main__':
+    try:
+        client_id = '932641205727146026'
+        rpc = pypresence.Presence(client_id)
+        rpc.connect()
+        rpc.update(state='Прохоидит регистрацию',
+                   large_image='logo', small_image='logo')
+    except Exception:
+        pass
     top1 = tkinter.Tk()
     top1.tk.eval(f'tk::PlaceWindow {top1._w} center')
     a = pygame_nick_input()
@@ -575,20 +582,17 @@ if __name__ == '__main__':
     manager = pygame_gui.UIManager(screen.get_size())
     screen.fill((255, 255, 255))
     clock = pygame.time.Clock()
+    try:
+        rpc.update(state='В главном меню',
+                   large_image='logo', small_image='logo')
+    except Exception:
+        pass
     soundS = 0.1
     soundS2 = 0.1
     soundS_2 = 0
     soundS2_2 = 0
     fps = 90
     grom = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
-    try:
-        client_id = '932641205727146026'
-        rpc = pypresence.Presence(client_id)
-        rpc.connect()
-        rpc.update(state='Играет в игру',
-                   large_image='logo', small_image='logo')
-    except Exception:
-        pass
     pygame.mixer.init()
     pygame.mixer.music.load('GameData/Music/music.mp3')
     pygame.mixer.music.set_volume(soundS)
@@ -604,7 +608,6 @@ if __name__ == '__main__':
         level_done = scores_2[0][0].split(';')
     else:
         level_done = ['']
-    # time.sleep(7)
     running = True
     run1 = True
     for_text = False
@@ -897,7 +900,6 @@ if __name__ == '__main__':
                             third_level.kill()
                             escapeB.kill()
                             custom_level.kill()
-                            # fade(780, 540)
                         elif event.ui_element == custom_level:
                             f = UserFile()
                             print(f)
