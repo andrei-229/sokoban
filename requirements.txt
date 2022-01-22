@@ -1,3 +1,4 @@
 gspread==4.0.1
 moviepy==1.0.3
 pygame_gui==0.5.7
+pypresence==4.2.0
