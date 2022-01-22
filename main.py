@@ -142,7 +142,8 @@ class Board:
 
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
-            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1 or self.po[0] <= 0 or self.po[1] <= 0:
+            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1 \
+                 or self.po[0] <= 0 or self.po[1] <= 0:
                 self.po = self.save_po  # возвращение координат игрока
         except:  # если клетки нет в списке
             self.po = self.save_po  # возвращение координат игрока
@@ -215,7 +216,9 @@ class Board:
         # если игрок на клетке с коробкой или крестом
         if self.board[now_board_y - 1][now_board_x - 1] == 2 or self.board[now_board_y - 1][now_board_x - 1] == 1:
             if self.board[now_board_y - 1][now_board_x - 1] != 1:
-                if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 1 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4:
+                if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 1 \
+                     or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2 \
+                          or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4:
                     self.po = self.save_po
                 # проверка на крестик
                 elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 3:
@@ -255,7 +258,8 @@ class Board:
                     self.qw.set_volume(self.soundS2)
                     self.board[(int(self.po[1] / self.cell_size)) -
                                1][(int(self.po[0] / self.cell_size)) - 1] = 3
-                elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2:
+                elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 4 \
+                     or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 2] == 2:
                     self.po = self.save_po
                 else:
                     self.board[(int(self.po[1] / self.cell_size)) -
@@ -286,9 +290,11 @@ class Board:
         # перемещение игрока на одну клетку вправо
         self.po[0] = self.po[0] + self.cell_size
         try:
-            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:
+            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 \
+                 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] != 1:
-                    if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 1 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4:
+                    if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 1 \
+                         or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4:
                         self.po = self.save_po
                     elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 3:
                         self.board[(int(self.po[1] / self.cell_size)) -
@@ -325,7 +331,8 @@ class Board:
                         self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
-                    elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2:
+                    elif self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 4 \
+                         or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size))] == 2:
                         self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
@@ -358,10 +365,12 @@ class Board:
         # перемещение игрока на одну клетку вверх
         self.po[1] = self.po[1] - self.cell_size
         try:
-            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:  # если на клетке препятствие
+            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 \
+                 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:  # если на клетке препятствие
                 # если на клетке не препятствие
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] != 1:
-                    if self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 1 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4:  # если на клетке препятствие
+                    if self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 1 \
+                         or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4:  # если на клетке препятствие
                         self.po = self.save_po
                     # если на клетке ящик
                     elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 3:
@@ -400,7 +409,8 @@ class Board:
                         self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
-                    elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2:
+                    elif self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 4 \
+                        or self.board[(int(self.po[1] / self.cell_size)) - 2][(int(self.po[0] / self.cell_size)) - 1] == 2:
                         self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size)) -
@@ -439,9 +449,12 @@ class Board:
         # перемещение игрока на одну клетку вниз
         self.po[1] = self.po[1] + self.cell_size
         try:
-            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:
+            if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 2 \
+                 or self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] == 1:
                 if self.board[(int(self.po[1] / self.cell_size)) - 1][(int(self.po[0] / self.cell_size)) - 1] != 1:
-                    if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 1 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4:
+                    if self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 1 \
+                         or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2 or \
+                              self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4:
                         self.po = self.save_po
                     elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 3:
                         self.board[(int(self.po[1] / self.cell_size))
@@ -461,8 +474,7 @@ class Board:
                         pygame.mixer.Sound.play(self.qw)
                         self.qw.set_volume(self.soundS2)
                     else:
-                        self.board[(int(self.po[1] / self.cell_size))
-                                   ][(int(self.po[0] / self.cell_size)) - 1] = 2
+                        self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] = 2
                         pygame.mixer.Sound.play(self.qw)
                         self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
@@ -478,7 +490,8 @@ class Board:
                         self.qw.set_volume(self.soundS2)
                         self.board[(int(self.po[1] / self.cell_size)) -
                                    1][(int(self.po[0] / self.cell_size)) - 1] = 3
-                    elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4 or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2:
+                    elif self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 4\
+                         or self.board[(int(self.po[1] / self.cell_size))][(int(self.po[0] / self.cell_size)) - 1] == 2:
                         self.po = self.save_po
                     else:
                         self.board[(int(self.po[1] / self.cell_size))
@@ -486,8 +499,7 @@ class Board:
                         pygame.mixer.Sound.play(self.qw)
                         self.qw.set_volume(self.soundS2)
                         self.count -= 1
-                        self.board[(int(self.po[1] / self.cell_size)) -
-                                   1][(int(self.po[0] / self.cell_size)) - 1] = 3
+                        self.board[(int(self.po[1] / self.cell_size)) -1][(int(self.po[0] / self.cell_size)) - 1] = 3
                 else:
                     self.po = self.save_po
         except:
@@ -514,14 +526,18 @@ def UserFile():
 
 def pygame_nick_input():
     top1.withdraw()
-    nick = tkinter.simpledialog.askstring("Введите ваш ник", "Введите ваш ник", parent=top1)
+    nick = tkinter.simpledialog.askstring("Введите ваш ник", 
+                                          "Введите ваш ник", 
+                                          parent=top1)
     try:
         if len(nick.split()) > 0:
             top1.destroy()
             return nick
         else:
             for i in range(1000):
-                nick = tkinter.simpledialog.askstring("Введите ваш ник", "Введите ваш ник", parent=top1)
+                nick = tkinter.simpledialog.askstring("Введите ваш ник", 
+                                                      "Введите ваш ник", 
+                                                      parent=top1)
                 if len(nick.split()) > 0:
                     top1.destroy()
                     return nick
@@ -676,7 +692,8 @@ if __name__ == '__main__':
 
     st2 = pygame.image.load('animation/sok.png')
     st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
-                                              manager=manager, image_surface=st2)
+                                              manager=manager, 
+                                              image_surface=st2)
     
     for_text5 = True
 
