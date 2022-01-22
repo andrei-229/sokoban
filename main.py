@@ -766,6 +766,13 @@ if __name__ == '__main__':
                         levels_button.kill()
                         st.kill()
                     elif event.ui_element == levels_button:
+                        scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                                            WHERE player_id = (SELECT player_id FROM Players
+                                                            WHERE player = ?)""", (a, )).fetchall()
+                        if len(scores_2) > 0:
+                            level_done = scores_2[0][0].split(';')
+                        else:
+                            level_done = ['']
                         lk = True
                         start_button.kill()
                         settings_button.kill()
