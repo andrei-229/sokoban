@@ -138,7 +138,7 @@ class Board:
                 pygame.mixer.music.play(-1)
                 pygame.mixer.music.set_volume(self.soundS)
                 self.board = [[0] * self.width for _ in range(self.height)]
-                Level4(self)
+                Level4(self, custom=True)
 
         try:  # проверка на наличие клетки в списке
             # проверка на препятствие
@@ -730,13 +730,20 @@ if __name__ == '__main__':
                                 score += 50
                             elif steps > 250:
                                 score += 25
+                        elif board.nowLevel == 25:
+                            if steps >= 0 and steps <= 150:
+                                score += 200
+                            elif steps > 150 and steps <= 250:
+                                score += 50
+                            elif steps > 250:
+                                score += 25
                         add_score_to_db(score, a, db, board.nowLevel)
                         board.score_2 = score
 
 
                         print(board.step , '- steps')
                         for_text4 = True
-                        if board.nowLevel != 3:
+                        if board.nowLevel != 3 and board.nowLevel != 25:
                             nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 200), (200, 100)),
                                                                  text='Продолжить',
                                                                  manager=manager)
@@ -1024,7 +1031,7 @@ if __name__ == '__main__':
                                                                            text='Настройки',
                                                                            manager=manager)
                     if ll:
-                        if board.nowLevel == 3:
+                        if board.nowLevel == 3 or board.nowLevel == 25:
                                 if event.ui_element == nextB:
                                     pygame.mixer.music.stop()
                                     win_music.stop()

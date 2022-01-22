@@ -1,8 +1,11 @@
 # Задача Кольки
 
 class Level:
-    def __init__(self, old):
-        old.nowLevel = 2
+    def __init__(self, old, custom=False):
+        if custom:
+            old.nowLevel = 25
+        else:
+            old.nowLevel = 2
         old.po = [8 * old.cell_size, 7 * old.cell_size]
 
         # стены 

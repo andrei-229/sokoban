@@ -1,7 +1,10 @@
 # Задача Андрея
 class Level:
-    def __init__(self, old) -> None:
-        old.nowLevel = 1
+    def __init__(self, old, custom=False) -> None:
+        if custom:
+            old.nowLevel = 25
+        else:
+            old.nowLevel = 1
         # Стены по периметру
         old.board[3][10] = old.board[3][12] = old.board[3][11] = old.board[4][12] = old.board[4][13] = 1
         old.board[4][10] = old.board[5][10] = old.board[6][10] = 1
