@@ -730,16 +730,8 @@ if __name__ == '__main__':
                                 score += 50
                             elif steps > 250:
                                 score += 25
-                        elif board.nowLevel == 25:
-                            if steps >= 0 and steps <= 150:
-                                score += 200
-                            elif steps > 150 and steps <= 250:
-                                score += 50
-                            elif steps > 250:
-                                score += 25
                         add_score_to_db(score, a, db, board.nowLevel)
                         board.score_2 = score
-
 
                         print(board.step , '- steps')
                         for_text4 = True
