@@ -642,6 +642,7 @@ if __name__ == '__main__':
     ld = False
     ll = False
     lm = False
+    lp = True
     r2 = ''
     count2 = 0
     stars = 3
@@ -753,94 +754,98 @@ if __name__ == '__main__':
                         score = 0
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == start_button:
-                        count2 = 0
-                        check = True
-                        for_text5 = False
-                        run1 = False
-                        screen.fill((0, 0, 0))
-                        board = Board(screen, 26, 18, 0, soundS, soundS2)
-                        pygame.mixer.music.stop()
-                        pygame.mixer.Sound.play(grom)
-                        grom.set_volume(soundS2)
-                        f = pygame.font.Font(None, 30)
-                        text = f.render('Загрузка...', True, (255, 255, 255))
-                        screen.blit(text, (650, 500))
-                        pygame.display.flip()
-                        time.sleep(2)
-                        board.render(screen)
-                        start_button.kill()
-                        settings_button.kill()
-                        levels_button.kill()
-                        st.kill()
-                    elif event.ui_element == levels_button:
-                        scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
-                                                            WHERE player_id = (SELECT player_id FROM Players
-                                                            WHERE player = ?)""", (a, )).fetchall()
-                        if len(scores_2) > 0:
-                            level_done = scores_2[0][0].split(';')
-                        else:
-                            level_done = ['']
-                        lk = True
-                        for_text5 = False
-                        start_button.kill()
-                        settings_button.kill()
-                        levels_button.kill()
-                        st.kill()
-                        pygame.mixer.Sound.play(levelS)
-                        levelS.set_volume(soundS2)
-                        for_text = True
-                        first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
-                                                                   text='1',
-                                                                   manager=manager)
-
-                        second_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 270), (220, 50)),
-                                                                    text='2',
-                                                                    manager=manager)
-                        if '1' not in level_done:
-                            second_level.disable()
-
-                        third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
-                                                                   text='3',
-                                                                   manager=manager)
-                        if '2' not in level_done:
-                            third_level.disable()
-
-                        custom_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 370), (220, 50)),
-                                                                    text='Custom',
+                    if lp:
+                        if event.ui_element == start_button:
+                            count2 = 0
+                            check = True
+                            lp = False
+                            for_text5 = False
+                            run1 = False
+                            screen.fill((0, 0, 0))
+                            board = Board(screen, 26, 18, 0, soundS, soundS2)
+                            pygame.mixer.music.stop()
+                            pygame.mixer.Sound.play(grom)
+                            grom.set_volume(soundS2)
+                            f = pygame.font.Font(None, 30)
+                            text = f.render('Загрузка...', True, (255, 255, 255))
+                            screen.blit(text, (650, 500))
+                            pygame.display.flip()
+                            time.sleep(2)
+                            board.render(screen)
+                            start_button.kill()
+                            settings_button.kill()
+                            levels_button.kill()
+                            st.kill()
+                        elif event.ui_element == levels_button:
+                            scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                                                WHERE player_id = (SELECT player_id FROM Players
+                                                                WHERE player = ?)""", (a, )).fetchall()
+                            if len(scores_2) > 0:
+                                level_done = scores_2[0][0].split(';')
+                            else:
+                                level_done = ['']
+                            lk = True
+                            lp = False
+                            for_text5 = False
+                            start_button.kill()
+                            settings_button.kill()
+                            levels_button.kill()
+                            st.kill()
+                            pygame.mixer.Sound.play(levelS)
+                            levelS.set_volume(soundS2)
+                            for_text = True
+                            first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
+                                                                    text='1',
                                                                     manager=manager)
 
-                        escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
-                                                               text='<-',
-                                                               manager=manager)
-                    elif event.ui_element == settings_button:
-                        for_text2 = True
-                        start_button.kill()
-                        settings_button.kill()
-                        levels_button.kill()
-                        pygame.mixer.Sound.play(levelS)
-                        levelS.set_volume(soundS2)
-                        st.kill()
-                        lm = True
-                        for_text5 = False
-                        escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
-                                                               text='<-',
-                                                               manager=manager)
-                        saveS = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 400), (200, 50)),
-                                                               text='Сохранить изменения',
-                                                               manager=manager)
-                        minus1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((270, 200), (50, 50)),
-                                                                        text='-',
+                            second_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 270), (220, 50)),
+                                                                        text='2',
                                                                         manager=manager)
-                        minus2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((270, 280), (50, 50)),
-                                                                        text='-',
+                            if '1' not in level_done:
+                                second_level.disable()
+
+                            third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
+                                                                    text='3',
+                                                                    manager=manager)
+                            if '2' not in level_done:
+                                third_level.disable()
+
+                            custom_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 370), (220, 50)),
+                                                                        text='Custom',
                                                                         manager=manager)
-                        plus1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((450, 200), (50, 50)),
-                                                              text='+',
-                                                              manager=manager)
-                        plus2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((450, 280), (50, 50)),
-                                                              text='+',
-                                                              manager=manager)
+
+                            escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
+                                                                text='<-',
+                                                                manager=manager)
+                        elif event.ui_element == settings_button:
+                            for_text2 = True
+                            start_button.kill()
+                            settings_button.kill()
+                            levels_button.kill()
+                            pygame.mixer.Sound.play(levelS)
+                            levelS.set_volume(soundS2)
+                            st.kill()
+                            lm = True
+                            lp = False
+                            for_text5 = False
+                            escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
+                                                                text='<-',
+                                                                manager=manager)
+                            saveS = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 400), (200, 50)),
+                                                                text='Сохранить изменения',
+                                                                manager=manager)
+                            minus1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((270, 200), (50, 50)),
+                                                                            text='-',
+                                                                            manager=manager)
+                            minus2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((270, 280), (50, 50)),
+                                                                            text='-',
+                                                                            manager=manager)
+                            plus1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((450, 200), (50, 50)),
+                                                                text='+',
+                                                                manager=manager)
+                            plus2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((450, 280), (50, 50)),
+                                                                text='+',
+                                                                manager=manager)
                     if lm:
                         if event.ui_element == escapeB:
                             escapeB.kill()
@@ -850,6 +855,8 @@ if __name__ == '__main__':
                             plus1.kill()
                             plus2.kill()
                             for_text2 = False
+                            for_text5 = True
+                            lp = True
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
@@ -993,6 +1000,8 @@ if __name__ == '__main__':
                             escapeB.kill()
                             custom_level.kill()
                             for_text = False
+                            for_text5 = True
+                            lp = True
                             scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
                                                             WHERE player_id = (SELECT player_id FROM Players
                                                             WHERE player = ?)""", (a, )).fetchall()
@@ -1041,6 +1050,8 @@ if __name__ == '__main__':
                                     lk = board.win = False
                                     ll = False
                                     for_text4 = False
+                                    for_text5 = True
+                                    lp = True
                         else:
                             if event.ui_element == nextB:
                                     f = pygame.font.Font(None, 30)
@@ -1065,6 +1076,7 @@ if __name__ == '__main__':
                                 pygame.mixer.music.set_volume(soundS)
                                 pygame.mixer.music.play(-1)
                                 for_text5 = True
+                                lp = True
                                 scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
                                                             WHERE player_id = (SELECT player_id FROM Players
                                                             WHERE player = ?)""", (a, )).fetchall()
@@ -1095,6 +1107,8 @@ if __name__ == '__main__':
                             pygame.mixer.music.load('GameData/Music/music.mp3')
                             pygame.mixer.music.set_volume(soundS)
                             pygame.mixer.music.play(-1)
+                            lp = True
+                            for_text5 = True
                             scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
                                                             WHERE player_id = (SELECT player_id FROM Players
                                                             WHERE player = ?)""", (a, )).fetchall()
@@ -1170,6 +1184,7 @@ if __name__ == '__main__':
             screen.blit(shag, (270, 70))
             screen.blit(score_text, (300, 120))
         if for_text5:
+            lp = True
             scores_2 = db.cursor().execute("""SELECT score FROM Scores
                                                             WHERE player_id = (SELECT player_id FROM Players
                                                             WHERE player = ?)""", (a, )).fetchall()
