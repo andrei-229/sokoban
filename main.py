@@ -724,7 +724,7 @@ if __name__ == '__main__':
                             elif steps >= 90:
                                 score += 5
                         elif board.nowLevel == 3:
-                            if steps >= 0 and strps <= 150:
+                            if steps >= 0 and steps <= 150:
                                 score += 100
                             elif steps > 150 and steps <= 250:
                                 score += 50
