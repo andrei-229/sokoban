@@ -742,7 +742,7 @@ if __name__ == '__main__':
                                 win_music.set_volume(soundS)
                             else:
                                 pass
-                            nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((250, 200), (300, 100)),
+                            gMenu2 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((250, 200), (300, 100)),
                                                                  text='Вернуться в главное меню',
                                                                  manager=manager)
                         count2 += 1
@@ -1029,28 +1029,31 @@ if __name__ == '__main__':
                                     ll = False
                                     for_text4 = False
                         else:
-                            if event.ui_element == nextB:
-                                    sndone = False
-                                    f = pygame.font.Font(None, 30)
-                                    nextB.kill()
-                                    try:
-                                        gMenu2.kill()
-                                    except Exception:
-                                        pass
-                                    screen.fill((0, 0, 0))
-                                    text = f.render(
-                                        'Загрузка...', True, (255, 255, 255))
-                                    screen.blit(text, (650, 500))
-                                    pygame.display.flip()
-                                    time.sleep(2)
-                                    board = Board(screen, 26, 18, count2, soundS, soundS2)
-                                    board.render(screen)
-                                    lk = board.win = False
-                                    ll = False
-                                    check = True
-                                    run1 = False
-                                    for_text4 = False
-                            elif event.ui_element == gMenu2:
+                            try:
+                                if event.ui_element == nextB:
+                                        sndone = False
+                                        f = pygame.font.Font(None, 30)
+                                        nextB.kill()
+                                        try:
+                                            gMenu2.kill()
+                                        except Exception:
+                                            pass
+                                        screen.fill((0, 0, 0))
+                                        text = f.render(
+                                            'Загрузка...', True, (255, 255, 255))
+                                        screen.blit(text, (650, 500))
+                                        pygame.display.flip()
+                                        time.sleep(2)
+                                        board = Board(screen, 26, 18, count2, soundS, soundS2)
+                                        board.render(screen)
+                                        lk = board.win = False
+                                        ll = False
+                                        check = True
+                                        run1 = False
+                                        for_text4 = False
+                            except Exception:
+                                pass
+                            if event.ui_element == gMenu2:
                                 pygame.mixer.music.stop()
                                 pygame.mixer.music.load('GameData/Music/music.mp3')
                                 pygame.mixer.music.set_volume(soundS)
@@ -1073,7 +1076,10 @@ if __name__ == '__main__':
                                 settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
                                                                             text='Настройки',
                                                                             manager=manager)
-                                nextB.kill()
+                                try:
+                                    nextB.kill()
+                                except Exception:
+                                    pass
                                 gMenu2.kill()
                                 lk = board.win = False
                                 ll = False
