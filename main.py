@@ -687,7 +687,6 @@ if __name__ == '__main__':
     for_text2 = False
     for_text3 = False
     for_text4 = False
-    print_win1 = False
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
@@ -757,8 +756,6 @@ if __name__ == '__main__':
                         soundS, soundS_2 = soundS_2, soundS
                         soundS2, soundS2_2 = soundS2_2, soundS2
                         grom.set_volume(soundS2)
-                        print(soundS, soundS2)
-                        print(soundS_2, soundS2_2)
                     if event.key == pygame.K_c:
                         r2 = True
                     if event.key == pygame.K_ESCAPE:
@@ -804,7 +801,6 @@ if __name__ == '__main__':
                         add_score_to_db(score, a, db, board.nowLevel)
                         board.score_2 = score
 
-                        print(board.step , '- steps')
                         for_text4 = True
                         if board.nowLevel != 3 and board.nowLevel != 25:
                             nextB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 200), (200, 100)),
@@ -981,8 +977,6 @@ if __name__ == '__main__':
                             pygame.display.flip()
                             time.sleep(2)
                             board.render(screen)
-                            if r2:
-                                print(2)
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
@@ -991,7 +985,6 @@ if __name__ == '__main__':
                             # fade(780, 540)
                         elif event.ui_element == custom_level:
                             f = UserFile()
-                            print(f)
                             if f:
                                 try:
                                     shutil.copy(f, 'Levels/level4.py')
