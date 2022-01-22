@@ -3,7 +3,7 @@ import shutil
 import sqlite3
 import time
 import tkinter
-from tkinter import filedialog, simpledialog
+from tkinter import filedialog
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level as Level3
@@ -524,6 +524,21 @@ def pygame_nick_input():
         sys.exit(-1)
 
 
+def main_menu():
+    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                                                text='Старт',
+                                                manager=manager)
+
+    levels_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 270), (200, 100)),
+                                                 text='Уровни',
+                                                 manager=manager)
+
+    settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
+                                                   text='Настройки',
+                                                   manager=manager)
+    
+
+
 def add_nickname_to_db(name, db):
     nicknames = db.cursor().execute("""SELECT player FROM Players""").fetchall()
     for elem in nicknames:
@@ -618,6 +633,7 @@ if __name__ == '__main__':
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
+    # Первое главное меню
     st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                               manager=manager, image_surface=st2)
 
@@ -837,7 +853,7 @@ if __name__ == '__main__':
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 20), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
-                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
+                            start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (100, 50)),
                                                                         text='Старт',
                                                                         manager=manager)
 
@@ -847,6 +863,10 @@ if __name__ == '__main__':
 
                             settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
                                                                            text='Настройки',
+                                                                           manager=manager)
+                            
+                            credits_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
+                                                                           text='Титрый',
                                                                            manager=manager)
                             lm = False
                         if soundS_2 == 0 and soundS2_2 == 0:
