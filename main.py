@@ -543,25 +543,79 @@ def add_nickname_to_db(name, db):
 def add_score_to_db(score, nickname, db, level):
     player_id = db.cursor().execute("""SELECT player_id FROM Players
                                 WHERE player = ?""", (nickname, )).fetchall()
-    scores = db.cursor().execute("""SELECT player_id, score FROM Scores
+    scores = db.cursor().execute("""SELECT player_id FROM Scores
                                     WHERE player_id = ?""", (player_id[0][0], )).fetchall()
     if len(scores) == 0:
-        db.cursor().execute("""INSERT INTO Scores(player_id, score, comp_levels) VALUES(?, ?, ?)""", 
-        (player_id[0][0], score, f'{level};'))
+        db.cursor().execute("""INSERT INTO Scores(player_id, comp_levels, first_level) VALUES(?, ?, ?)""", 
+        (player_id[0][0], f'{level};', score))
         db.commit()
     else:
-        comp = db.cursor().execute("""SELECT comp_levels FROM Scores
+        if level == 1:
+            comp = db.cursor().execute("""SELECT comp_levels FROM Scores
                                         WHERE player_id = ?""", (player_id[0][0], )).fetchall()
-        comp = [x for x in comp[0][0].split(';') if x != '']
-        if str(level) not in comp:
-            comp.append(str(level))
-            db.cursor().execute("""UPDATE Scores
-                                    SET score = ?
-                                    WHERE player_id = ?""", (int(scores[0][1]) + score, player_id[0][0], ))
-            db.cursor().execute("""UPDATE Scores
-                                    SET comp_levels = ?
-                                    WHERE player_id = ?""", (';'.join(comp), player_id[0][0], ))
-            db.commit()
+            comp = [x for x in comp[0][0].split(';') if x != '']
+            sc = db.cursor().execute("""SELECT first_level FROM Scores
+                                        WHERE player_id = ?""", (player_id[0][0], )).fetchall()
+            if (sc[0][0] is None or sc[0][0] < score) and str(level) not in comp:
+                db.cursor().execute("""UPDATE Scores
+                                        SET first_level = ?
+                                        WHERE player_id = ?""", (score, player_id[0][0]))
+                db.commit()
+                comp.append(str(level))
+                db.cursor().execute("""UPDATE Scores
+                                        SET comp_levels = ?
+                                        WHERE player_id = ?""", (';'.join(comp), player_id[0][0], ))
+                db.commit()
+            else:
+                if sc[0][0] is None or sc[0][0] < score:
+                    db.cursor().execute("""UPDATE Scores
+                                        SET first_level = ?
+                                        WHERE player_id = ?""", (score, player_id[0][0]))
+                    db.commit()
+        elif level == 2:
+            comp = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                        WHERE player_id = ?""", (player_id[0][0], )).fetchall()
+            comp = [x for x in comp[0][0].split(';') if x != '']
+            sc = db.cursor().execute("""SELECT second_level FROM Scores
+                                        WHERE player_id = ?""", (player_id[0][0], )).fetchall()
+            if (sc[0][0] is None or sc[0][0] < score) and str(level) not in comp:
+                db.cursor().execute("""UPDATE Scores
+                                        SET second_level = ?
+                                        WHERE player_id = ?""", (score, player_id[0][0]))
+                db.commit()
+                comp.append(str(level))
+                db.cursor().execute("""UPDATE Scores
+                                        SET comp_levels = ?
+                                        WHERE player_id = ?""", (';'.join(comp), player_id[0][0], ))
+                db.commit()
+            else:
+                if sc[0][0] is None or sc[0][0] < score:
+                    db.cursor().execute("""UPDATE Scores
+                                        SET second_level = ?
+                                        WHERE player_id = ?""", (score, player_id[0][0]))
+                    db.commit()
+        elif level == 3:
+            comp = db.cursor().execute("""SELECT comp_levels FROM Scores
+                                        WHERE player_id = ?""", (player_id[0][0], )).fetchall()
+            comp = [x for x in comp[0][0].split(';') if x != '']
+            sc = db.cursor().execute("""SELECT third_level FROM Scores
+                                        WHERE player_id = ?""", (player_id[0][0], )).fetchall()
+            if (sc[0][0] is None or sc[0][0] < score) and str(level) not in comp:
+                db.cursor().execute("""UPDATE Scores
+                                        SET third_level = ?
+                                        WHERE player_id = ?""", (score, player_id[0][0]))
+                db.commit()
+                comp.append(str(level))
+                db.cursor().execute("""UPDATE Scores
+                                        SET comp_levels = ?
+                                        WHERE player_id = ?""", (';'.join(comp), player_id[0][0], ))
+                db.commit()
+            else:
+                if sc[0][0] is None or sc[0][0] < score:
+                    db.cursor().execute("""UPDATE Scores
+                                        SET third_level = ?
+                                        WHERE player_id = ?""", (score, player_id[0][0]))
+                    db.commit()
 
 
 # всё далее я не менял, поэтому не буду писать комментарии
@@ -1062,7 +1116,9 @@ if __name__ == '__main__':
                                     screen.blit(text, (650, 500))
                                     pygame.display.flip()
                                     time.sleep(2)
-                                    board = Board(screen, 26, 18, count2, soundS, soundS2)
+                                    board = Board(screen, 
+                                                  26, 18, 
+                                                  count2, soundS, soundS2)
                                     board.render(screen)
                                     lk = board.win = False
                                     ll = False
@@ -1081,7 +1137,8 @@ if __name__ == '__main__':
                                                             WHERE player = ?)""", (a, )).fetchall()
                                 level_done = scores_2[0][0].split(';')
                                 st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
-                                                                        manager=manager, image_surface=st2)
+                                                                        manager=manager, 
+                                                                        image_surface=st2)
 
                                 start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 150), (200, 100)),
                                                                             text='Старт',
@@ -1184,11 +1241,12 @@ if __name__ == '__main__':
             screen.blit(score_text, (300, 120))
         if for_text5:
             lp = True
-            scores_2 = db.cursor().execute("""SELECT score FROM Scores
-                                                            WHERE player_id = (SELECT player_id FROM Players
-                                                            WHERE player = ?)""", (a, )).fetchall()
+            scores_2 = db.cursor().execute("""SELECT first_level, second_level, third_level FROM Scores
+                                                WHERE player_id = (SELECT player_id FROM Players
+                                                WHERE player = ?)""", (a, )).fetchall()
             if len(scores_2) > 0:
-                ipe = scores_2[0][0]
+                scsc = [int(x) for x in scores_2[0] if x is not None]
+                ipe = sum(scsc)
             else:
                 ipe = '0'
             f = pygame.font.Font(None, 50)
