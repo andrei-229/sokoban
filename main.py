@@ -679,7 +679,8 @@ if __name__ == '__main__':
                     if event.key == pygame.K_r:
                         board.board = [[0] * width for _ in range(height)]
                         board.count = board.countBox = 0
-                        board.nowLevel -= 1
+                        if board.nowLevel != 25:
+                            board.nowLevel -= 1
                         board.render(screen)
                         board.step = 0
                     if event.key == pygame.K_m:
