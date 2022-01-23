@@ -929,6 +929,7 @@ if __name__ == '__main__':
                             for_text2 = False
                             for_text5 = True
                             lp = True
+                            lm = False
                             st = pygame_gui.elements.ui_image.UIImage(relative_rect=pygame.Rect((250, 10), (300, 100)),
                                                                       manager=manager, image_surface=st2)
 
@@ -943,7 +944,6 @@ if __name__ == '__main__':
                             settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
                                                                            text='Настройки',
                                                                            manager=manager)
-                            lm = False
                         if soundS_2 == 0 and soundS2_2 == 0:
                             if event.ui_element == minus1 and soundS >= 0.05:
                                 soundS -= 0.05
@@ -1076,6 +1076,7 @@ if __name__ == '__main__':
                             for_text = False
                             for_text5 = True
                             lp = True
+                            lk = False
                             scores_2 = db.cursor().execute("""SELECT comp_levels FROM Scores
                                                             WHERE player_id = (SELECT player_id FROM Players
                                                             WHERE player = ?)""", (a, )).fetchall()
@@ -1326,12 +1327,14 @@ if __name__ == '__main__':
             text = f.render('Лидеры', True, (255, 255, 255))
             screen.blit(text, (320, 20))
             scores_main = db.cursor().execute("""SELECT player_id, first_level, second_level, third_level FROM Scores""").fetchall()
+            scores_id_and_niks = db.cursor().execute("""SELECT player_id, player FROM Players""").fetchall()
             level_one_leaderboard = {}
             level_two_leaderboard = {}
             level_three_leaderboard = {}
             for i in range(len(scores_main)):
                 if scores_main[i][1] != None:
-                    level_one_leaderboard[scores_main[i][0]] = scores_main[i][1]
+
+                    level_one_leaderboard[scores_id_and_niks[i][1]] = scores_main[i][1]
                 else:
                     level_one_leaderboard[scores_main[i][0]] = 0
                 if scores_main[i][2] != None:
