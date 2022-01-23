@@ -11,13 +11,30 @@ class Level:
         old.countBox = 6
 
         # стены 
-        old.board[5][7] = old.board[5][6] = 1
-        old.board[6][6] = old.board[7][6] = old.board[8][6] = old.board[9][6] = old.board[10][6] = 1
-        old.board[10][7] = old.board[10][8] = old.board[10][9] = 1
-        old.board[11][9] = old.board[11][10] = old.board[11][11] = old.board[11][12] = 1
-        old.board[10][12] = old.board[9][12] = 1
-        old.board[9][13] = old.board[9][14] = old.board[9][15] = 1
-        old.board[10][15] = old.board[11][15] = old.board[12][15] = old.board[13][15] = 1
+        old.board[5][7] = 1
+
+        old.board[5][6] = 1
+        old.board[6][6] = 1
+        old.board[7][6] = 1
+        old.board[8][6] = 1
+        old.board[9][6] = 1
+        old.board[10][6] = 1
+        old.board[10][7] = 1
+        old.board[10][8] = 1
+        old.board[10][9] = 1
+        old.board[11][9] = 1
+        old.board[11][10] = 1
+        old.board[11][11] = 1
+        old.board[11][12] = 1
+        old.board[10][12] = 1
+        old.board[9][12] = 1
+        old.board[9][13] = 1
+        old.board[9][14] = 1
+        old.board[9][15] = 1
+        old.board[10][15] = 1
+        old.board[11][15] = 1
+        old.board[12][15] = 1
+        old.board[13][15] = 1
         old.board[13][16] = old.board[13][17] = old.board[13][18] = 1
         old.board[12][18] = old.board[11][18] = old.board[10][18] = old.board[9][18] = old.board[8][18] = 1
         old.board[7][18] = old.board[6][18] = old.board[5][18] = old.board[4][18] = 1

@@ -6,10 +6,25 @@ class Level:
         else:
             old.nowLevel = 1
         # Стены по периметру
-        old.board[3][10] = old.board[3][12] = old.board[3][11] = old.board[4][12] = old.board[4][13] = 1
-        old.board[4][10] = old.board[5][10] = old.board[6][10] = 1
-        old.board[6][9] = old.board[7][9] = old.board[8][9] = old.board[9][9] = old.board[10][9] = old.board[12][9] = 1
-        old.board[12][9] = old.board[12][10] = old.board[12][11] = old.board[12][12] = old.board[12][13] = 1 # Пол
+        old.board[3][10] = 1
+        old.board[3][12] = 1
+        old.board[3][11] = 1
+        old.board[4][12] = 1
+        old.board[4][13] = 1
+        old.board[4][10] = 1
+        old.board[5][10] = 1
+        old.board[6][10] = 1
+        old.board[6][9] = 1
+        old.board[7][9] = 1
+        old.board[8][9] = 1
+        old.board[9][9] = 1
+        old.board[10][9] = 1
+        old.board[12][9] = 1
+        old.board[12][9] = 1
+        old.board[12][10] = 1
+        old.board[12][11] = 1
+        old.board[12][12] = 1
+        old.board[12][13] = 1 # Пол
         old.board[12][16] = 1
         old.board[12][14] = old.board[12][15] = old.board[11][16] = old.board[11][9] = 1
         old.board[10][16] = old.board[9][16] = old.board[8][16] = old.board[7][16] = old.board[6][16] = 1
