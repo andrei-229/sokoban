@@ -4,6 +4,7 @@ import sqlite3
 import time
 import tkinter
 from tkinter import filedialog, simpledialog
+from discord import player
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level as Level3
@@ -1333,18 +1334,23 @@ if __name__ == '__main__':
             level_three_leaderboard = {}
             for i in range(len(scores_main)):
                 if scores_main[i][1] != None:
-
-                    level_one_leaderboard[scores_id_and_niks[i][1]] = scores_main[i][1]
+                    player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
+                    level_one_leaderboard[player_nick] = scores_main[i][1]
                 else:
-                    level_one_leaderboard[scores_main[i][0]] = 0
+                    player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
+                    level_one_leaderboard[player_nick] = 0
                 if scores_main[i][2] != None:
-                    level_two_leaderboard[scores_main[i][0]] = scores_main[i][2]
+                    player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
+                    level_two_leaderboard[player_nick] = scores_main[i][2]
                 else:
-                    level_two_leaderboard[scores_main[i][0]] = 0
+                    player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
+                    level_two_leaderboard[player_nick] = 0
                 if scores_main[i][3] != None:
-                    level_three_leaderboard[scores_main[i][0]] = scores_main[i][3]
+                    player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
+                    level_three_leaderboard[player_nick] = scores_main[i][3]
                 else:
-                    level_three_leaderboard[scores_main[i][0]] = 0
+                    player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
+                    level_three_leaderboard[player_nick] = 0
             level_one_leaderboard = sorted(level_one_leaderboard.items(), key=lambda x: x[1], reverse=True)
             level_two_leaderboard = sorted(level_two_leaderboard.items(), key=lambda x: x[1], reverse=True)
             level_three_leaderboard = sorted(level_three_leaderboard.items(), key=lambda x: x[1], reverse=True)
