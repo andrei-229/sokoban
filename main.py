@@ -1325,8 +1325,30 @@ if __name__ == '__main__':
             f = pygame.font.Font(None, 50)
             text = f.render('Лидеры', True, (255, 255, 255))
             screen.blit(text, (320, 20))
-            for i in range(6):
-                pass
+            scores_main = db.cursor().execute("""SELECT player_id, first_level, second_level, third_level FROM Scores""").fetchall()
+            level_one_leaderboard = {}
+            level_two_leaderboard = {}
+            level_three_leaderboard = {}
+            for i in range(len(scores_main)):
+                if scores_main[i][1] != None:
+                    level_one_leaderboard[scores_main[i][0]] = scores_main[i][1]
+                else:
+                    level_one_leaderboard[scores_main[i][0]] = 0
+                if scores_main[i][2] != None:
+                    level_two_leaderboard[scores_main[i][0]] = scores_main[i][2]
+                else:
+                    level_two_leaderboard[scores_main[i][0]] = 0
+                if scores_main[i][3] != None:
+                    level_three_leaderboard[scores_main[i][0]] = scores_main[i][3]
+                else:
+                    level_three_leaderboard[scores_main[i][0]] = 0
+            level_one_leaderboard = sorted(level_one_leaderboard.items(), key=lambda x: x[1], reverse=True)
+            level_two_leaderboard = sorted(level_two_leaderboard.items(), key=lambda x: x[1], reverse=True)
+            level_three_leaderboard = sorted(level_three_leaderboard.items(), key=lambda x: x[1], reverse=True)
+            for i in range(len(level_one_leaderboard)):
+                f = pygame.font.Font(None, 30)
+                text = f.render(f'{i + 1}. {level_one_leaderboard[i][0]} - {level_one_leaderboard[i][1]}', True, (255, 255, 255))
+                screen.blit(text, (50, 100 + i * 40))
         clock.tick(fps)
         pygame.display.flip()
     try:
