@@ -4,7 +4,6 @@ import sqlite3
 import time
 import tkinter
 from tkinter import filedialog, simpledialog
-from discord import player
 import pygame  # Import pygame
 import pygame_gui
 from Levels.level3 import Level as Level3
@@ -1332,6 +1331,7 @@ if __name__ == '__main__':
             level_one_leaderboard = {}
             level_two_leaderboard = {}
             level_three_leaderboard = {}
+            levels_leader_board = {}
             for i in range(len(scores_main)):
                 if scores_main[i][1] != None:
                     player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
@@ -1351,13 +1351,24 @@ if __name__ == '__main__':
                 else:
                     player_nick = db.cursor().execute("""SELECT player FROM Players WHERE player_id = ?""", (scores_main[i][0],)).fetchall()[0][0]
                     level_three_leaderboard[player_nick] = 0
-            level_one_leaderboard = sorted(level_one_leaderboard.items(), key=lambda x: x[1], reverse=True)
-            level_two_leaderboard = sorted(level_two_leaderboard.items(), key=lambda x: x[1], reverse=True)
-            level_three_leaderboard = sorted(level_three_leaderboard.items(), key=lambda x: x[1], reverse=True)
-            for i in range(len(level_one_leaderboard)):
-                f = pygame.font.Font(None, 30)
-                text = f.render(f'{i + 1}. {level_one_leaderboard[i][0]} - {level_one_leaderboard[i][1]}', True, (255, 255, 255))
-                screen.blit(text, (50, 100 + i * 40))
+            for i in level_one_leaderboard.keys():
+                levels_leader_board[i] = level_one_leaderboard[i] + level_two_leaderboard[i] + level_three_leaderboard[i]
+            levels_leader_board = sorted(levels_leader_board.items(), 
+                                         key=lambda x: x[1], 
+                                         reverse=True)
+            # level_one_leaderboard = sorted(level_one_leaderboard.items(), key=lambda x: x[1], reverse=True)
+            # level_two_leaderboard = sorted(level_two_leaderboard.items(), key=lambda x: x[1], reverse=True)
+            # level_three_leaderboard = sorted(level_three_leaderboard.items(), key=lambda x: x[1], reverse=True)
+            try:
+                for i in range(10):
+                    f = pygame.font.Font(None, 30)
+                    text = f.render(f'{i + 1}. {levels_leader_board[i][0]} - {levels_leader_board[i][1]}', True, (255, 255, 255))
+                    screen.blit(text, (50, 100 + i * 40))
+            except:
+                for i in range(len(level_one_leaderboard)):
+                    f = pygame.font.Font(None, 30)
+                    text = f.render(f'{i + 1}. {levels_leader_board[i][0]} - {levels_leader_board[i][1]}', True, (255, 255, 255))
+                    screen.blit(text, (50, 100 + i * 40))
         clock.tick(fps)
         pygame.display.flip()
     try:
