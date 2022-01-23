@@ -7,6 +7,8 @@ class Level:
         else:
             old.nowLevel = 2
         old.po = [8 * old.cell_size, 7 * old.cell_size]
+        old.count = 0
+        old.countBox = 6
 
         # стены 
         old.board[5][7] = old.board[5][6] = 1

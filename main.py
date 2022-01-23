@@ -10,8 +10,9 @@ from Levels.level3 import Level as Level3
 from Levels.level2 import Level as Level2
 from Levels.level1 import Level as Level1
 import moviepy.editor
-import moviepy.video.fx.all
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import pypresence
+# ▤
 
 
 class Board:
@@ -655,7 +656,7 @@ if __name__ == '__main__':
     soundS2 = 0.1
     soundS_2 = 0
     soundS2_2 = 0
-    fps = 90
+    fps = 120
     grom = pygame.mixer.Sound('GameData/Music/levelopen.mp3')
     try:
         client_id = '932641205727146026'
@@ -687,6 +688,7 @@ if __name__ == '__main__':
     for_text2 = False
     for_text3 = False
     for_text4 = False
+    for_text6 = False
     check = False
 
     st2 = pygame.image.load('animation/sok.png')
@@ -713,6 +715,7 @@ if __name__ == '__main__':
     ll = False
     lm = False
     lp = True
+    lo = False
     r2 = ''
     count2 = 0
     stars = 3
@@ -860,6 +863,9 @@ if __name__ == '__main__':
                             pygame.mixer.Sound.play(levelS)
                             levelS.set_volume(soundS2)
                             for_text = True
+                            liders_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 20), (100, 50)),
+                                                                         text='Лидеры',
+                                                                         manager=manager)
                             first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
                                                                     text='1',
                                                                     manager=manager)
@@ -982,6 +988,7 @@ if __name__ == '__main__':
                             third_level.kill()
                             escapeB.kill()
                             custom_level.kill()
+                            liders_button.kill()
                             # fade(780, 540)
                         elif event.ui_element == custom_level:
                             f = UserFile()
@@ -1009,6 +1016,7 @@ if __name__ == '__main__':
                                     third_level.kill()
                                     escapeB.kill()
                                     custom_level.kill()
+                                    liders_button.kill()
                                 except Exception:
                                     pass
 
@@ -1034,6 +1042,7 @@ if __name__ == '__main__':
                             third_level.kill()
                             escapeB.kill()
                             custom_level.kill()
+                            liders_button.kill()
                         elif event.ui_element == third_level:
                             count2 = 2
                             pygame.mixer.Sound.play(grom)
@@ -1056,12 +1065,14 @@ if __name__ == '__main__':
                             third_level.kill()
                             escapeB.kill()
                             custom_level.kill()
+                            liders_button.kill()
                         elif event.ui_element == escapeB:
                             first_level.kill()
                             second_level.kill()
                             third_level.kill()
                             escapeB.kill()
                             custom_level.kill()
+                            liders_button.kill()
                             for_text = False
                             for_text5 = True
                             lp = True
@@ -1086,6 +1097,54 @@ if __name__ == '__main__':
                             settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((300, 385), (200, 100)),
                                                                            text='Настройки',
                                                                            manager=manager)
+                        elif event.ui_element == liders_button:
+                            first_level.kill()
+                            second_level.kill()
+                            third_level.kill()
+                            escapeB.kill()
+                            custom_level.kill()
+                            liders_button.kill()
+                            lo = True
+                            for_text = False
+                            for_text6 = True
+                            escapeBq = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
+                                                                   text='<-',
+                                                                   manager=manager)
+                    if lo:
+                        if event.ui_element == escapeBq:
+                            escapeBq.kill()
+                            lo = False
+                            lk = True
+                            pygame.mixer.Sound.play(levelS)
+                            levelS.set_volume(soundS2)
+                            for_text = True
+                            for_text6 = False
+                            liders_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 20), (100, 50)),
+                                                                         text='Лидеры',
+                                                                         manager=manager)
+                            first_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((35, 270), (220, 50)),
+                                                                       text='1',
+                                                                       manager=manager)
+
+                            second_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 270), (220, 50)),
+                                                                        text='2',
+                                                                        manager=manager)
+                            if '1' not in level_done:
+                                second_level.disable()
+
+                            third_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((515, 270), (220, 50)),
+                                                                       text='3',
+                                                                       manager=manager)
+                            if '2' not in level_done:
+                                third_level.disable()
+
+                            custom_level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((275, 370), (220, 50)),
+                                                                        text='Custom',
+                                                                        manager=manager)
+
+                            escapeB = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (50, 50)),
+                                                                   text='<-',
+                                                                   manager=manager)
                     if ll:
                         if board.nowLevel == 3 or board.nowLevel == 25:
                                 if event.ui_element == nextB:
@@ -1262,6 +1321,12 @@ if __name__ == '__main__':
             f = pygame.font.Font(None, 50)
             text = f.render(f'Лучший результат: {ipe}', True, (255, 255, 255))
             screen.blit(text, (250, 100))
+        if for_text6:
+            f = pygame.font.Font(None, 50)
+            text = f.render('Лидеры', True, (255, 255, 255))
+            screen.blit(text, (320, 20))
+            for i in range(6):
+                pass
         clock.tick(fps)
         pygame.display.flip()
     try:
